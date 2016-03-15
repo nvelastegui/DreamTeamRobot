@@ -1,5 +1,8 @@
-package ca.mcgill.ecse211.dreamteamrobot;
+package ca.mcgill.ecse211.dreamteamrobot.navigation;
 
+import lejos.hardware.port.Port;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
 //
@@ -13,14 +16,17 @@ import lejos.robotics.SampleProvider;
 //
 
 public class UltrasonicPoller extends Thread {
-	private SampleProvider us;
+
+	/** Variables */
+	private SampleProvider sampleProvider;
 	private float[] usData;
 	private int distance;
 
 	/** Constructor */
-	public UltrasonicPoller(SampleProvider us, float[] usData) {
-		this.us = us;
-		this.usData = usData;
+	public UltrasonicPoller(Port ultrasonicSensorPort) {
+		SensorModes usSensor = new EV3UltrasonicSensor(ultrasonicSensorPort);
+		this.sampleProvider = usSensor.getMode("Distance");			// colorValue provides samples from this instance;
+		this.usData = new float[sampleProvider.sampleSize()];;
 	}
 
 	/**
@@ -36,7 +42,7 @@ public class UltrasonicPoller extends Thread {
 	public void run() {
 
 		while (true) {
-			us.fetchSample(usData, 0); // acquire data
+			sampleProvider.fetchSample(usData, 0); // acquire data
 			distance = (int) (usData[0] * 100.0); // extract from buffer, cast
 													// to int
 			try {

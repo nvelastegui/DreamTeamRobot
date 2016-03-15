@@ -18,7 +18,7 @@ import lejos.robotics.SampleProvider;
 /**
  * Central class.
  */
-public class Heart {
+public class Main {
 	
 	// Static Resources:
 	// Motors, TextLCD

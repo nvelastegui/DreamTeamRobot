@@ -1,14 +1,17 @@
-/*
- * Odometer.java
+package ca.mcgill.ecse211.dreamteamrobot.navigation;
+
+import ca.mcgill.ecse211.dreamteamrobot.kinematicmodel.KinematicModel;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+
+/**
+ * Odometer is a thread which uses the parameters in KinematicModel and changes in the tachometers
+ * of the left and right motors to estimate the robot's current position.
  */
-
-// Nicolas Velastegui 260521419
-// Siddiqui Hakim 260564770
-// Group 26
-
-package ca.mcgill.ecse211.dreamteamrobot;
-
 public class Odometer extends Thread {
+
+	private EV3LargeRegulatedMotor leftMotor;
+	private EV3LargeRegulatedMotor rightMotor;
+
 	// robot position
 	private double x, y, theta;
 	private double distancePerDegreeRotationLeft;
@@ -32,15 +35,19 @@ public class Odometer extends Thread {
 	private Object lock;
 
 	// default constructor
-	public Odometer() {
+	public Odometer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor) {
+
+		this.leftMotor = leftMotor;
+		this.rightMotor = rightMotor;
+
 		x = 0.0;
 		y = 0.0;
 		theta = 00.0; // Start theta at 90 so that x and y values are positive.
 		// stop at example2?
 		lock = new Object();
 		// Initialize the distancePerDegreeRotation using the parameters in Lab2.
-		distancePerDegreeRotationLeft = Math.PI * (Heart.WHEEL_RADIUS_L) / 180.00;
-		distancePerDegreeRotationRight = Math.PI * (Heart.WHEEL_RADIUS_R) / 180.00;
+		distancePerDegreeRotationLeft = Math.PI * (KinematicModel.WHEEL_RADIUS_L) / 180.00;
+		distancePerDegreeRotationRight = Math.PI * (KinematicModel.WHEEL_RADIUS_R) / 180.00;
 	}
 
 	// run method (required for Thread)
@@ -53,10 +60,10 @@ public class Odometer extends Thread {
 
 			// We want to grab the tacho count from the motors and immediately
 			// reset them so that we don't lose any rotations.
-			leftMotorTachoCount = Heart.leftMotor.getTachoCount();
-			rightMotorTachoCount = Heart.rightMotor.getTachoCount();
-			Heart.rightMotor.resetTachoCount();
-			Heart.leftMotor.resetTachoCount();
+			leftMotorTachoCount = leftMotor.getTachoCount();
+			rightMotorTachoCount = rightMotor.getTachoCount();
+			rightMotor.resetTachoCount();
+			leftMotor.resetTachoCount();
 
 			// theta goes from vertical axis (0 degrees) in a CW rotation.
 
@@ -73,7 +80,7 @@ public class Odometer extends Thread {
 				// deltaTheta is more complicated - derived in the lab tutorial.
 				// Heavily relies upon the time interval of readings being small (sufficiently small)
 				// (But not infinitesimally small!)
-				deltaTheta = (leftMotorDistance - rightMotorDistance) / Heart.TRACK;
+				deltaTheta = (leftMotorDistance - rightMotorDistance) / KinematicModel.WHEELBASE;
 
 				// Now we can calculate the new x, y, and theta values based on
 				// the previous ones, using the recursive relationship derived

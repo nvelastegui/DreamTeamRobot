@@ -1,12 +1,11 @@
-// Nicolas Velastegui 260521419
-// Siddiqui Hakim 260564770
-// Group 26
-
-package ca.mcgill.ecse211.dreamteamrobot;
+package ca.mcgill.ecse211.dreamteamrobot.navigation;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
-import lejos.internal.io.SystemSettings;
 
+/**
+ * Navigator is a state machine running on a thread. It manages movement of the robot in the horizontal plane,
+ * watching for obstacles and such.
+ */
 public class Navigator extends Thread {
 
 	/** Constants */
@@ -14,16 +13,20 @@ public class Navigator extends Thread {
 	private static final int ROTATE_SPEED = 80;
 	private static boolean[] getAllValues = {true, true, true};
 
+	/** Variables: Sub Threads */
 	private Odometer odometer;
 	private UltrasonicPoller usPoller;
+
+	/** Variables: Status */
 	private boolean status;
 	enum State {INIT, TURNING, TRAVELLING, EMERGENCY};
 
-	/** Variables: motors */
-	private EV3LargeRegulatedMotor leftMotor = Heart.leftMotor;
-	private EV3LargeRegulatedMotor rightMotor = Heart.rightMotor;
+	/** Variables: Motors */
+	private EV3LargeRegulatedMotor leftMotor;
+	private EV3LargeRegulatedMotor rightMotor;
+	private EV3LargeRegulatedMotor ultrasonicSensorMotor;
 
-	/** Variables: positions */
+	/** Variables: Positions */
 	private Location currentDestination;
 	private double destinationAngle;
 	private double[] currentPosition = new double[3];
@@ -38,9 +41,12 @@ public class Navigator extends Thread {
 	 * @param odometer Robot odometer.
 	 * @param usPoller Robot ultrasonic poller used for checkEmergency()
 	 */
-	public Navigator(Odometer odometer, UltrasonicPoller usPoller) {
+	public Navigator(Odometer odometer, UltrasonicPoller usPoller, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3LargeRegulatedMotor ultrasonicSensorMotor) {
 		this.odometer = odometer;
 		this.usPoller = usPoller;
+		this.leftMotor = leftMotor;
+		this.rightMotor = rightMotor;
+		this.ultrasonicSensorMotor = ultrasonicSensorMotor;
 		this.status = false;
 	}
 
@@ -65,6 +71,11 @@ public class Navigator extends Thread {
 		return currentDestination;
 	}
 
+	/**
+	 * Sets new travel point for robot.
+	 * @param x x coordinate of travel point
+	 * @param y y coordinate of travel point
+     */
 	public void travelTo (double x, double y) {
 		//System.out.println("run travelTo");
 
@@ -76,6 +87,14 @@ public class Navigator extends Thread {
 
 		// Set travel status to true.
 		status = true;
+	}
+
+	/**
+	 * Cancels current travel.
+	 */
+	public void cancelTravel () {
+		// do stuff here
+		// what if it's currently in an emergency?
 	}
 
 	/**
@@ -227,7 +246,7 @@ public class Navigator extends Thread {
 	public void run() {
 
 		State state = State.INIT;
-		ObstacleAvoidance avoidance = new ObstacleAvoidance(this);
+		ObstacleAvoider avoidance = new ObstacleAvoider(this, ultrasonicSensorMotor, leftMotor, rightMotor);
 
 		while (true) {
 //			System.out.println("State: " + state);
@@ -254,7 +273,7 @@ public class Navigator extends Thread {
 					Location currentPosition = getPositionFromOdometer();
 					if (checkEmergency()) {
 						state = State.EMERGENCY;
-						avoidance = new ObstacleAvoidance(this);
+						avoidance = new ObstacleAvoider(this, ultrasonicSensorMotor, leftMotor, rightMotor);
 						avoidance.start();
 					}
 					else if (!checkIfAtDestination(currentPosition)) {

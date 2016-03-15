@@ -1,16 +1,16 @@
-package ca.mcgill.ecse211.dreamteamrobot;
+package ca.mcgill.ecse211.dreamteamrobot.navigation;
 
 // Nicolas Velastegui 260521419
 // Siddiqui Hakim 260564770
 // Group 26
 
-import lejos.hardware.ev3.LocalEV3;
+import ca.mcgill.ecse211.dreamteamrobot.kinematicmodel.KinematicModel;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**
  * Created by nicolas on 2016-02-07.
  */
-public class ObstacleAvoidance extends Thread {
+public class ObstacleAvoider extends Thread {
 
 	/** enum: bangbang or p controller */
 	enum Controller {BANGBANG, PCONT};
@@ -48,14 +48,14 @@ public class ObstacleAvoidance extends Thread {
 	double tolFinalTheta = 0.40;
 
 	/** Constructor */
-	public ObstacleAvoidance (Navigator nav) {
+	public ObstacleAvoider(Navigator nav, EV3LargeRegulatedMotor ultrasonicSensorMotor, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor) {
 		this.nav = nav;
 		this.odometer = nav.getOdometer();
 		this.ultrasonicPoller = nav.getUsPoller();
 		this.finalPosition = nav.getCurrentDestination();
-		this.ultrasonicSensorMotor = Heart.ultrasonicSensorMotor;
-		this.leftMotor = Heart.leftMotor;
-		this.rightMotor = Heart.rightMotor;
+		this.ultrasonicSensorMotor = ultrasonicSensorMotor;
+		this.leftMotor = leftMotor;
+		this.rightMotor = rightMotor;
 		this.safe = false;
 	}
 
@@ -75,14 +75,14 @@ public class ObstacleAvoidance extends Thread {
 		// 2. Move back a little.
 		leftMotor.setSpeed(ROTATE_SPEED);
 		rightMotor.setSpeed(ROTATE_SPEED);
-		leftMotor.rotate(-convertAngle(Heart.WHEEL_RADIUS_L, Heart.TRACK, 60), true);    // Return immediately
-		rightMotor.rotate(-convertAngle(Heart.WHEEL_RADIUS_R, Heart.TRACK, 60), false); // Return when motion is completed.
+		leftMotor.rotate(-convertAngle(KinematicModel.WHEEL_RADIUS_L, KinematicModel.WHEELBASE, 60), true);    // Return immediately
+		rightMotor.rotate(-convertAngle(KinematicModel.WHEEL_RADIUS_R, KinematicModel.WHEELBASE, 60), false); // Return when motion is completed.
 
 		// 3. Rotate the robot 90 degrees right.
 		leftMotor.setSpeed(ROTATE_SPEED);
 		rightMotor.setSpeed(ROTATE_SPEED);
-		leftMotor.rotate(convertAngle(Heart.WHEEL_RADIUS_L, Heart.TRACK, 90), true);    // Return immediately
-		rightMotor.rotate(-convertAngle(Heart.WHEEL_RADIUS_R, Heart.TRACK, 90), false); // Return when motion is completed.
+		leftMotor.rotate(convertAngle(KinematicModel.WHEEL_RADIUS_L, KinematicModel.WHEELBASE, 90), true);    // Return immediately
+		rightMotor.rotate(-convertAngle(KinematicModel.WHEEL_RADIUS_R, KinematicModel.WHEELBASE, 90), false); // Return when motion is completed.
 
 		// Grab the starting angle.
 		double startingTheta = odometer.getTheta();

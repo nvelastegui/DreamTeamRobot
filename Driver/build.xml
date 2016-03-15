@@ -5,7 +5,7 @@
 	<property name="classdir" location="${blddir}/classes" />
 	<property name="jardir" location="${blddir}/jar" />
 	<property name="srcdircode" location="src/" />
-	<property name="Main-Class" value="ca.mcgill.ecse211.dreamteamrobot.Heart" />
+	<property name="Main-Class" value="ca.mcgill.ecse211.dreamteamrobot.main.Main" />
 
 	<!-- CLASSPATH: LEJOS LIBRARIES: DO NOT CHANGE -->
 	<path id="project.class.path">
@@ -41,7 +41,7 @@
 	<target name="link" depends="compile">
 		<jar
 		basedir="${classdir}"
-		destfile="${jardir}/DreamTeamRobot.jar" >
+		destfile="${jardir}/Driver.jar" >
 		<manifest>
 		<attribute name="Main-Class" value="${Main-Class}"/>
 		</manifest>
