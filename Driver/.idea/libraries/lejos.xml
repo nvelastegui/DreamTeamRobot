@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="lejos">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/lejos.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
