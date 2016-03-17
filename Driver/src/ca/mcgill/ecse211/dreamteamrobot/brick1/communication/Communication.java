@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.dreamteamrobot.communication;
+package ca.mcgill.ecse211.dreamteamrobot.brick1.communication;
 
 /**
  * Class containing static methods for communicating between bricks.

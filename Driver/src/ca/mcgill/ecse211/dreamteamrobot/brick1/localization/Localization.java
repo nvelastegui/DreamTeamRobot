@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.dreamteamrobot.localization;
+package ca.mcgill.ecse211.dreamteamrobot.brick1.localization;
 
 /**
  * Created by nicolas on 2016-03-14.

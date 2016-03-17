@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.dreamteamrobot.navigation;
+package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3UltrasonicSensor;

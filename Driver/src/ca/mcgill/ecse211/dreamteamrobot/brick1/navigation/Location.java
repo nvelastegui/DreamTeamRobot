@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.dreamteamrobot.navigation;
+package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 
 /**
  * This object holds a coordinate.

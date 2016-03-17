@@ -1,6 +1,6 @@
-package ca.mcgill.ecse211.dreamteamrobot.navigation;
+package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 
-import ca.mcgill.ecse211.dreamteamrobot.kinematicmodel.KinematicModel;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**

@@ -1,9 +1,9 @@
-package ca.mcgill.ecse211.dreamteamrobot.main;
+package ca.mcgill.ecse211.dreamteamrobot.brick1.main;
 
-import ca.mcgill.ecse211.dreamteamrobot.navigation.Navigator;
-import ca.mcgill.ecse211.dreamteamrobot.navigation.Odometer;
-import ca.mcgill.ecse211.dreamteamrobot.navigation.OdometerCorrection;
-import ca.mcgill.ecse211.dreamteamrobot.navigation.UltrasonicPoller;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.OdometerCorrection;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.UltrasonicPoller;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
 

@@ -6,11 +6,9 @@
 // Siddiqui Hakim 260564770
 // Group 26
 
-package ca.mcgill.ecse211.dreamteamrobot.display;
+package ca.mcgill.ecse211.dreamteamrobot.brick1.display;
 
-import ca.mcgill.ecse211.dreamteamrobot.main.Driver;
-import ca.mcgill.ecse211.dreamteamrobot.navigation.Odometer;
-import lejos.hardware.lcd.TextLCD;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.main.Driver;
 
 public class LCDDisplay extends Thread {
 

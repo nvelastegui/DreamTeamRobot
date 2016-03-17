@@ -1,10 +1,10 @@
-package ca.mcgill.ecse211.dreamteamrobot.navigation;
+package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 
 // Nicolas Velastegui 260521419
 // Siddiqui Hakim 260564770
 // Group 26
 
-import ca.mcgill.ecse211.dreamteamrobot.kinematicmodel.KinematicModel;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**

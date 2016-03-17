@@ -4,21 +4,13 @@
 // Siddiqui Hakim 260564770
 // Group 26
 
-package ca.mcgill.ecse211.dreamteamrobot.main;
+package ca.mcgill.ecse211.dreamteamrobot.brick1.main;
 
-import ca.mcgill.ecse211.dreamteamrobot.display.LCDDisplay;
-import ca.mcgill.ecse211.dreamteamrobot.navigation.OdometerCorrection;
-import ca.mcgill.ecse211.dreamteamrobot.navigation.UltrasonicPoller;
-import ca.mcgill.ecse211.dreamteamrobot.navigation.Navigator;
-import ca.mcgill.ecse211.dreamteamrobot.navigation.Odometer;
-import lejos.hardware.Button;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.display.LCDDisplay;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.port.Port;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.hardware.sensor.SensorModes;
-import lejos.robotics.SampleProvider;
 
 /**
  * Central class.
