@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="840d1550-cde4-4073-9d45-405837c17478" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/ColourPoller.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/UltrasonicPoller.java" afterPath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/UltrasonicPoller.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Driver/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../Driver/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Driver/build.xml" afterPath="$PROJECT_DIR$/../Driver/build.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java" afterPath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" afterPath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java" afterPath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ObstacleAvoider.java" afterPath="$PROJECT_DIR$/../Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ObstacleAvoider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Gunner.iws" />
@@ -582,12 +588,12 @@
       <updated>1458011020621</updated>
       <workItem from="1458011021741" duration="397000" />
       <workItem from="1458011434715" duration="1532000" />
-      <workItem from="1458235736182" duration="232000" />
+      <workItem from="1458235736182" duration="1152000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2161000" />
+    <option name="totallyTimeSpent" value="3081000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="6" />

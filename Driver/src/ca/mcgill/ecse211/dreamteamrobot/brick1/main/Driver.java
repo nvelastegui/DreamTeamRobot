@@ -3,12 +3,12 @@ package ca.mcgill.ecse211.dreamteamrobot.brick1.main;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.OdometerCorrection;
-import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.UltrasonicPoller;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
 
 /**
- * This is the main thread for the navigational brick. It runs as state machine.
+ * This is the main offensive thread for the navigational brick. It runs as state machine.
  */
 public class Driver extends Thread {
 
@@ -21,7 +21,6 @@ public class Driver extends Thread {
     private OdometerCorrection odometerCorrection;
     private UltrasonicPoller ultrasonicPoller;
     private Navigator navigator;
-
 
     /**
      * Constructor.

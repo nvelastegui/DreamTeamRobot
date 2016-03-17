@@ -1,20 +1,14 @@
-package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
+package ca.mcgill.ecse211.dreamteamrobot.brick1.sensors;
 
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
-//
-//  Control of the wall follower is applied periodically by the 
-//  UltrasonicPoller thread.  The while loop at the bottom executes
-//  in a loop.  Assuming that the us.fetchSample, and cont.processUSData
-//  methods operate in about 20mS, and that the thread sleeps for
-//  50 mS at the end of each loop, then one cycle through the loop
-//  is approximately 70 mS.  This corresponds to a sampling rate
-//  of 1/70mS or about 14 Hz.
-//
-
+/**
+ * This thread runs in the background, polling an ultrasonic sensor and logging value.
+ * Parent threads can call getDistance() to retrieve the value read by the sensor.
+ */
 public class UltrasonicPoller extends Thread {
 
 	/** Variables */

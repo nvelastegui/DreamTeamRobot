@@ -2,20 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="86480b4d-a434-42c9-a33a-ed2cc5fde52e" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/communication/Communication.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/communication/Communication.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/display/LCDDisplay.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/display/LCDDisplay.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/kinematicmodel/KinematicModel.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/kinematicmodel/KinematicModel.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/localization/Localization.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/main/Driver.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/main/Main.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Main.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation/Location.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Location.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation/Navigator.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation/ObstacleAvoider.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ObstacleAvoider.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation/Odometer.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Odometer.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation/OdometerCorrection.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/OdometerCorrection.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation/UltrasonicPoller.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/UltrasonicPoller.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/ColourPoller.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/UltrasonicPoller.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/UltrasonicPoller.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ObstacleAvoider.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ObstacleAvoider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Gunner/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../Gunner/.idea/workspace.xml" />
     </list>
     <ignored path="Driver.iws" />
@@ -38,11 +32,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Main.java">
+      <file leaf-file-name="Navigator.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="60" column="30" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
+            <state vertical-scroll-proportion="3.1169653">
+              <caret line="180" column="0" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -50,14 +44,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Driver.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java">
+      <file leaf-file-name="Localization.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.19704953">
-              <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0">
+              <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Defender.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -101,6 +103,17 @@
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation/Navigator.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation/Odometer.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Lab4.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/USLocalizer.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/UltrasonicPoller.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ColourPoller.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/ColourPoller.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/UltrasonicPoller.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/UltrasonicLocalizer.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/LightLocalizer.java" />
       </list>
     </option>
   </component>
@@ -160,6 +173,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Driver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Driver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Driver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="brick1" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sensors" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -303,7 +338,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -312,9 +347,11 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/nicolas/SpiderOak/School/2015-2016/Winter 2016/ECSE 211 - Design Principles And Methods/Project/DreamTeamRobot/Driver/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors" />
       <recent name="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/display" />
       <recent name="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation" />
       <recent name="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/main" />
@@ -759,15 +796,15 @@
       <workItem from="1458010791938" duration="153000" />
       <workItem from="1458011063554" duration="356000" />
       <workItem from="1458011436611" duration="5278000" />
-      <workItem from="1458235737504" duration="425000" />
+      <workItem from="1458235737504" duration="4951000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6292000" />
+    <option name="totallyTimeSpent" value="10818000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -776,22 +813,22 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20238096" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32958034" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32958034" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -919,26 +956,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08956797">
-          <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/UltrasonicPoller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63123643">
-          <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1201#1202#0" expanded="true" />
-            <element signature="e#1223#1224#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/kinematicmodel/KinematicModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.05374078">
@@ -965,39 +982,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Location.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Odometer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.12906724">
           <caret line="7" column="73" selection-start-line="7" selection-start-column="73" selection-end-line="7" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6090622">
-          <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
-          <folding>
-            <element signature="e#1752#1753#0" expanded="true" />
-            <element signature="e#1774#1775#0" expanded="true" />
-            <element signature="e#1869#1870#0" expanded="true" />
-            <element signature="e#1891#1892#0" expanded="true" />
-            <element signature="e#1990#1991#0" expanded="true" />
-            <element signature="e#2022#2023#0" expanded="true" />
-            <element signature="e#6154#6155#0" expanded="true" />
-            <element signature="e#6174#6175#0" expanded="true" />
-            <element signature="e#6278#6279#0" expanded="true" />
-            <element signature="e#6329#6330#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1020,10 +1010,84 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/ColourPoller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.41201264">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#876#877#0" expanded="true" />
+            <element signature="e#910#911#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/UltrasonicPoller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48366702">
+          <caret line="27" column="7" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Location.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14330874">
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/LightLocalizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21496312">
+          <caret line="12" column="82" selection-start-line="12" selection-start-column="82" selection-end-line="12" selection-end-column="82" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/UltrasonicLocalizer.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19704953">
-          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
+          <caret line="11" column="73" selection-start-line="11" selection-start-column="73" selection-end-line="11" selection-end-column="73" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.1169653">
+          <caret line="180" column="0" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

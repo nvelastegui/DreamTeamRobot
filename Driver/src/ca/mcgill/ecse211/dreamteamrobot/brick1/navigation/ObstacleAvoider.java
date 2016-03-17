@@ -5,6 +5,7 @@ package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 // Group 26
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**

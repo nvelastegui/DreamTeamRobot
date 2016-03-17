@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 
+import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**
@@ -16,6 +17,7 @@ public class Navigator extends Thread {
 	/** Variables: Sub Threads */
 	private Odometer odometer;
 	private UltrasonicPoller usPoller;
+	private ObstacleAvoider obstacleAvoider;
 
 	/** Variables: Status */
 	private boolean status;
@@ -169,6 +171,26 @@ public class Navigator extends Thread {
 			rightMotor.forward();
 		}
 
+	}
+
+	/**
+	 * Allows external object to turn robot to a specific angle.
+	 * @param desiredAngle
+	 */
+	public boolean turnToAngle (double desiredAngle) {
+
+		// Continue to turn until proper angle is reached.
+		while (!isFacingDestination(desiredAngle)) {
+			turnTo(desiredAngle);
+		}
+
+		// Stop motors and set navigating status to false.
+		leftMotor.stop();
+		rightMotor.stop();
+
+		// Return a value here to ensure that full method runs
+		// before next line is executed in parent call.
+		return true;
 	}
 
 	/**
