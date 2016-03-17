@@ -1,26 +1,44 @@
-/*
- * OdometryDisplay.java
- */
-
-// Nicolas Velastegui 260521419
-// Siddiqui Hakim 260564770
-// Group 26
-
 package ca.mcgill.ecse211.dreamteamrobot.brick1.display;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.main.Driver;
+import lejos.hardware.ev3.LocalEV3;
+import lejos.hardware.lcd.TextLCD;
 
+import java.util.List;
+
+/**
+ * This thread automatically samples data from a Driver thread, supplied in the constructor, and
+ * displays it on the brick LCD. Classes may interrupt this automated procedure by calling sendToDisplay(),
+ * which immediately displays some provided message.
+ */
 public class LCDDisplay extends Thread {
 
 	private static final long DISPLAY_PERIOD = 250;
+	private TextLCD LCD = LocalEV3.get().getTextLCD();;
 	private Driver driver;
 
-	// constructor
+	/**
+	 * Constructor
+	 * @param driver Driver thread.
+     */
 	public LCDDisplay(Driver driver) {
 		this.driver = driver;
 	}
 
-	// run method (required for Thread)
+	/**
+	 * Displays message on screen.
+	 * @param lines Message to be displayed, in a list where each element is a line.
+     */
+	public static void sendToDisplay (List<String> lines) {
+//		LCD.clear();
+//		LCD.drawString("X: ", 0, 0);
+//		LCD.drawString("Y: ", 0, 1);
+//		LCD.drawString("H: ", 0, 2);
+	}
+
+	/**
+	 *
+	 */
 	public void run() {
 		long displayStart, displayEnd;
 		double[] position = new double[3];

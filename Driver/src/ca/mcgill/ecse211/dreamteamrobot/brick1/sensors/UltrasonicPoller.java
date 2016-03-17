@@ -6,17 +6,20 @@ import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
 /**
- * This thread runs in the background, polling an ultrasonic sensor and logging value.
+ * This thread polls an ultrasonic sensor and logs the value.
  * Parent threads can call getDistance() to retrieve the value read by the sensor.
  */
 public class UltrasonicPoller extends Thread {
 
-	/** Variables */
+	// Variables
 	private SampleProvider sampleProvider;
 	private float[] usData;
 	private int distance;
 
-	/** Constructor */
+	/**
+	 * Constructor.
+	 * @param ultrasonicSensorPort Port connecting ultrasonic sensor.
+     */
 	public UltrasonicPoller(Port ultrasonicSensorPort) {
 		SensorModes usSensor = new EV3UltrasonicSensor(ultrasonicSensorPort);
 		this.sampleProvider = usSensor.getMode("Distance");			// colorValue provides samples from this instance;

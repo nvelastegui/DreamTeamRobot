@@ -1,9 +1,3 @@
-// Lab2.java
-
-// Nicolas Velastegui 260521419
-// Siddiqui Hakim 260564770
-// Group 26
-
 package ca.mcgill.ecse211.dreamteamrobot.brick1.main;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.display.LCDDisplay;
@@ -17,15 +11,15 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  */
 public class Main {
 
-	/** Constants */
+	// /** Constants */
 	private static final TextLCD t = LocalEV3.get().getTextLCD();
 
-	/** Constants: Motor Ports */
+	// /** Constants: Motor Ports */
 	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private static final EV3LargeRegulatedMotor ultrasonicSensorMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
 
-	/** Constants: Sensor Ports */
+	// /** Constants: Sensor Ports */
 	private static final Port ultrasonicSensorPort = LocalEV3.get().getPort("S1");
 	private static final Port leftColorSensorPort = LocalEV3.get().getPort("S2");
 	private static final Port rightColorSensorPort = LocalEV3.get().getPort("S3");

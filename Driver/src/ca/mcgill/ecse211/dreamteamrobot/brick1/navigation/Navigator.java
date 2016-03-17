@@ -5,7 +5,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**
  * Navigator is a state machine running on a thread. It manages movement of the robot in the horizontal plane,
- * watching for obstacles and such.
+ * watching for obstacles and driving around them.
  */
 public class Navigator extends Thread {
 

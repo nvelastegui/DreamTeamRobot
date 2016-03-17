@@ -1,19 +1,16 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 
-// Nicolas Velastegui 260521419
-// Siddiqui Hakim 260564770
-// Group 26
-
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**
- * Created by nicolas on 2016-02-07.
+ * This is a sub-thread for a Navigator thread, which is run when Navigator determines that an obstacle
+ * is ahead. ObstacleAvoider runs a wall following algorithm to drive around the obstacle.
  */
 public class ObstacleAvoider extends Thread {
 
-	/** enum: bangbang or p controller */
+	// /** enum: bangbang or p controller */
 	enum Controller {BANGBANG, PCONT};
 	private Controller chosenController = Controller.BANGBANG;
 	// BangBang
@@ -26,16 +23,16 @@ public class ObstacleAvoider extends Thread {
 	int bandwidthPC = 5;
 	int motorStraightPC = 200; // was 200
 
-	/** Constants */
+	// /** Constants */
 	private static final int FORWARD_SPEED = 100;
 	private static final int ROTATE_SPEED = 80;
 
-	/** Variables: threads */
+	// /** Variables: threads */
 	private Navigator nav;
 	private Odometer odometer;
 	private UltrasonicPoller ultrasonicPoller;
 
-	/** Variables */
+	// /** Variables */
 	private EV3LargeRegulatedMotor ultrasonicSensorMotor;
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
@@ -44,11 +41,17 @@ public class ObstacleAvoider extends Thread {
 	private double slope;
 	boolean safe;
 
-	/** tolerances */
+	// /** tolerances */
 	double tolSlope = 45;
 	double tolFinalTheta = 0.40;
 
-	/** Constructor */
+	/**
+	 * Constructor.
+	 * @param nav Navigator thread.
+	 * @param ultrasonicSensorMotor Motor controlling rotation of ultrasonic sensor on vertical axis.
+	 * @param leftMotor Left wheel motor.
+	 * @param rightMotor Right wheel motor.
+     */
 	public ObstacleAvoider(Navigator nav, EV3LargeRegulatedMotor ultrasonicSensorMotor, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor) {
 		this.nav = nav;
 		this.odometer = nav.getOdometer();
@@ -207,6 +210,10 @@ public class ObstacleAvoider extends Thread {
 
 	}
 
+	/**
+	 * This method is called by a parent thread to check if the obstacle has been surpassed.
+	 * @return True if obstacle surpassed, false if not.
+     */
 	public boolean isResolved() {
 		return safe;
 	}

@@ -18,20 +18,20 @@ public class LightLocalizer {
 	private static int ROTATE_SPEED = 30;
 	private static double lengthToLightSensor = 12.00; // 8.00
 
-	/** Instance Variables */
+	// Instance Variables
 	private Odometer odo;
 	private Navigator nav;
 	private ColourPoller colourPoller;
-
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
 
 	/**
-	 *
-	 * @param leftMotor
-	 * @param rightMotor
-	 * @param odo
-     * @param nav
+	 * Constructor.
+	 * @param leftMotor Left wheel motor.
+	 * @param rightMotor Right wheel motor.
+	 * @param odo Odometer.
+	 * @param nav Navigator.
+     * @param colourPoller Thread poller for colour sensor.
      */
 	public LightLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odo, Navigator nav, ColourPoller colourPoller) {
 		this.nav = nav;
@@ -42,7 +42,7 @@ public class LightLocalizer {
 	}
 
 	/**
-	 *
+	 * Corrects theta and brings robot to relative (0,0,0).
 	 */
 	public void doLocalization() {
 

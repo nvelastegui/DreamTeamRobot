@@ -12,11 +12,11 @@ import lejos.hardware.port.Port;
  */
 public class Driver extends Thread {
 
-    /** Constants: State */
+    // /** Constants: State */
     enum State {INIT};
     private State state;
 
-    /** Variables: Sub Threads */
+    // /** Variables: Sub Threads */
     private Odometer odometer;
     private OdometerCorrection odometerCorrection;
     private UltrasonicPoller ultrasonicPoller;

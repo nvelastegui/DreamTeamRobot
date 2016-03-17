@@ -13,19 +13,19 @@ import java.util.List;
  */
 public class UltrasonicLocalizer {
 
-	/** Constants */
+	// /** Constants */
 	public enum LocalizationType { FALLING_EDGE, RISING_EDGE };
 	private static LocalizationType locType = LocalizationType.FALLING_EDGE;
 	private static int ROTATE_SPEED = 50;
 
-	/** Localization Related Constants */
+	// /** Localization Related Constants */
 	private static double d = 20;
 	private static double k = 2;
 	private static double pDTolerance = 50;
 	private static double pDToleranceRisingEdge = 70;
 	private static double thetaCompensation = 0.09; // amount to add to final theta value to compensate for error.
 
-	/** Instance Variables */
+	// /** Instance Variables */
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
 	private Odometer odometer;
