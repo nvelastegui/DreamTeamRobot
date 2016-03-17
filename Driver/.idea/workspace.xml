@@ -4,7 +4,21 @@
     <option name="ANALYZE_TEST_SOURCES" value="false" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="86480b4d-a434-42c9-a33a-ed2cc5fde52e" name="Default" comment="" />
+=======
+    <list default="true" id="86480b4d-a434-42c9-a33a-ed2cc5fde52e" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/ColourPoller.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/UltrasonicPoller.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/UltrasonicPoller.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ObstacleAvoider.java" afterPath="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ObstacleAvoider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Gunner/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../Gunner/.idea/workspace.xml" />
+    </list>
+>>>>>>> 717771d460c1591d46c584398968a98e2ececf07
     <ignored path="Driver.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -25,16 +39,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
       <file leaf-file-name="Localization.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
               <folding />
+=======
+      <file leaf-file-name="Navigator.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="3.1169653">
+              <caret line="180" column="0" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+>>>>>>> 717771d460c1591d46c584398968a98e2ececf07
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="LightLocalizer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/LightLocalizer.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -43,10 +69,19 @@
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+=======
+      <file leaf-file-name="Localization.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+              <folding />
+>>>>>>> 717771d460c1591d46c584398968a98e2ececf07
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="UltrasonicLocalizer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/UltrasonicLocalizer.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -55,6 +90,14 @@
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+=======
+      <file leaf-file-name="Defender.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
+>>>>>>> 717771d460c1591d46c584398968a98e2ececf07
             </state>
           </provider>
         </entry>
@@ -97,24 +140,18 @@
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/main/Driver.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation/Navigator.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/navigation/Odometer.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Lab4.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/USLocalizer.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/UltrasonicPoller.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ColourPoller.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/LCDInfo.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/display/LCDDisplay.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/kinematicmodel/KinematicModel.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/OdometerCorrection.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/ColourPoller.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/UltrasonicPoller.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/LightLocalizer.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java" />
         <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/UltrasonicLocalizer.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Main.java" />
-        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ObstacleAvoider.java" />
+        <option value="$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/LightLocalizer.java" />
       </list>
     </option>
   </component>
@@ -339,7 +376,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -797,12 +834,20 @@
       <workItem from="1458010791938" duration="153000" />
       <workItem from="1458011063554" duration="356000" />
       <workItem from="1458011436611" duration="5278000" />
+<<<<<<< HEAD
       <workItem from="1458235737504" duration="7625000" />
+=======
+      <workItem from="1458235737504" duration="4951000" />
+>>>>>>> 717771d460c1591d46c584398968a98e2ececf07
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="13492000" />
+=======
+    <option name="totallyTimeSpent" value="10818000" />
+>>>>>>> 717771d460c1591d46c584398968a98e2ececf07
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
@@ -934,10 +979,75 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/communication/Communication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DreamTeamRobot.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/display/LCDDisplay.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2687039">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/kinematicmodel/KinematicModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.05374078">
+          <caret line="3" column="63" selection-start-line="3" selection-start-column="63" selection-end-line="3" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ObstacleAvoider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.09272919">
+          <caret line="52" column="42" selection-start-line="52" selection-start-column="42" selection-end-line="52" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/OdometerCorrection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17913593">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Odometer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12906724">
+          <caret line="7" column="73" selection-start-line="7" selection-start-column="73" selection-end-line="7" selection-end-column="73" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/kinematicmodel/KinematicModel.java">
+=======
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="60" column="30" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -949,87 +1059,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java">
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.6933615">
-          <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java">
+>>>>>>> 717771d460c1591d46c584398968a98e2ececf07
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/ColourPoller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16122234">
-          <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.41201264">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#876#877#0" expanded="true" />
+            <element signature="e#910#911#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/sensors/UltrasonicPoller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2866175">
-          <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/kinematicmodel/KinematicModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10748156">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/display/LCDDisplay.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.573235">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/communication/Communication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21496312">
-          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
-          <folding>
-            <element signature="e#323#324#0" expanded="true" />
-            <element signature="e#350#351#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Defender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12539515">
-          <caret line="7" column="7" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Driver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23287672">
-          <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/main/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42992625">
-          <caret line="24" column="24" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.48366702">
+          <caret line="27" column="7" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1038,32 +1100,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Location.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12539515">
-          <caret line="7" column="21" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.14330874">
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/ObstacleAvoider.java">
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/LightLocalizer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32244468">
-          <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.21496312">
+          <caret line="12" column="82" selection-start-line="12" selection-start-column="82" selection-end-line="12" selection-end-column="82" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Odometer.java">
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/UltrasonicLocalizer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37618545">
-          <caret line="21" column="37" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.19704953">
+          <caret line="11" column="73" selection-start-line="11" selection-start-column="73" selection-end-line="11" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/localization/Localization.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/Navigator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.1169653">
+          <caret line="180" column="0" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/ca/mcgill/ecse211/dreamteamrobot/brick1/navigation/OdometerCorrection.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.23287672">
@@ -1100,6 +1181,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> 717771d460c1591d46c584398968a98e2ececf07
   </component>
   <component name="masterDetails">
     <states>
