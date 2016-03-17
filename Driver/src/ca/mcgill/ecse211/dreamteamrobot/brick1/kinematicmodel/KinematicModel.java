@@ -1,7 +1,7 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel;
 
 /**
- * Class holding static variables for kinematic model of robot.
+ * Class holding constants for kinematic model of robot.
  */
 public class KinematicModel {
 
