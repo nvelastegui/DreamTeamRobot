@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.dreamteamrobot;
+package ca.mcgill.ecse211.dreamteamrobot.brick2;
 
 import lejos.robotics.SampleProvider;
 
@@ -13,37 +13,37 @@ import lejos.robotics.SampleProvider;
 //
 
 public class UltrasonicPoller extends Thread {
-	private SampleProvider us;
-	private float[] usData;
-	private int distance;
-
-	/** Constructor */
-	public UltrasonicPoller(SampleProvider us, float[] usData) {
-		this.us = us;
-		this.usData = usData;
-	}
-
-	/**
-	 * @return Current distance.
-	 */
-	public int getDistance() {
-		return distance;
-	}
-
-	/**
-	 * Continually fetches distance and stores in distance variable.
-	 */
-	public void run() {
-
-		while (true) {
-			us.fetchSample(usData, 0); // acquire data
-			distance = (int) (usData[0] * 100.0); // extract from buffer, cast
-													// to int
-			try {
-				Thread.sleep(50);
-			} catch (Exception e) {
-			} // Poor man's timed sampling
-		}
-	}
+//	private SampleProvider us;
+//	private float[] usData;
+//	private int distance;
+//
+//	/** Constructor */
+//	public UltrasonicPoller(SampleProvider us, float[] usData) {
+//		this.us = us;
+//		this.usData = usData;
+//	}
+//
+//	/**
+//	 * @return Current distance.
+//	 */
+//	public int getDistance() {
+//		return distance;
+//	}
+//
+//	/**
+//	 * Continually fetches distance and stores in distance variable.
+//	 */
+//	public void run() {
+//
+//		while (true) {
+//			us.fetchSample(usData, 0); // acquire data
+//			distance = (int) (usData[0] * 100.0); // extract from buffer, cast
+//													// to int
+//			try {
+//				Thread.sleep(50);
+//			} catch (Exception e) {
+//			} // Poor man's timed sampling
+//		}
+//	}
 
 }

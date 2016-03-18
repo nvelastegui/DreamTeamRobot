@@ -1,8 +1,4 @@
-package ca.mcgill.ecse211.dreamteamrobot;
-
-// Nicolas Velastegui 260521419
-// Siddiqui Hakim 260564770
-// Group 26
+package ca.mcgill.ecse211.dreamteamrobot.brick2;
 
 public interface UltrasonicController {
 

@@ -1,12 +1,9 @@
-package connection;
+package ca.mcgill.ecse211.dreamteamrobot.connection;
 
 import java.util.ArrayDeque;
 import java.util.Hashtable;
 import java.util.NoSuchElementException;
 
-import org.json.simple.*;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class Queue {
 	public final String routeProperty;

@@ -1,4 +1,4 @@
-package connection;
+package ca.mcgill.ecse211.dreamteamrobot.connection;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
