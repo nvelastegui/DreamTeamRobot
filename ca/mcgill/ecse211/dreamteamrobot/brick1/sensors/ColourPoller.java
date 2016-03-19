@@ -9,7 +9,7 @@ import lejos.robotics.SampleProvider;
  * This thread polls a color sensor and logs values.
  * Parent threads can call getSensorValue() to retrieve the value read by the sensor.
  */
-public class ColourPoller {
+public class ColourPoller extends Thread {
 
     // Variables
     private SampleProvider sampleProvider;
@@ -36,6 +36,7 @@ public class ColourPoller {
     /**
      * Continually fetches sensor value and stores in variable.
      */
+    @Override
     public void run() {
 
         while (true) {

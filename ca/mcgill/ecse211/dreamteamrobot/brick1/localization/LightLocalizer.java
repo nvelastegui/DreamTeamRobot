@@ -21,7 +21,8 @@ public class LightLocalizer {
 	// Instance Variables
 	private Odometer odo;
 	private Navigator nav;
-	private ColourPoller colourPoller;
+	private ColourPoller colourPollerLeft;
+	private ColourPoller colourPollerRight;
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
 
@@ -31,12 +32,14 @@ public class LightLocalizer {
 	 * @param rightMotor Right wheel motor.
 	 * @param odo Odometer.
 	 * @param nav Navigator.
-     * @param colourPoller Thread poller for colour sensor.
+     * @param colourPollerLeft Thread poller for left colour sensor.
+	 * @param colourPollerRight Thread poller for right colour sensor.
      */
-	public LightLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odo, Navigator nav, ColourPoller colourPoller) {
+	public LightLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odo, Navigator nav, ColourPoller colourPollerLeft, ColourPoller colourPollerRight) {
 		this.nav = nav;
 		this.odo = odo;
-		this.colourPoller = colourPoller;
+		this.colourPollerLeft = colourPollerLeft;
+		this.colourPollerRight = colourPollerRight;
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
 	}
@@ -181,7 +184,7 @@ public class LightLocalizer {
 	 * @return True if robot is hovering over line. False if not.
 	 */
 	private boolean isHoveringOverLine () {
-		double sensorValue = colourPoller.getSensorValue();
+		double sensorValue = colourPollerLeft.getSensorValue();
 		return (sensorValue < 50.00);
 	}
 

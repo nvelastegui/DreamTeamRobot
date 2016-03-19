@@ -36,6 +36,7 @@ public class UltrasonicPoller extends Thread {
 	/**
 	 * Continually fetches distance and stores in distance variable.
 	 */
+	@Override
 	public void run() {
 
 		while (true) {

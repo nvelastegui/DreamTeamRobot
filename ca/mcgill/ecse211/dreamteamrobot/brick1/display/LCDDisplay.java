@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.display;
 
+import ca.mcgill.ecse211.dreamteamrobot.brick1.communication.DriverStatusPacket;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.main.Driver;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
@@ -30,10 +31,7 @@ public class LCDDisplay extends Thread {
 	 * @param lines Message to be displayed, in a list where each element is a line.
      */
 	public static void sendToDisplay (List<String> lines) {
-//		LCD.clear();
-//		LCD.drawString("X: ", 0, 0);
-//		LCD.drawString("Y: ", 0, 1);
-//		LCD.drawString("H: ", 0, 2);
+
 	}
 
 	/**
@@ -43,17 +41,25 @@ public class LCDDisplay extends Thread {
 		long displayStart, displayEnd;
 		double[] position = new double[3];
 
-//		// clear the display once
-//		t.clear();
-//
-//		while (true) {
-//			displayStart = System.currentTimeMillis();
-//
-//			// clear the lines for displaying odometry information
-//			t.drawString("X:              ", 0, 0);
-//			t.drawString("Y:              ", 0, 1);
-//			t.drawString("T:              ", 0, 2);
-//
+		// clear the display once
+		LCD.clear();
+
+		while (true) {
+
+			displayStart = System.currentTimeMillis();
+
+			// Clear display
+			LCD.clear();
+
+			// Get info from driver.
+			DriverStatusPacket stats = driver.getStatus();
+
+			// Display info on screen.
+			LCD.drawString("Sts: " + stats.getCurrentState(), 0, 0);
+			LCD.drawString("X: " + String.valueOf(stats.getX()), 0, 1);
+			LCD.drawString("Y: " + String.valueOf(stats.getY()), 0, 2);
+			LCD.drawString("T: " + String.valueOf(stats.getTheta()), 0, 3);
+
 //			// get the odometry information
 //			odometer.getPosition(position, new boolean[] { true, true, true });
 //
@@ -61,19 +67,19 @@ public class LCDDisplay extends Thread {
 //			for (int i = 0; i < 3; i++) {
 //				t.drawString(formattedDoubleToString(position[i], 2), 3, i);
 //			}
-//
-//			// throttle the LCDDisplay
-//			displayEnd = System.currentTimeMillis();
-//			if (displayEnd - displayStart < DISPLAY_PERIOD) {
-//				try {
-//					Thread.sleep(DISPLAY_PERIOD - (displayEnd - displayStart));
-//				} catch (InterruptedException e) {
-//					// there is nothing to be done here because it is not
-//					// expected that LCDDisplay will be interrupted
-//					// by another thread
-//				}
-//			}
-//		}
+
+			// throttle the LCDDisplay
+			displayEnd = System.currentTimeMillis();
+			if (displayEnd - displayStart < DISPLAY_PERIOD) {
+				try {
+					Thread.sleep(DISPLAY_PERIOD - (displayEnd - displayStart));
+				} catch (InterruptedException e) {
+					// there is nothing to be done here because it is not
+					// expected that LCDDisplay will be interrupted
+					// by another thread
+				}
+			}
+		}
 	}
 	
 	private static String formattedDoubleToString(double x, int places) {
