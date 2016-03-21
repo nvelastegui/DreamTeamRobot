@@ -65,6 +65,12 @@ public class Localization {
         // Perform #datLocalizationDoe
         ultrasonicLocalizer.doLocalization();
 
+        // Turn to vertical.
+        navigator.turnToAngle(0.00);
+
+        // Start navigator.
+        navigator.start();
+
         // Perform colour sensor localization.
         // lightLocalizer.doLocalization();
 

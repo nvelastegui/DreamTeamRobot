@@ -49,6 +49,28 @@ public class LightLocalizer {
 	 */
 	public void doLocalization() {
 
+		// Set odometer values to (-30, -30)
+		odo.setX(-30.00);
+		odo.setY(-30.00);
+
+		// Drive up to cross y = 0 line
+		// assume correction by odometry correction
+		nav.travelTo(-30.00, 10.00);
+
+		// Move back to vertical middle of block
+		nav.travelTo(-30.00, -15.00);
+
+		//
+		nav.travelTo(10, -15.00);
+
+		//
+		nav.travelTo(0,0);
+
+		// Move forward
+
+
+
+
 		// First we need to bring the robot somewhere near the intersection (0,0).
 		getNearTopRightIntersection();
 
@@ -124,9 +146,6 @@ public class LightLocalizer {
 	 * to the top right intersection of the block it's in.
 	 */
 	private void getNearTopRightIntersection () {
-
-		// Turn to vertical.
-		nav.turnToAngle(0.00);
 
 		// Wait for a button press to move to next procedure.
 		Button.waitForAnyPress();
