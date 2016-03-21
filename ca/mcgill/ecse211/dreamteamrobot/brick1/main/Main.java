@@ -58,9 +58,19 @@ public class Main {
 		// Process signal
 
 
-		// Set up the Driver thread, but do not run it.
+		// Create a new instance of driver thread.
+		Driver driver = new Driver(
+				leftMotor,
+				rightMotor,
+				leftUltrasonicSensorMotor,
+				rightUltrasonicSensorMotor,
+				leftUltrasonicSensorPort,
+				rightUltrasonicSensorPort,
+				leftColorSensorPort,
+				rightColorSensorPort
+		);
 
-		Driver driver = new Driver(leftMotor, rightMotor, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor, leftUltrasonicSensorPort, rightUltrasonicSensorPort);
+		// Run pre-execute procedure (starts subthreads).
 		driver.performPreExecute();
 
 		// Set up lcdDisplay and run it.
@@ -68,10 +78,6 @@ public class Main {
 		lcdDisplay.start();
 
 		// Perform localization.
-		ColourPoller leftColourPoller = new ColourPoller(leftColorSensorPort);
-		// leftColourPoller.start();
-		ColourPoller rightColourPoller = new ColourPoller(rightColorSensorPort);
-		// rightColourPoller.start();
 		Localization localizer = new Localization(
 				leftMotor,
 				rightMotor,
@@ -79,8 +85,8 @@ public class Main {
 				driver.getNavigator(),
 				driver.getUltrasonicPollerLeft(),
 				driver.getUltrasonicPollerRight(),
-				leftColourPoller,
-				rightColourPoller
+				driver.getColourPollerLeft(),
+				driver.getColourPollerRight()
 		);
 		localizer.setupLocalizer();
 		localizer.doLocalization(null);

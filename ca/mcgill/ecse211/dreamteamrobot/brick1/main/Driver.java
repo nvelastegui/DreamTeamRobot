@@ -4,6 +4,7 @@ import ca.mcgill.ecse211.dreamteamrobot.brick1.communication.DriverStatusPacket;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.OdometerCorrection;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
@@ -22,20 +23,25 @@ public class Driver extends Thread {
     private OdometerCorrection odometerCorrection;
     private UltrasonicPoller ultrasonicPollerLeft;
     private UltrasonicPoller ultrasonicPollerRight;
+    private ColourPoller colourPollerLeft;
+    private ColourPoller colourPollerRight;
     private Navigator navigator;
 
     /**
      * Constructor.
      * @param leftMotor motor for left wheel
      * @param rightMotor motor for right wheel
-     * @param ultrasonicSensorMotor motor for ultrasonic sensor's rotation about vertical axis
+     * @param leftUltrasonicSensorMotor motor for left ultrasonic sensor's rotation about vertical axis
+     * @param rightUltrasonicSensorMotor motor for right ultrasonic sensor's rotation about vertical axis
      * @param ultrasonicSensorPortLeft port for left ultrasonic sensor
      * @param ultrasonicSensorPortRight port for right ultrasonic sensor
      */
-    public Driver (EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3LargeRegulatedMotor leftUltrasonicSensorMotor, EV3LargeRegulatedMotor rightUltrasonicSensorMotor, Port ultrasonicSensorPortLeft, Port ultrasonicSensorPortRight) {
+    public Driver (EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3LargeRegulatedMotor leftUltrasonicSensorMotor, EV3LargeRegulatedMotor rightUltrasonicSensorMotor, Port ultrasonicSensorPortLeft, Port ultrasonicSensorPortRight, Port colourSensorLeftPort, Port colourSensorRightPort) {
 
         // Create thread instances.
         this.odometer = new Odometer(leftMotor, rightMotor);
+        this.colourPollerLeft = new ColourPoller(colourSensorLeftPort);
+        this.colourPollerRight = new ColourPoller(colourSensorRightPort);
         this.odometerCorrection = new OdometerCorrection(odometer);
         this.ultrasonicPollerLeft = new UltrasonicPoller(ultrasonicSensorPortLeft);
         this.ultrasonicPollerRight = new UltrasonicPoller(ultrasonicSensorPortRight);
@@ -75,16 +81,35 @@ public class Driver extends Thread {
         return ultrasonicPollerRight;
     }
 
+    public ColourPoller getColourPollerLeft() {
+        return colourPollerLeft;
+    }
+
+    public ColourPoller getColourPollerRight() {
+        return colourPollerRight;
+    }
+
     /**
      * Set up sub threads before running.
      */
     public void performPreExecute () {
-        // add stuff here
+
+        // Start odometer.
         odometer.start();
+
+        // Start colour pollers.
+        colourPollerLeft.start();
+        colourPollerRight.start();
+
+        // Start odometry correction.
         //odometerCorrection.start();
+
+        // Start ultrasonic pollers.
         ultrasonicPollerLeft.start();
         ultrasonicPollerRight.start();
-        //navigator.start(); // TODO: needs to be started later so that obstacle avoidance doesn't fuck localization.
+
+        // Do not start navigator yet. Should only be started after localization is complete (so obstacle avoidance
+        // doesn't fuck with localization process).
 
     }
 
