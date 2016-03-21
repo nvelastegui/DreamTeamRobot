@@ -50,6 +50,14 @@ public class Odometer extends Thread {
 		distancePerDegreeRotationRight = Math.PI * (KinematicModel.WHEEL_RADIUS_R) / 180.00;
 	}
 
+	public EV3LargeRegulatedMotor getLeftMotor() {
+		return leftMotor;
+	}
+
+	public EV3LargeRegulatedMotor getRightMotor() {
+		return rightMotor;
+	}
+
 	// run method (required for Thread)
 	public void run() {
 		long updateStart, updateEnd;
