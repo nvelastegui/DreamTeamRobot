@@ -26,7 +26,8 @@ public class Navigator extends Thread {
 	/** Variables: Motors */
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
-	private EV3LargeRegulatedMotor ultrasonicSensorMotor;
+	private EV3LargeRegulatedMotor leftUltrasonicSensorMotor;
+	private EV3LargeRegulatedMotor rightUltrasonicSensorMotor;
 
 	/** Variables: Positions */
 	private Location currentDestination;
@@ -43,12 +44,13 @@ public class Navigator extends Thread {
 	 * @param odometer Robot odometer.
 	 * @param usPoller Robot ultrasonic poller used for checkEmergency()
 	 */
-	public Navigator(Odometer odometer, UltrasonicPoller usPoller, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3LargeRegulatedMotor ultrasonicSensorMotor) {
+	public Navigator(Odometer odometer, UltrasonicPoller usPoller, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3LargeRegulatedMotor leftUltrasonicSensorMotor, EV3LargeRegulatedMotor rightUltrasonicSensorMotor) {
 		this.odometer = odometer;
 		this.usPoller = usPoller;
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
-		this.ultrasonicSensorMotor = ultrasonicSensorMotor;
+		this.leftUltrasonicSensorMotor = leftUltrasonicSensorMotor;
+		this.rightUltrasonicSensorMotor = rightUltrasonicSensorMotor;
 		this.status = false;
 	}
 
@@ -268,7 +270,7 @@ public class Navigator extends Thread {
 	public void run() {
 
 		State state = State.INIT;
-		ObstacleAvoider avoidance = new ObstacleAvoider(this, ultrasonicSensorMotor, leftMotor, rightMotor);
+		ObstacleAvoider avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, leftMotor, rightMotor);
 
 		while (true) {
 //			System.out.println("State: " + state);
@@ -295,7 +297,7 @@ public class Navigator extends Thread {
 					Location currentPosition = getPositionFromOdometer();
 					if (checkEmergency()) {
 						state = State.EMERGENCY;
-						avoidance = new ObstacleAvoider(this, ultrasonicSensorMotor, leftMotor, rightMotor);
+						avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, leftMotor, rightMotor);
 						avoidance.start();
 					}
 					else if (!checkIfAtDestination(currentPosition)) {

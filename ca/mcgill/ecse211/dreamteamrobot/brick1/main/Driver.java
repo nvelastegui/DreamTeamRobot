@@ -32,14 +32,14 @@ public class Driver extends Thread {
      * @param ultrasonicSensorPortLeft port for left ultrasonic sensor
      * @param ultrasonicSensorPortRight port for right ultrasonic sensor
      */
-    public Driver (EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3LargeRegulatedMotor ultrasonicSensorMotor, Port ultrasonicSensorPortLeft, Port ultrasonicSensorPortRight) {
+    public Driver (EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3LargeRegulatedMotor leftUltrasonicSensorMotor, EV3LargeRegulatedMotor rightUltrasonicSensorMotor, Port ultrasonicSensorPortLeft, Port ultrasonicSensorPortRight) {
 
         // Create thread instances.
         this.odometer = new Odometer(leftMotor, rightMotor);
         this.odometerCorrection = new OdometerCorrection(odometer);
         this.ultrasonicPollerLeft = new UltrasonicPoller(ultrasonicSensorPortLeft);
         this.ultrasonicPollerRight = new UltrasonicPoller(ultrasonicSensorPortRight);
-        this.navigator = new Navigator(odometer, ultrasonicPollerLeft, leftMotor, rightMotor, ultrasonicSensorMotor);
+        this.navigator = new Navigator(odometer, ultrasonicPollerLeft, leftMotor, rightMotor, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor);
 
         // Set state to OFF.
         state = State.OFF;
