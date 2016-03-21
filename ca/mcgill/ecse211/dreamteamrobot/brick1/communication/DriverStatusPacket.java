@@ -1,7 +1,5 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.communication;
 
-import com.sun.tools.internal.xjc.Driver;
-
 /**
  * Packet for transferring data between Driver and LCDDisplay.
  */
