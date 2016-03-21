@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
 
 /**
  * Thread simultaneous to Odometer. This thread reads values from the environment (ie. color sensor values)
@@ -25,12 +26,18 @@ public class OdometerCorrection extends Thread {
 
     private Odometer odometer;
 
+    private ColourPoller leftColourPoller;
+    private ColourPoller rightColourPoller;
+
     private double rightTacho;
     private double leftTacho;
 
-    public OdometerCorrection (Odometer odometer) {
+    public OdometerCorrection (Odometer odometer, ColourPoller leftP, ColourPoller rightP) {
         this.leftTacho = 0;
         this.rightTacho = 0;
+
+        this.leftColourPoller = leftP;
+        this.rightColourPoller = rightP;
 
         this.odometer = odometer;
     }

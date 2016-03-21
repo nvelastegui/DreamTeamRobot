@@ -42,7 +42,7 @@ public class Driver extends Thread {
         this.odometer = new Odometer(leftMotor, rightMotor);
         this.colourPollerLeft = new ColourPoller(colourSensorLeftPort);
         this.colourPollerRight = new ColourPoller(colourSensorRightPort);
-        this.odometerCorrection = new OdometerCorrection(odometer);
+        this.odometerCorrection = new OdometerCorrection(odometer, colourPollerLeft, colourPollerRight);
         this.ultrasonicPollerLeft = new UltrasonicPoller(ultrasonicSensorPortLeft);
         this.ultrasonicPollerRight = new UltrasonicPoller(ultrasonicSensorPortRight);
         this.navigator = new Navigator(odometer, ultrasonicPollerLeft, leftMotor, rightMotor, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor);
