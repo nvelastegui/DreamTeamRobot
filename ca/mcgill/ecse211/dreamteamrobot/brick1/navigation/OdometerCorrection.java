@@ -12,6 +12,7 @@ public class OdometerCorrection extends Thread {
 
     private int LONG_SLEEP = 200;
     private int SHORT_SLEEP = 50;
+    private double R_THRESHOLD = 50.00;
 
     // HEADING_ERROR is how closely the robot's heading must be to perpendicular to the line in order to initiate correction
     // ie : HEADING_ERROR of 0 would mean the robots heading would have to be a perfect 90deg from the line it is crossing
@@ -117,15 +118,19 @@ public class OdometerCorrection extends Thread {
         return coordValid && headingValid;
     }
 
+    private boolean colourSensorHitLine(ColourPoller cp){
+        return cp.getSensorValue() < R_THRESHOLD;
+    }
+
     private void beginOdoCorrection(){
 
         // poll left color sensor
-        boolean leftSensorHitLine = false;
+        boolean leftSensorHitLine = colourSensorHitLine(leftColourPoller);
         if(leftSensorHitLine && this.leftTacho == 0){
             this.leftTacho = odometer.getLeftMotor().getTachoCount();
         }
         // poll right color sensor
-        boolean rightSensorHitLine = false;
+        boolean rightSensorHitLine = colourSensorHitLine(rightColourPoller);
         if(rightSensorHitLine && this.rightTacho == 0){
             this.rightTacho = odometer.getRightMotor().getTachoCount();
         }
