@@ -18,10 +18,12 @@ public class Main {
 	private static final TextLCD t = LocalEV3.get().getTextLCD();
 
 	// /** Constants: Motor Ports */
+
 	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private static final EV3LargeRegulatedMotor leftUltrasonicSensorMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
-	private static final EV3LargeRegulatedMotor rightRltrasonicSensorMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+	private static final EV3LargeRegulatedMotor rightUltrasonicSensorMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+
 
 	// /** Constants: Sensor Ports */
 	private static final Port leftUltrasonicSensorPort = LocalEV3.get().getPort("S1");
@@ -57,8 +59,9 @@ public class Main {
 
 
 		// Set up the Driver thread, but do not run it.
-		Driver driver = new Driver(leftMotor, rightMotor, leftUltrasonicSensorMotor, leftUltrasonicSensorPort, rightUltrasonicSensorPort);
-		driver.performPreExecute(); // doesn't start navigator.
+
+		Driver driver = new Driver(leftMotor, rightMotor, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor, leftUltrasonicSensorPort, rightUltrasonicSensorPort);
+		driver.performPreExecute();
 
 		// Set up lcdDisplay and run it.
 		LCDDisplay lcdDisplay = new LCDDisplay(driver);
