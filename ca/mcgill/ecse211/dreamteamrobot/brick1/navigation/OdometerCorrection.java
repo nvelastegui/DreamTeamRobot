@@ -35,10 +35,10 @@ public class OdometerCorrection extends Thread {
         this.odometer = odometer;
     }
 
-    private static double calcDeltaHeading(double left, double right){
+    private static double calcLineInterceptAngle(double left, double right){
         double deltaTheta = left - right;
         double sideLength = deltaTheta * KinematicModel.WHEEL_RADIUS_L;
-        return Math.atan(sideLength / KinematicModel.WHEELBASE);
+        return -1 * Math.atan(sideLength / KinematicModel.WHEELBASE);
     }
 
 
@@ -114,12 +114,12 @@ public class OdometerCorrection extends Thread {
 
         // poll left color sensor
         boolean leftSensorHitLine = false;
-        if(leftSensorHitLine){
+        if(leftSensorHitLine && this.leftTacho == 0){
             this.leftTacho = odometer.getLeftMotor().getTachoCount();
         }
         // poll right color sensor
         boolean rightSensorHitLine = false;
-        if(rightSensorHitLine){
+        if(rightSensorHitLine && this.rightTacho == 0){
             this.rightTacho = odometer.getRightMotor().getTachoCount();
         }
 
@@ -129,17 +129,25 @@ public class OdometerCorrection extends Thread {
                 leftTacho = 0;
                 rightTacho = 0;
                 return;
+            } else {
+                // calculate for heading
+                double lineInterceptAngle = calcLineInterceptAngle(leftTacho, rightTacho);
+                double correctedHeading;
+                if(lineInterceptAngle > 0){
+                    correctedHeading = ((int)(odometer.getTheta() / 90)) * 90 + lineInterceptAngle;
+                } else {
+                    correctedHeading = ((int)(odometer.getTheta() / 90) + 1) * 90 - lineInterceptAngle;
+                }
+                // update heading in the odometer..
+                this.odometer.setTheta(correctedHeading);
+
+                // correct for coordinates
+                correctCoords();
+
+                // reset line tacho counts
+                leftTacho = 0;
+                rightTacho = 0;
             }
-
-            // calculate for heading
-            double deltaHeading = calcDeltaHeading(leftTacho, rightTacho);
-
-            // correct for coordinates
-            correctCoords();
-
-            // reset line tacho counts
-            leftTacho = 0;
-            rightTacho = 0;
         }
     }
 
