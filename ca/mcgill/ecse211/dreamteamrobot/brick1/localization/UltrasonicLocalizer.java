@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.localization;
 
+import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
@@ -13,18 +14,16 @@ import java.util.List;
  */
 public class UltrasonicLocalizer {
 
-	// /** Constants */
-	private static int ROTATE_SPEED = 50;
+	/** Localization Related Constants */
+	/** NOTE: These values should be changed in KinematicModel.java, NOT HERE. */
+	private static int ROTATE_SPEED = KinematicModel.ultrasonicLocalizationRotateSpeed;
+	private static double d = KinematicModel.d;
+	private static double k = KinematicModel.k;
+	private static double pDTolerance = KinematicModel.pDTolerance;
+	private static double tolDistanceToWall = KinematicModel.tolDistanceToWall;
+	private static double thetaCompensation = KinematicModel.thetaCompensation; // amount to add to final theta value to compensate for error.
 
-	// /** Localization Related Constants */
-	private static double d = 20;
-	private static double k = 2;
-	private static double pDTolerance = 50;
-	private static double tolDistanceToWall = 2;
-	private static double pDToleranceRisingEdge = 70;
-	private static double thetaCompensation = 0.09; // amount to add to final theta value to compensate for error.
-
-	// /** Instance Variables */
+	/** Instance Variables */
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
 	private Odometer odometer;
@@ -61,6 +60,7 @@ public class UltrasonicLocalizer {
 		// approximation to the starting angle theta.
 
 		if (isFacingWall()) {
+			System.out.println("is facing wall");
 			// If condition is true, then robot is facing a wall,
 			// and we need to rotate it 180 degrees to start the localization.
 			navigator.turnToAngle(Math.PI);
@@ -130,8 +130,7 @@ public class UltrasonicLocalizer {
 		listThetas.add(odometer.getTheta());
 
 		// Rotate until within tolerance.
-		// TODO: Incorporate d-k mechanic like before?
-		while (Math.abs(distanceLeft - distanceRight) > (tolDistanceToWall)) {
+		while ((Math.abs(distanceLeft - distanceRight) > (tolDistanceToWall)) || (((distanceLeft + distanceRight)/2.0) > (d-k))) {
 
 			// Grab the current distances and theta and record them.
 			currentDistances = getFilteredData();
@@ -142,6 +141,10 @@ public class UltrasonicLocalizer {
 			distanceLeft = currentDistances.get(0);
 			distanceRight = currentDistances.get(1);
 
+			System.out.println("abs: " + Math.abs(distanceLeft - distanceRight));
+			System.out.println("avg: " + ((distanceLeft + distanceRight)/2.0));
+			System.out.println("Rotating right: \ndistanceLeft: " + distanceLeft + "\ndistanceRight: " + distanceRight);
+
 		}
 
 		// Stop motors and sound beep to signal that wall was found.
@@ -149,8 +152,25 @@ public class UltrasonicLocalizer {
 		rightMotor.stop();
 		Sound.beep();
 
+		// Do some analysis to determine angleA
+
+		// Determine the theta for when values first dropped below (d+k)
+		// (might be the same theta as for when values dropped below (d-k))
+		int firstdrop = -1; // Start this at -1.
+		for (List<Double> current : listDistances) {
+			firstdrop += 1; // Goes up to 0 on first run through loop. List index starts at 0.
+			double avgCurrentDistances = (current.get(0) + current.get(1))/2.0;
+			if (avgCurrentDistances < (d+k)) {
+				break;
+			}
+		}
+
+		// Grab theta for when values dropped below (d-k) -> this is the last item in listThetas.
+		int seconddrop = listThetas.size() - 1;
+
 		// Return angleA
-		return listThetas.get(listThetas.size() - 1);
+		System.out.println("Finished rotating right.");
+		return (listThetas.get(seconddrop) + listThetas.get(firstdrop))/2.0;
 
 	}
 
@@ -183,8 +203,9 @@ public class UltrasonicLocalizer {
 		listThetas.add(odometer.getTheta());
 
 		// Rotate until within tolerance.
-		// TODO: Incorporate d-k mechanic like before?
-		while (Math.abs(distanceLeft - distanceRight) > (tolDistanceToWall)) {
+		while ((Math.abs(distanceLeft - distanceRight) > (tolDistanceToWall)) || (((distanceLeft + distanceRight)/2.0) > (d-k))) {
+
+			System.out.println("Rotating left: \ndistanceLeft: " + distanceLeft + "\ndistanceRight: " + distanceRight);
 
 			// Grab the current distances and theta and record them.
 			currentDistances = getFilteredData();
@@ -202,8 +223,26 @@ public class UltrasonicLocalizer {
 		rightMotor.stop();
 		Sound.beep();
 
-		// Return angleB
-		return (listThetas.get(listThetas.size() - 1));
+		// Do some analysis to determine angleA
+
+		// Determine the theta for when values first dropped below (d+k)
+		// (might be the same theta as for when values dropped below (d-k))
+		int firstdrop = -1; // Start this at -1.
+		for (List<Double> current : listDistances) {
+			firstdrop += 1; // Goes up to 0 on first run through loop. List index starts at 0.
+			double avgCurrentDistances = (current.get(0) + current.get(1))/2.0;
+			if (avgCurrentDistances < (d+k)) {
+				break;
+			}
+		}
+
+		// Grab theta for when values dropped below (d-k) -> this is the last item in listThetas.
+		int seconddrop = listThetas.size() - 1;
+
+		// Return angleA
+		System.out.println("Finished rotating left.");
+		return (listThetas.get(seconddrop) + listThetas.get(firstdrop))/2.0;
+
 
 	}
 

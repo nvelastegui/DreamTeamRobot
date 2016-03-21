@@ -184,8 +184,9 @@ public class LightLocalizer {
 	 * @return True if robot is hovering over line. False if not.
 	 */
 	private boolean isHoveringOverLine () {
-		double sensorValue = colourPollerLeft.getSensorValue();
-		return (sensorValue < 50.00);
+		double sensorValueLeft = colourPollerLeft.getSensorValue();
+		double sensorValueRight = colourPollerRight.getSensorValue();
+		return (sensorValueLeft < 50.00) || (sensorValueRight < 50.00);
 	}
 
 
@@ -210,8 +211,6 @@ public class LightLocalizer {
 			Sound.twoBeeps();
 		}
 	}
-
-
 
 }
 

@@ -84,7 +84,7 @@ public class Driver extends Thread {
         //odometerCorrection.start();
         ultrasonicPollerLeft.start();
         ultrasonicPollerRight.start();
-        // navigator.start(); TODO: needs to be started later so that obstacle avoidance doesn't fuck localization.
+        //navigator.start(); // TODO: needs to be started later so that obstacle avoidance doesn't fuck localization.
 
     }
 

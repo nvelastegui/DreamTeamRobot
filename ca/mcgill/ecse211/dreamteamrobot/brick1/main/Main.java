@@ -3,6 +3,7 @@ package ca.mcgill.ecse211.dreamteamrobot.brick1.main;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.display.LCDDisplay;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.localization.Localization;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
+import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.port.Port;
 import lejos.hardware.lcd.TextLCD;
@@ -57,7 +58,7 @@ public class Main {
 
 		// Set up the Driver thread, but do not run it.
 		Driver driver = new Driver(leftMotor, rightMotor, leftUltrasonicSensorMotor, leftUltrasonicSensorPort, rightUltrasonicSensorPort);
-		driver.performPreExecute();
+		driver.performPreExecute(); // doesn't start navigator.
 
 		// Set up lcdDisplay and run it.
 		LCDDisplay lcdDisplay = new LCDDisplay(driver);
@@ -84,6 +85,20 @@ public class Main {
 
 
 
+	}
+
+	/**
+	 * Pauses thread to allow for wheel motions to finish.
+	 * @param timeToStop amount of time to stop, in milliseconds.
+	 */
+	private static void pause(int timeToStop) {
+		try {
+			Thread.sleep(timeToStop);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			Sound.beep();
+			Sound.twoBeeps();
+		}
 	}
 
 }
