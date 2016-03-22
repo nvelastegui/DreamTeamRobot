@@ -22,7 +22,7 @@ public class OdometerCorrection extends Thread {
     private int POSITION_ERROR = 5;
     // MAX_DELTA_TACHO : amount of error between the right and left wheel tachos when they each detect their lines.
     // if the difference in distance travelled between the 2 wheels exceeds this # the correction attempt is cancelled and tachos are reset.
-    private double MAX_DELTA_TACHO = HEADING_ERROR * KinematicModel.WHEELBASE / KinematicModel.WHEEL_RADIUS_L;
+    private double MAX_DELTA_TACHO = (HEADING_ERROR * KinematicModel.WHEELBASE / KinematicModel.WHEEL_RADIUS_L) * 180 / Math.PI;
 
     private boolean[] xUpdateArr = {true, false, false};
     private boolean[] yUpdateArr = {false, true, false};
@@ -46,7 +46,7 @@ public class OdometerCorrection extends Thread {
     }
 
     private static double calcLineInterceptAngle(double left, double right){
-        double deltaTheta = left - right;
+        double deltaTheta = (left - right) * Math.PI / 180;
         double sideLength = deltaTheta * KinematicModel.WHEEL_RADIUS_L;
         return -1 * Math.atan(sideLength / KinematicModel.WHEELBASE);
     }
@@ -84,6 +84,7 @@ public class OdometerCorrection extends Thread {
 
             odometer.setPosition(updateArr, yUpdateArr);
         }
+        System.out.println("updated Coord to x:"+updateArr[0] + ", y:"+updateArr[1]);
     }
 
     private static double getDistanceAdjust(double odoPosition) {
@@ -118,7 +119,7 @@ public class OdometerCorrection extends Thread {
         double yErr = 15 - Math.abs(Math.abs(this.odometer.getY())%30 - 15);
 
         boolean coordValid = xErr < POSITION_ERROR || yErr < POSITION_ERROR;
-        System.out.println("" + (coordValid && headingValid) + " --- head:"+this.odometer.getTheta()+",headingErr:"+headingErr+ " - x:"+this.odometer.getX()+",xErr:"+xErr+" - y:"+this.odometer.getY()+":yErr : "+yErr);
+        //System.out.println("" + (coordValid && headingValid) + " --- head:"+this.odometer.getTheta()+",headingErr:"+headingErr+ " - x:"+this.odometer.getX()+",xErr:"+xErr+" - y:"+this.odometer.getY()+":yErr : "+yErr);
         return coordValid && headingValid;
     }
 
@@ -145,6 +146,7 @@ public class OdometerCorrection extends Thread {
 
         if(leftTacho != 0 && rightTacho != 0){
             // account for possibility that the bot was turning or something and the tachos are very different
+            System.out.println("OdoCorrecting - leftTacho:"+leftTacho + ", rightTacho:"+rightTacho);
             if(Math.abs(leftTacho - rightTacho) > MAX_DELTA_TACHO){
                 leftTacho = 0;
                 rightTacho = 0;

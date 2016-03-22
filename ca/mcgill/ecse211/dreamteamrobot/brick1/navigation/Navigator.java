@@ -35,7 +35,7 @@ public class Navigator extends Thread {
 	private double[] currentPosition = new double[3];
 
 	/** Tolerances */
-	private static double tolTheta = 0.04; // 0.06
+	private static double tolTheta = 0.08; // 0.06
 	private static double tolEuclideanDistance = 5.0;
 	private static int    tolCloseness = 15;
 
@@ -201,7 +201,9 @@ public class Navigator extends Thread {
 	 */
 	private boolean isFacingDestination (double destinationAngle) {
 		double currentTheta = odometer.getTheta();
-		return ((destinationAngle - tolTheta) < currentTheta) && (currentTheta < (destinationAngle + tolTheta));
+		double err = Math.min(Math.abs(destinationAngle - currentTheta), Math.abs(Math.PI-currentTheta - destinationAngle));
+		return err < tolTheta;
+		//return ((destinationAngle - tolTheta) < currentTheta) && (currentTheta < (destinationAngle + tolTheta));
 	}
 
 	/**
@@ -279,7 +281,6 @@ public class Navigator extends Thread {
 				/** */
 				case INIT:
 					if (status) {
-						System.out.println("navigator changing to turning");
 						state = State.TURNING;
 					}
 					break;
@@ -290,6 +291,7 @@ public class Navigator extends Thread {
 					if (isFacingDestination(destinationAngle)) {
 						state = State.TRAVELLING;
 					} else {
+						System.out.println("turning from nav class : " + destinationAngle);
 						// This method returns only when the motion is complete.
 						turnToAngle(destinationAngle);
 					}
