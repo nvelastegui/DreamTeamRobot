@@ -141,10 +141,6 @@ public class UltrasonicLocalizer {
 			distanceLeft = currentDistances.get(0);
 			distanceRight = currentDistances.get(1);
 
-			System.out.println("abs: " + Math.abs(distanceLeft - distanceRight));
-			System.out.println("avg: " + ((distanceLeft + distanceRight)/2.0));
-			System.out.println("Rotating right: \ndistanceLeft: " + distanceLeft + "\ndistanceRight: " + distanceRight);
-
 		}
 
 		// Stop motors and sound beep to signal that wall was found.
@@ -204,8 +200,6 @@ public class UltrasonicLocalizer {
 
 		// Rotate until within tolerance.
 		while ((Math.abs(distanceLeft - distanceRight) > (tolDistanceToWall)) || (((distanceLeft + distanceRight)/2.0) > (d-k))) {
-
-			System.out.println("Rotating left: \ndistanceLeft: " + distanceLeft + "\ndistanceRight: " + distanceRight);
 
 			// Grab the current distances and theta and record them.
 			currentDistances = getFilteredData();

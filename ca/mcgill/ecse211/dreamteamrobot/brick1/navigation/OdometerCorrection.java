@@ -1,7 +1,9 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 
+import lejos.hardware.Sound;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
+import lejos.internal.io.SystemSettings;
 
 /**
  * Thread simultaneous to Odometer. This thread reads values from the environment (ie. color sensor values)
@@ -10,7 +12,7 @@ import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
  */
 public class OdometerCorrection extends Thread {
 
-    private int LONG_SLEEP = 200;
+    private int LONG_SLEEP = 100;
     private int SHORT_SLEEP = 50;
     private double R_THRESHOLD = 50.00;
 
@@ -49,7 +51,6 @@ public class OdometerCorrection extends Thread {
         return -1 * Math.atan(sideLength / KinematicModel.WHEELBASE);
     }
 
-
     private void correctCoords(){
         double heading = odometer.getTheta();
         double xDir = 0;
@@ -86,6 +87,9 @@ public class OdometerCorrection extends Thread {
     }
 
     private static double getDistanceAdjust(double odoPosition) {
+        if(odoPosition < 0){
+            return 0.0;
+        }
         double previous30, distFromPrev30, closest30, totalAdjust;
         double startAdjusted = odoPosition;
         // hasn't passed a line yet.. set to first line
@@ -106,20 +110,24 @@ public class OdometerCorrection extends Thread {
 
     private boolean checkCorrectionCandidate(){
         // check if heading is within accepted heading error;
-        double headingErr = 45 - Math.abs(this.odometer.getTheta() % 90 - 45);
+        double headingErr = Math.PI/4 - Math.abs(this.odometer.getTheta() % Math.PI/2 - Math.PI/4);
         boolean headingValid = headingErr < HEADING_ERROR;
 
         // check if coords are within acceptable distances
-        double xErr = 15 - Math.abs(this.odometer.getX()%30 - 15);
-        double yErr = 15 - Math.abs(this.odometer.getX()%30 - 15);
+        double xErr = 15 - Math.abs(Math.abs(this.odometer.getX())%30 - 15);
+        double yErr = 15 - Math.abs(Math.abs(this.odometer.getY())%30 - 15);
 
         boolean coordValid = xErr < POSITION_ERROR || yErr < POSITION_ERROR;
-
+        System.out.println("" + (coordValid && headingValid) + " --- head:"+this.odometer.getTheta()+",headingErr:"+headingErr+ " - x:"+this.odometer.getX()+",xErr:"+xErr+" - y:"+this.odometer.getY()+":yErr : "+yErr);
         return coordValid && headingValid;
     }
 
     private boolean colourSensorHitLine(ColourPoller cp){
-        return cp.getSensorValue() < R_THRESHOLD;
+        boolean hit = cp.getSensorValue() < R_THRESHOLD;
+        if(hit){
+            Sound.beep();
+        }
+        return hit;
     }
 
     private void beginOdoCorrection(){

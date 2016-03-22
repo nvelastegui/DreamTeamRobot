@@ -279,17 +279,19 @@ public class Navigator extends Thread {
 				/** */
 				case INIT:
 					if (status) {
+						System.out.println("navigator changing to turning");
 						state = State.TURNING;
 					}
 					break;
 				/** */
 				case TURNING:
-					// First order of business is to turn to the required angle.
-					// This method returns only when the motion is complete.
-					turnTo(destinationAngle);
+
 					// Then if the angle is correct, set the state to TRAVELLING.
 					if (isFacingDestination(destinationAngle)) {
 						state = State.TRAVELLING;
+					} else {
+						// This method returns only when the motion is complete.
+						turnToAngle(destinationAngle);
 					}
 					break;
 				/** */

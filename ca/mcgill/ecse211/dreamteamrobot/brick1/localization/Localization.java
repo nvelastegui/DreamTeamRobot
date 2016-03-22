@@ -68,15 +68,13 @@ public class Localization {
         // Turn to vertical.
         navigator.turnToAngle(0.00);
 
+        System.out.println("Facing forward...");
+
         // Start navigator.
         navigator.start();
 
-        // Perform colour sensor localization.
-        // lightLocalizer.doLocalization();
-
-        // Move to proper starting location.
-        // TODO: start navigator here?
-        // navigator.start();
+        // Begin lightLocalizer routine
+        lightLocalizer.doLocalization();
 
     }
 

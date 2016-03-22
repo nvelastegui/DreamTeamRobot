@@ -48,7 +48,7 @@ public class LightLocalizer {
 	 * Corrects theta and brings robot to relative (0,0,0).
 	 */
 	public void doLocalization() {
-
+		System.out.println("Doing LightLocalization");
 		// Set odometer values to (-30, -30)
 		odo.setX(-30.00);
 		odo.setY(-30.00);
@@ -56,15 +56,19 @@ public class LightLocalizer {
 		// Drive up to cross y = 0 line
 		// assume correction by odometry correction
 		nav.travelTo(-30.00, 10.00);
+		while(nav.isNavigating()){};
 
 		// Move back to vertical middle of block
 		nav.travelTo(-30.00, -15.00);
+		while(nav.isNavigating()){};
 
 		//
 		nav.travelTo(10, -15.00);
+		while(nav.isNavigating()){};
 
 		//
 		nav.travelTo(0,0);
+		while(nav.isNavigating()){};
 
 		// Move forward
 
