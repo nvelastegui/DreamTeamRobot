@@ -9,7 +9,7 @@ public class KinematicModel {
     public static final double WHEEL_RADIUS_L = 2.01;
     public static final double WHEEL_RADIUS_R = 2.01;
     public static final double WHEELBASE = 13.00;
-    public static final double COLOUR_SENSOR_SPACING = 0;
+
 
     /** Ultrasonic Localization Constants
      *
@@ -28,4 +28,8 @@ public class KinematicModel {
     public static final double thetaCompensation = 0.09; // amount to add to final theta value to compensate for error.
 
 
+    /** Odometry Correction
+     *
+     */
+    public static final double COLOUR_SENSOR_SPACING = 8.0;
 }

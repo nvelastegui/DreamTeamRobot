@@ -15,6 +15,7 @@ public class OdometerCorrection extends Thread {
     private int LONG_SLEEP = 100;
     private int SHORT_SLEEP = 50;
     private double R_THRESHOLD = 50.00;
+    private double MAX_CORRECTION_DETECT_DIST = 10;
 
     // HEADING_ERROR is how closely the robot's heading must be to perpendicular to the line in order to initiate correction
     // ie : HEADING_ERROR of 0 would mean the robots heading would have to be a perfect 90deg from the line it is crossing
@@ -24,6 +25,7 @@ public class OdometerCorrection extends Thread {
     // if the difference in distance travelled between the 2 wheels exceeds this # the correction attempt is cancelled and tachos are reset.
     private double MAX_DELTA_TACHO = (HEADING_ERROR * KinematicModel.WHEELBASE / KinematicModel.WHEEL_RADIUS_L) * 180 / Math.PI;
 
+    private boolean[] aUpdateArr = {true, true, true};
     private boolean[] xUpdateArr = {true, false, false};
     private boolean[] yUpdateArr = {false, true, false};
 
@@ -32,8 +34,9 @@ public class OdometerCorrection extends Thread {
     private ColourPoller leftColourPoller;
     private ColourPoller rightColourPoller;
 
-    private double rightTacho;
-    private double leftTacho;
+    private double rightTacho, leftTacho;
+    private double[] leftLoc = new double[3];
+    private double[] rightLoc = new double[3];
 
     public OdometerCorrection (Odometer odometer, ColourPoller leftP, ColourPoller rightP) {
         this.leftTacho = 0;
@@ -48,7 +51,7 @@ public class OdometerCorrection extends Thread {
     private static double calcLineInterceptAngle(double left, double right){
         double deltaTheta = (left - right) * Math.PI / 180;
         double sideLength = deltaTheta * KinematicModel.WHEEL_RADIUS_L;
-        return -1 * Math.atan(sideLength / KinematicModel.WHEELBASE);
+        return -1 * Math.atan(sideLength / KinematicModel.COLOUR_SENSOR_SPACING);
     }
 
     private void correctCoords(){
@@ -135,33 +138,27 @@ public class OdometerCorrection extends Thread {
 
         // poll left color sensor
         boolean leftSensorHitLine = colourSensorHitLine(leftColourPoller);
-        if(leftSensorHitLine && this.leftTacho == 0){
-            this.leftTacho = odometer.getLeftMotor().getTachoCount();
+        if(leftSensorHitLine && leftTacho == 0){
+            leftTacho = odometer.getLeftMotor().getTachoCount();
+            odometer.getPosition(leftLoc, aUpdateArr);
         }
         // poll right color sensor
         boolean rightSensorHitLine = colourSensorHitLine(rightColourPoller);
-        if(rightSensorHitLine && this.rightTacho == 0){
-            this.rightTacho = odometer.getRightMotor().getTachoCount();
+        if(rightSensorHitLine && rightTacho == 0){
+            rightTacho = odometer.getRightMotor().getTachoCount();
+            odometer.getPosition(rightLoc, aUpdateArr);
         }
 
         if(leftTacho != 0 && rightTacho != 0){
             // account for possibility that the bot was turning or something and the tachos are very different
             System.out.println("OdoCorrecting - leftTacho:"+leftTacho + ", rightTacho:"+rightTacho);
-            if(Math.abs(leftTacho - rightTacho) > MAX_DELTA_TACHO){
+            double detectDist = Math.abs(Math.pow(rightLoc[0]-leftLoc[0],2) + Math.pow(rightLoc[1]-leftLoc[1],2));
+            if(Math.abs(leftTacho - rightTacho) > MAX_DELTA_TACHO && detectDist < MAX_CORRECTION_DETECT_DIST){
                 leftTacho = 0;
                 rightTacho = 0;
                 return;
             } else {
-                // calculate for heading
-                double lineInterceptAngle = calcLineInterceptAngle(leftTacho, rightTacho);
-                double correctedHeading;
-                if(lineInterceptAngle > 0){
-                    correctedHeading = ((int)(odometer.getTheta() / 90)) * 90 + lineInterceptAngle;
-                } else {
-                    correctedHeading = ((int)(odometer.getTheta() / 90) + 1) * 90 - lineInterceptAngle;
-                }
-                // update heading in the odometer..
-                this.odometer.setTheta(correctedHeading);
+
 
                 // correct for coordinates
                 correctCoords();
@@ -171,6 +168,24 @@ public class OdometerCorrection extends Thread {
                 rightTacho = 0;
             }
         }
+    }
+
+    public void correctTheta(double rightTacho, double leftTacho){
+        // calculate for heading
+        double lineInterceptAngle = calcLineInterceptAngle(leftTacho, rightTacho);
+        double correctedHeading;
+
+        // robot is driving parallel to yAxis.. therefore angle is near 0 or 180
+        boolean yDir = (Math.PI/4 - Math.abs(this.odometer.getTheta() % Math.PI - Math.PI/4)) < HEADING_ERROR;
+        if(yDir){
+            correctedHeading = lineInterceptAngle;
+        } else {
+            correctedHeading = lineInterceptAngle + Math.PI / 2;
+        }
+
+        // update heading in the odometer..
+        System.out.println("UpdatingTheta from : "+odometer.getTheta() + " to : "+correctedHeading);
+        this.odometer.setTheta(correctedHeading);
     }
 
     @Override

@@ -55,15 +55,15 @@ public class LightLocalizer {
 
 		// Drive up to cross y = 0 line
 		// assume correction by odometry correction
-		nav.travelTo(-30.00, 10.00);
+		nav.travelTo(-30.00, 5.00);
 		while(nav.isNavigating()){};
 
 		// Move back to vertical middle of block
-		nav.travelTo(-30.00, -15.00);
+		nav.travelTo(-30.00, -10.00);
 		while(nav.isNavigating()){};
 
 		//
-		nav.travelTo(10, -15.00);
+		nav.travelTo(5, -10.00);
 		while(nav.isNavigating()){};
 
 		//
