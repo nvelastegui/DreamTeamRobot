@@ -24,7 +24,7 @@ public class KinematicModel {
     public static final double d = 20;
     public static final double k = 2;
     public static final double pDTolerance = 50;
-    public static final double tolDistanceToWall = 2;
+    public static final double tolDistanceToWall = 6;
     public static final double thetaCompensation = 0.09; // amount to add to final theta value to compensate for error.
 
 
