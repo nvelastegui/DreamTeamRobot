@@ -39,10 +39,6 @@ public class Main {
      */
 	public static void main(String[] args) throws InterruptedException {
 
-		// Reset the tacho counts in case (for whatever reason) they are not zero.
-		leftMotor.resetTachoCount();
-		rightMotor.resetTachoCount();
-
 		// Set initial diplay.
 		t.clear();
 		t.drawString("<DreamTeamRobot >", 0, 0);

@@ -17,10 +17,7 @@ public class Odometer extends Thread {
 	private double distancePerDegreeRotationLeft;
 	private double distancePerDegreeRotationRight;
 
-	private int leftMotorTachoCount;
-	private double leftMotorDistance;
-	private int rightMotorTachoCount;
-	private double rightMotorDistance;
+
 	private double newX;
 	private double newY;
 	private double newTheta;
@@ -60,20 +57,43 @@ public class Odometer extends Thread {
 
 	// run method (required for Thread)
 	public void run() {
+
+		// Variables: Timing
 		long updateStart, updateEnd;
+
+		// Reset the tacho counts.
+		leftMotor.resetTachoCount();
+		rightMotor.resetTachoCount();
+
+		// Variables: Keep track of last cycle's tacho reading
+		long previousTachoLeft = 0;
+		long previousTachoRight = 0;
+
+		// Variables: Keep track of difference in this cycle's tacho reading
+		// 			  and last cycle's tacho reading.
+		long leftMotorTachoCount;
+		long rightMotorTachoCount;
+
+		// Variables: Distance travelled based on tacho counts.
+		double leftMotorDistance;
+		double rightMotorDistance;
 
 		while (true) {
 			updateStart = System.currentTimeMillis();
-			// put (some of) your odometer code here
 
-			// We want to grab the tacho count from the motors and immediately
-			// reset them so that we don't lose any rotations.
-			leftMotorTachoCount = leftMotor.getTachoCount();
-			rightMotorTachoCount = rightMotor.getTachoCount();
-			rightMotor.resetTachoCount();
-			leftMotor.resetTachoCount();
+			// Grab the tacho count from the motors
+			long currentTachoLeft = leftMotor.getTachoCount();
+			long currentTachoRight = rightMotor.getTachoCount();
 
-			// theta goes from vertical axis (0 degrees) in a CW rotation.
+			// Calculate the rotations from the last cycle until now
+			leftMotorTachoCount = currentTachoLeft - previousTachoLeft;
+			rightMotorTachoCount = currentTachoRight - previousTachoRight;
+
+			// Save the current tachos into previous slots.
+			previousTachoLeft = currentTachoLeft;
+			previousTachoRight = currentTachoRight;
+
+			// >>> Theta goes from vertical axis (0 degrees) in a CW rotation.
 
 			synchronized (lock) {
 				// don't use the variables x, y, or theta anywhere but here!

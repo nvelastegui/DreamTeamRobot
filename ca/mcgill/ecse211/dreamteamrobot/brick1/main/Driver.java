@@ -121,6 +121,8 @@ public class Driver extends Thread {
     @Override
     public void run() {
 
+        // turn on obstacle avoidance on navigator
+
         //ObstacleAvoider avoidance = new ObstacleAvoider(this);
 
 //        while (true) {

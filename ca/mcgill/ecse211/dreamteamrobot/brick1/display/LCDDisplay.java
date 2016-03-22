@@ -15,7 +15,7 @@ import java.util.List;
 public class LCDDisplay extends Thread {
 
 	private static final long DISPLAY_PERIOD = 250;
-	private TextLCD LCD = LocalEV3.get().getTextLCD();;
+	private static TextLCD LCD = LocalEV3.get().getTextLCD();;
 	private Driver driver;
 
 	/**
@@ -27,11 +27,16 @@ public class LCDDisplay extends Thread {
 	}
 
 	/**
-	 * Displays message on screen.
-	 * @param lines Message to be displayed, in a list where each element is a line.
+	 * Displays message on screen. Logs it to system.out.
+	 * @param message Message to be displayed, in a list where each element is a line.
      */
-	public static void sendToDisplay (List<String> lines) {
-
+	public static void sendToDisplay (String message, boolean log) {
+		// Clear line
+		LCD.clear(5);
+		// Display message on line.
+		LCD.drawString(message, 0, 5);
+		// Log
+		if (log) System.out.println(message);
 	}
 
 	/**
@@ -59,6 +64,8 @@ public class LCDDisplay extends Thread {
 			LCD.drawString("X: " + String.valueOf(stats.getX()), 0, 1);
 			LCD.drawString("Y: " + String.valueOf(stats.getY()), 0, 2);
 			LCD.drawString("T: " + String.valueOf(stats.getTheta()), 0, 3);
+			LCD.drawString("  ", 0, 4);
+			// line 5 reserved for messages sent in via sendToDisplay.
 
 //			// get the odometry information
 //			odometer.getPosition(position, new boolean[] { true, true, true });

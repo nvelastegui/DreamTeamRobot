@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.localization;
 
+import ca.mcgill.ecse211.dreamteamrobot.brick1.display.LCDDisplay;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
@@ -53,6 +54,8 @@ public class UltrasonicLocalizer {
 	 */
 	public boolean doLocalization() {
 
+		LCDDisplay.sendToDisplay("Exec: USLocalization", true);
+
 		double angleA, angleB;
 		double deltaTheta;
 
@@ -81,6 +84,7 @@ public class UltrasonicLocalizer {
 
 		Sound.twoBeeps();
 
+		LCDDisplay.sendToDisplay("Compl: USLocalization", true);
 		return true;
 
 	}
