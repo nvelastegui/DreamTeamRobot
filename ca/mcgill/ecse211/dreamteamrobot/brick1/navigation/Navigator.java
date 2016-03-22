@@ -20,8 +20,10 @@ public class Navigator extends Thread {
 	private ObstacleAvoider obstacleAvoider;
 
 	/** Variables: Status */
-	private boolean status;
 	enum State {INIT, TURNING, TRAVELLING, EMERGENCY};
+	enum StateObstacleAvoidance {OFF, ON};
+	private boolean status;
+	private StateObstacleAvoidance stateOA;
 
 	/** Variables: Motors */
 	private EV3LargeRegulatedMotor leftMotor;
@@ -52,6 +54,16 @@ public class Navigator extends Thread {
 		this.leftUltrasonicSensorMotor = leftUltrasonicSensorMotor;
 		this.rightUltrasonicSensorMotor = rightUltrasonicSensorMotor;
 		this.status = false;
+
+		// Set obstacle avoidance to off initially.
+		this.stateOA = StateObstacleAvoidance.OFF;
+	}
+
+	/**
+	 * Turns on Obstacle Avoidance.
+	 */
+	public void setObstacleAvoidanceOn () {
+		stateOA = StateObstacleAvoidance.ON;
 	}
 
 	/**
@@ -286,11 +298,12 @@ public class Navigator extends Thread {
 					break;
 				/** */
 				case TURNING:
-
-					// Then if the angle is correct, set the state to TRAVELLING.
+					// If robot is facing the right way, set state to travelling.
 					if (isFacingDestination(destinationAngle)) {
 						state = State.TRAVELLING;
-					} else {
+					}
+					// Otherwise, turn until facing the right way.
+					else {
 						System.out.println("turning from nav class : " + destinationAngle);
 						// This method returns only when the motion is complete.
 						turnToAngle(destinationAngle);
@@ -300,9 +313,11 @@ public class Navigator extends Thread {
 				case TRAVELLING:
 					Location currentPosition = getPositionFromOdometer();
 					if (checkEmergency()) {
-						state = State.EMERGENCY;
-						avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, leftMotor, rightMotor);
-						avoidance.start();
+						if (stateOA == StateObstacleAvoidance.ON) {
+							state = State.EMERGENCY;
+							avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, leftMotor, rightMotor);
+							avoidance.start();
+						}
 					}
 					else if (!checkIfAtDestination(currentPosition)) {
 						updateTravel();

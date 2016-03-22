@@ -41,10 +41,8 @@ public class OdometerCorrection extends Thread {
     public OdometerCorrection (Odometer odometer, ColourPoller leftP, ColourPoller rightP) {
         this.leftTacho = 0;
         this.rightTacho = 0;
-
         this.leftColourPoller = leftP;
         this.rightColourPoller = rightP;
-
         this.odometer = odometer;
     }
 
@@ -54,52 +52,89 @@ public class OdometerCorrection extends Thread {
         return -1 * Math.atan(sideLength / KinematicModel.COLOUR_SENSOR_SPACING);
     }
 
+    /**
+     * Corrects x,y on odometer.
+     */
     private void correctCoords(){
+
+        // Variables
         double heading = odometer.getTheta();
         double xDir = 0;
         double yDir = 0;
         double absAdjust, updateAmount;
         double[] updateArr = new double[3];
+
+        // Determine direction
         if(Math.abs(heading - 0) <= HEADING_ERROR){
-            xDir = 1;
-        } else if (Math.abs(heading - 90) <= HEADING_ERROR){
-            yDir = 1;
-        } else if (Math.abs(heading - 180) <= HEADING_ERROR){
-            xDir = -1;
-        } else if (Math.abs(heading - 270) <= HEADING_ERROR){
-            yDir = -1;
+            yDir = 1; // heading positive y direction
+        } else if (Math.abs(heading - Math.PI/2.0) <= HEADING_ERROR){
+            xDir = 1; // heading positive x direction
+        } else if (Math.abs(heading - Math.PI) <= HEADING_ERROR){
+            yDir = -1; // heading negative y direction
+        } else if (Math.abs(heading - (Math.PI + Math.PI/2.0)) <= HEADING_ERROR){
+            xDir = -1; // heading negative x direction
         }
 
+        // Perform correction based on direction
+
+        // Heading positive x or negative x
         if(xDir != 0) {
+            // Grab coordinates from odometer.
             double[] doublexPos = new double[3];
             odometer.getPosition(doublexPos, xUpdateArr);
-            absAdjust = getDistanceAdjust(doublexPos[0]);
-            updateAmount = xDir * absAdjust;
-            updateArr[0] = updateAmount + doublexPos[0];
 
+            // Send x coordinate into getDistanceAdjust
+            // to get required update amount.
+            absAdjust = getDistanceAdjust(doublexPos[0]);
+
+            // Switch sign of adjustment depending on direction.
+            updateAmount = xDir * absAdjust;
+
+            // Update position in odometer.
+            updateArr[0] = updateAmount + doublexPos[0];
             odometer.setPosition(updateArr, xUpdateArr);
-        } else {
+        }
+        // Heading positive y or negative y
+        else {
+            // Grab coordinates from odometer.
             double[] doubleyPos = new double[3];
             odometer.getPosition(doubleyPos, yUpdateArr);
-            absAdjust = getDistanceAdjust(doubleyPos[1]);
-            updateAmount = yDir * absAdjust;
-            updateArr[1] = updateAmount + doubleyPos[1];
 
+            // Send y coordinate into getDistanceAdjust
+            // to get required update amount
+            absAdjust = getDistanceAdjust(doubleyPos[1]);
+
+            // Then switch sign of adjustment depending on direction
+            updateAmount = yDir * absAdjust;
+
+            // Update position in odometer.
+            updateArr[1] = updateAmount + doubleyPos[1];
             odometer.setPosition(updateArr, yUpdateArr);
         }
-        System.out.println("updated Coord to x:"+updateArr[0] + ", y:"+updateArr[1]);
+
+        System.out.println("updated Coord to x: "+updateArr[0] + ", y: "+updateArr[1]);
     }
 
+    /**
+     * Given either an x position or a y position, determines whether to adjust to next multiple of 30
+     * or previous multiple of 30.
+     * @param odoPosition x or y position
+     * @return Adjustment to be added to parameter.
+     */
     private static double getDistanceAdjust(double odoPosition) {
-        if(odoPosition < 0){
-            return 0.0;
-        }
-        double previous30, distFromPrev30, closest30, totalAdjust;
-        double startAdjusted = odoPosition;
-        // hasn't passed a line yet.. set to first line
 
-        previous30 = ((int) (startAdjusted / 30.0)) * 30;
-        distFromPrev30 = startAdjusted - previous30;
+        // In the case that we are localizing, and the robot is reading less than 0,
+        // just return 0.0.
+        if (odoPosition < 0) return 0.0;
+
+        // Variables
+        double previous30, distFromPrev30, closest30;
+
+        // Determine how far the current odoPosition is from the last line.
+        previous30 = ((int) (odoPosition / 30.0)) * 30;
+        distFromPrev30 = odoPosition - previous30;
+
+        // Correct position.
         if(distFromPrev30 > 15) {
             // odoPosition is shorter than actual
             closest30 = previous30 + 30;
@@ -108,32 +143,47 @@ public class OdometerCorrection extends Thread {
             closest30 = previous30;
         }
 
-        totalAdjust = closest30 - startAdjusted;
-        return totalAdjust;
+        // Return required adjustment.
+        return (closest30 - odoPosition);
     }
 
+    /**
+     * Checks if robot is travelling vertically or horizontally, approximately.
+     * Checks if coordinates are around a known line (multiple of 30).
+     * @return True if robot is travelling vertically horizontally and around line. False if not.
+     */
     private boolean checkCorrectionCandidate(){
-        // check if heading is within accepted heading error;
-        double headingErr = Math.PI/4 - Math.abs(this.odometer.getTheta() % Math.PI/2 - Math.PI/4);
-        boolean headingValid = headingErr < HEADING_ERROR;
 
-        // check if coords are within acceptable distances
-        double xErr = 15 - Math.abs(Math.abs(this.odometer.getX())%30 - 15);
-        double yErr = 15 - Math.abs(Math.abs(this.odometer.getY())%30 - 15);
+        // Check if heading is within accepted heading error:
+        double headingErr = Math.abs(odometer.getTheta() % (Math.PI/2.0));
+        boolean headingValid = headingErr < HEADING_ERROR;
+            // double headingErr = Math.PI/4 - Math.abs(this.odometer.getTheta() % Math.PI/2 - Math.PI/4);
+
+        // Check if coords are within acceptable distances
+        //double xErr = Math.abs(odometer.getX())%30);
+        double xErr = 15 - Math.abs(Math.abs(odometer.getX())%30 - 15);
+        double yErr = 15 - Math.abs(Math.abs(odometer.getY())%30 - 15);
 
         boolean coordValid = xErr < POSITION_ERROR || yErr < POSITION_ERROR;
         //System.out.println("" + (coordValid && headingValid) + " --- head:"+this.odometer.getTheta()+",headingErr:"+headingErr+ " - x:"+this.odometer.getX()+",xErr:"+xErr+" - y:"+this.odometer.getY()+":yErr : "+yErr);
         return coordValid && headingValid;
+
     }
 
+    /**
+     * Checks if a colour sensor is reading a line.
+     * @param cp Colour poller for colour sensor.
+     * @return True if there is a line. False if not.
+     */
     private boolean colourSensorHitLine(ColourPoller cp){
         boolean hit = cp.getSensorValue() < R_THRESHOLD;
-        if(hit){
-            Sound.beep();
-        }
+        if (hit) Sound.beep();
         return hit;
     }
 
+    /**
+     * Manages odometer correction.
+     */
     private void beginOdoCorrection(){
 
         // poll left color sensor
@@ -170,6 +220,7 @@ public class OdometerCorrection extends Thread {
         }
     }
 
+
     public void correctTheta(double rightTacho, double leftTacho){
         // calculate for heading
         double lineInterceptAngle = calcLineInterceptAngle(leftTacho, rightTacho);
@@ -191,7 +242,12 @@ public class OdometerCorrection extends Thread {
     @Override
     public void run() {
         boolean nearCandidate;
+
+        // We don't want to waste processing power or anything, so if
+        // we determine that we're close to a spot where we have to correct,
+        // then we do so. Otherwise, we rest for a longer period.
         while(true){
+
             nearCandidate = checkCorrectionCandidate();
 
             if(nearCandidate){

@@ -108,8 +108,8 @@ public class Driver extends Thread {
         ultrasonicPollerLeft.start();
         ultrasonicPollerRight.start();
 
-        // Do not start navigator yet. Should only be started after localization is complete (so obstacle avoidance
-        // doesn't fuck with localization process).
+        // Start navigator, in no-obstacle-avoidance mode.
+        navigator.start();
 
     }
 

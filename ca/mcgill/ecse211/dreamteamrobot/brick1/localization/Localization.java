@@ -70,9 +70,6 @@ public class Localization {
 
         System.out.println("Facing forward...");
 
-        // Start navigator.
-        navigator.start();
-
         // Begin lightLocalizer routine
         lightLocalizer.doLocalization();
 
