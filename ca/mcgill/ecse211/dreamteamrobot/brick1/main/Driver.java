@@ -102,7 +102,7 @@ public class Driver extends Thread {
         colourPollerRight.start();
 
         // Start odometry correction.
-        //odometerCorrection.start();
+        odometerCorrection.start();
 
         // Start ultrasonic pollers.
         ultrasonicPollerLeft.start();

@@ -45,10 +45,10 @@ public class Main {
 
 		// Set initial diplay.
 		t.clear();
-		t.drawString("<DreamTeamRobotr>", 0, 0);
+		t.drawString("<DreamTeamRobot >", 0, 0);
 		t.drawString("<               >", 0, 1);
-		t.drawString("<   Awaiting    >", 0, 2);
-		t.drawString("<   Orders      >", 0, 3);
+		t.drawString("<  Initializing >", 0, 2);
+		t.drawString("<   Classes     >", 0, 3);
 		t.drawString("<               >", 0, 4);
 		t.drawString("<               >", 0, 5);
 
@@ -89,6 +89,9 @@ public class Main {
 				driver.getColourPollerRight()
 		);
 		localizer.setupLocalizer();
+
+
+
 		localizer.doLocalization(null);
 
 
