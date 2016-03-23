@@ -49,26 +49,42 @@ public class LightLocalizer {
 		LCDDisplay.sendToDisplay("Exec: LightLocalization", true);
 
 		// Set odometer values to (-30, -30)
-		odo.setX(-30.00);
-		odo.setY(-30.00);
+		odo.setX(-20.00);
+		odo.setY(-20.00);
 
 		// Drive up to cross y = 0 line
-		nav.travelTo(-30.00, 5.00);
-		while(nav.isNavigating()){pause(100);}
+		System.out.println("nav.travelTo(-20.00, 5.00);");
+		nav.travelTo(-20.00, 10.00);
+		while(nav.isNavigating()){
+			System.out.println("X:"+((int)(odo.getX()*100))/100.0+", Y:"+((int)(odo.getY()*100))/100.0+", T:"+((int)(odo.getTheta()*180/Math.PI*100))/100.0);
+			pause(100);
+		}
 
 		// Move back to vertical middle of block
-		nav.travelTo(-30.00, -10.00);
-		while(nav.isNavigating()){pause(100);}
+		System.out.println("nav.travelTo(-20.00, -10.00);");
+		nav.travelTo(-20.00, -15.00);
+		while(nav.isNavigating()){
+			System.out.println("X:"+((int)(odo.getX()*100))/100.0+", Y:"+((int)(odo.getY()*100))/100.0+", T:"+((int)(odo.getTheta()*180/Math.PI*100))/100.0);
+			pause(100);
+		}
 
 		// Drive right to cross x = 0 line.
-		nav.travelTo(5, -10.00);
-		while(nav.isNavigating()){pause(100);}
+		System.out.println("nav.travelTo(5, -10.00);");
+		nav.travelTo(15, -15.00);
+		while(nav.isNavigating()){
+			System.out.println("X:"+((int)(odo.getX()*100))/100.0+", Y:"+((int)(odo.getY()*100))/100.0+", T:"+((int)(odo.getTheta()*180/Math.PI*100))/100.0);
+			pause(100);
+		}
 
 		// Localization complete.
 
 		// Drive to (0,0)
+		System.out.println("nav.travelTo(0,0);");
 		nav.travelTo(0,0);
-		while(nav.isNavigating()){pause(100);}
+		while(nav.isNavigating()){
+			System.out.println("X:"+((int)(odo.getX()*100))/100.0+", Y:"+((int)(odo.getY()*100))/100.0+", T:"+((int)(odo.getTheta()*180/Math.PI*100))/100.0);
+			pause(100);
+		}
 
 		// Turn to 0 degrees.
 		nav.turnToAngle(0.0);

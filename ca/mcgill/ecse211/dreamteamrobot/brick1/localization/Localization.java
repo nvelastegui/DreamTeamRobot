@@ -70,6 +70,8 @@ public class Localization {
 
         System.out.println("Facing forward...");
 
+        //odometer.setTheta(0.0);
+
         // Begin lightLocalizer routine
         lightLocalizer.doLocalization();
 
