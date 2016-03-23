@@ -155,9 +155,9 @@ public class OdometerCorrection extends Thread {
     private boolean checkCorrectionCandidate(){
 
         // Check if heading is within accepted heading error:
-        double headingErr = Math.abs(odometer.getTheta() % (Math.PI/2.0));
+//        double headingErr = Math.abs(odometer.getTheta() % (Math.PI/2.0));
+        double headingErr = Math.PI/4 - Math.abs(this.odometer.getTheta() % Math.PI/2 - Math.PI/4);
         boolean headingValid = headingErr < HEADING_ERROR;
-            // double headingErr = Math.PI/4 - Math.abs(this.odometer.getTheta() % Math.PI/2 - Math.PI/4);
 
         // Check if coords are within acceptable distances
         //double xErr = Math.abs(odometer.getX())%30);

@@ -87,7 +87,6 @@ public class Main {
 		localizer.setupLocalizer();
 
 
-
 		localizer.doLocalization(null);
 
 
