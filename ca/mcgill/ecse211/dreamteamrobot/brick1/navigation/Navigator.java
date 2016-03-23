@@ -37,8 +37,8 @@ public class Navigator extends Thread {
 	private double[] currentPosition = new double[3];
 
 	/** Tolerances */
-	private static double tolTheta = 0.08; // 0.06
-	private static double tolEuclideanDistance = 5.0;
+	private static double tolTheta = 0.16; // 0.06
+	private static double tolEuclideanDistance = 3.0;
 	private static int    tolCloseness = 15;
 
 	/**
@@ -320,7 +320,11 @@ public class Navigator extends Thread {
 						}
 					}
 					else if (!checkIfAtDestination(currentPosition)) {
-						updateTravel();
+						if (isFacingDestination(destinationAngle)) {
+							updateTravel();
+						} else {
+							state = State.TURNING;
+						}
 					}
 					else {
 						leftMotor.stop();
