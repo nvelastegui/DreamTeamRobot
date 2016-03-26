@@ -123,13 +123,13 @@ public class Odometer extends Thread {
 				theta = newTheta;
 
 				// Theta upper bound
-				if (theta > 6.28) {
-					theta = theta - 6.28;
+				if (theta > 2.0*Math.PI) {
+					theta = theta - 2.0*Math.PI;
 				}
 
 				// Theta lower bound
 				if (theta < 0) {
-					theta = 6.28 + theta;
+					theta = 2.0*Math.PI + theta;
 				}
 
 

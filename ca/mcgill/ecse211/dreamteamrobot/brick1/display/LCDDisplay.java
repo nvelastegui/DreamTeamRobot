@@ -15,7 +15,7 @@ import java.util.List;
 public class LCDDisplay extends Thread {
 
 	private static final long DISPLAY_PERIOD = 250;
-	private static TextLCD LCD = LocalEV3.get().getTextLCD();;
+	private static TextLCD LCD = LocalEV3.get().getTextLCD();
 	private Driver driver;
 
 	/**
