@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 
+import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
@@ -10,8 +11,8 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 public class Navigator extends Thread {
 
 	/** Constants */
-	private static final int FORWARD_SPEED = 100;
-	private static final int ROTATE_SPEED = 80;
+	private static final int FORWARD_SPEED = KinematicModel.navigator_forwardSpeed;
+	private static final int ROTATE_SPEED = KinematicModel.navigator_rotateSpeed;
 	private static boolean[] getAllValues = {true, true, true};
 
 	/** Variables: Sub Threads */
@@ -37,9 +38,9 @@ public class Navigator extends Thread {
 	private double[] currentPosition = new double[3];
 
 	/** Tolerances */
-	private static double tolTheta = 0.16; // 0.06
-	private static double tolEuclideanDistance = 3.0;
-	private static int    tolCloseness = 15;
+	private double tolTheta;
+	private static double tolEuclideanDistance = KinematicModel.navigator_tolEuclideanDistance;
+	private static int    tolCloseness = KinematicModel.navigator_obstacleDistanceTolerance;
 
 	/**
 	 * Constructor
@@ -57,6 +58,25 @@ public class Navigator extends Thread {
 
 		// Set obstacle avoidance to off initially.
 		this.stateOA = StateObstacleAvoidance.OFF;
+
+		// Set theta tolerance to low initially.
+		this.tolTheta = KinematicModel.navigator_tolThetaLow;
+	}
+
+	/**
+	 * Sets tolerance on theta (for turnToAngle/turnTo/isFacing/etc.) to lower value, as defined
+	 * in KinematicModel.
+	 */
+	public void setThetaToleranceLow () {
+		this.tolTheta = KinematicModel.navigator_tolThetaLow;
+	}
+
+	/**
+	 * Sets tolerance on theta (for turnToAngle/turnTo/isFacing/etc.) to higher value, as defined
+	 * in KinematicModel.
+	 */
+	public void setThetaToleranceHigh () {
+		this.tolTheta = KinematicModel.navigator_tolThetaHigh;
 	}
 
 	/**
@@ -213,9 +233,7 @@ public class Navigator extends Thread {
 	 */
 	private boolean isFacingDestination (double destinationAngle) {
 		double currentTheta = odometer.getTheta();
-		double err = Math.min(Math.abs(destinationAngle - currentTheta), Math.abs(Math.PI-currentTheta - destinationAngle));
-		return err < tolTheta;
-		//return ((destinationAngle - tolTheta) < currentTheta) && (currentTheta < (destinationAngle + tolTheta));
+		return ((destinationAngle - tolTheta) < currentTheta) && (currentTheta < (destinationAngle + tolTheta));
 	}
 
 	/**

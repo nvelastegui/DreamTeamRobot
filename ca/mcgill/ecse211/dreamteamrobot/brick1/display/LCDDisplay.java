@@ -59,6 +59,11 @@ public class LCDDisplay extends Thread {
 			// Get info from driver.
 			DriverStatusPacket stats = driver.getStatus();
 
+			// Debugging: print values
+			System.out.println("X: " + stats.getX());
+			System.out.println("Y: " + stats.getY());
+			System.out.println("T: " + stats.getTheta());
+
 			// Display info on screen.
 			LCD.drawString("Sts: " + stats.getCurrentState(), 0, 0);
 			LCD.drawString("X: " + String.valueOf(stats.getX()), 0, 1);

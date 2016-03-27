@@ -82,7 +82,8 @@ public class Main {
 				driver.getUltrasonicPollerLeft(),
 				driver.getUltrasonicPollerRight(),
 				driver.getColourPollerLeft(),
-				driver.getColourPollerRight()
+				driver.getColourPollerRight(),
+				driver.getOdometerCorrection()
 		);
 		localizer.setupLocalizer();
 

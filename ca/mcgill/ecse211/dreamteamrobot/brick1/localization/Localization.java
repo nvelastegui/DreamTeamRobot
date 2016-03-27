@@ -2,6 +2,7 @@ package ca.mcgill.ecse211.dreamteamrobot.brick1.localization;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.OdometerCorrection;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -27,8 +28,9 @@ public class Localization {
     private UltrasonicPoller ultrasonicPollerRight;
     private ColourPoller colourPollerLeft;
     private ColourPoller colourPollerRight;
+    private OdometerCorrection odometerCorrection;
 
-    public Localization (EV3LargeRegulatedMotor leftMotor,EV3LargeRegulatedMotor rightMotor, Odometer odometer, Navigator navigator, UltrasonicPoller ultrasonicPollerLeft, UltrasonicPoller ultrasonicPollerRight, ColourPoller colourPollerLeft, ColourPoller colourPollerRight) {
+    public Localization (EV3LargeRegulatedMotor leftMotor,EV3LargeRegulatedMotor rightMotor, Odometer odometer, Navigator navigator, UltrasonicPoller ultrasonicPollerLeft, UltrasonicPoller ultrasonicPollerRight, ColourPoller colourPollerLeft, ColourPoller colourPollerRight, OdometerCorrection odometerCorrection) {
         this.leftMotor = leftMotor;
         this.rightMotor = rightMotor;
         this.odometer = odometer;
@@ -37,6 +39,7 @@ public class Localization {
         this.ultrasonicPollerRight = ultrasonicPollerRight;
         this.colourPollerLeft = colourPollerLeft;
         this.colourPollerRight = colourPollerRight;
+        this.odometerCorrection = odometerCorrection;
     }
 
     /**
@@ -66,11 +69,15 @@ public class Localization {
         ultrasonicLocalizer.doLocalization();
 
         // Turn to vertical.
+        //System.out.println("About to turn to 0 -> Theta: " + odometer.getTheta());
         navigator.turnToAngle(0.00);
+        //System.out.println("Done turning to 0 -> Theta: " + odometer.getTheta());
 
-        System.out.println("Facing forward...");
+        //System.out.println("Facing forward...");
 
-        //odometer.setTheta(0.0);
+        // Start odometry correction.
+        navigator.setThetaToleranceHigh();
+        odometerCorrection.start();
 
         // Begin lightLocalizer routine
         lightLocalizer.doLocalization();

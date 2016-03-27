@@ -54,7 +54,11 @@ public class UltrasonicLocalizer {
 	 */
 	public boolean doLocalization() {
 
-		LCDDisplay.sendToDisplay("Exec: USLocalization", true);
+		// Send to display.
+		// LCDDisplay.sendToDisplay("Exec: USLocalization", true);
+
+		// Make sure theta starts at 0 degrees.
+		odometer.setTheta(0.00);
 
 		double angleA, angleB;
 		double deltaTheta;
@@ -84,7 +88,6 @@ public class UltrasonicLocalizer {
 
 		Sound.twoBeeps();
 
-		LCDDisplay.sendToDisplay("Compl: USLocalization", true);
 		return true;
 
 	}
@@ -169,7 +172,6 @@ public class UltrasonicLocalizer {
 		int seconddrop = listThetas.size() - 1;
 
 		// Return angleA
-		System.out.println("Finished rotating right.");
 		return (listThetas.get(seconddrop) + listThetas.get(firstdrop))/2.0;
 
 	}
@@ -191,7 +193,7 @@ public class UltrasonicLocalizer {
 		rightMotor.forward();
 
 		// Sleep thread for a bit so that right-side wall doesn't confuse readings.
-		pause(2000);
+		pause(5000);
 
 		// Start by grabbing an initial reading and setting the conditional variables.
 		List<Double> currentDistances = getFilteredData();
@@ -238,7 +240,6 @@ public class UltrasonicLocalizer {
 		int seconddrop = listThetas.size() - 1;
 
 		// Return angleA
-		System.out.println("Finished rotating left.");
 		return (listThetas.get(seconddrop) + listThetas.get(firstdrop))/2.0;
 
 
@@ -249,16 +250,12 @@ public class UltrasonicLocalizer {
 	 */
 	private double getDeltaTheta (double angleA, double angleB) {
 
-		double deltaTheta;
-		// Delta theta is calculated using method defined in lab tutorial
-		if (Math.abs(angleA) > Math.abs(angleB)) {
-			deltaTheta = (Math.PI/4.0) - (angleA + angleB)/2.0;
+		double deltaTheta = Math.PI/4.0 - ((angleA + angleB) / 2);
+		deltaTheta += Math.PI;
+		if (deltaTheta < 0) {
+			deltaTheta += 2.0*Math.PI;
 		}
-		else {
-			deltaTheta = (Math.PI/4.0 + Math.PI) - (angleA + angleB)/2.0;
-		}
-
-		return deltaTheta;
+		return deltaTheta % (2.0*Math.PI);
 
 	}
 

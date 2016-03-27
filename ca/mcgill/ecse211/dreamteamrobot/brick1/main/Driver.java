@@ -69,6 +69,10 @@ public class Driver extends Thread {
         return odometer;
     }
 
+    public OdometerCorrection getOdometerCorrection() {
+        return odometerCorrection;
+    }
+
     public Navigator getNavigator() {
         return navigator;
     }
@@ -101,8 +105,7 @@ public class Driver extends Thread {
         colourPollerLeft.start();
         colourPollerRight.start();
 
-        // Start odometry correction.
-        odometerCorrection.start();
+        // Don't start odometry correction yet.
 
         // Start ultrasonic pollers.
         ultrasonicPollerLeft.start();
@@ -111,6 +114,13 @@ public class Driver extends Thread {
         // Start navigator, in no-obstacle-avoidance mode.
         navigator.start();
 
+    }
+
+    /**
+     * Runs odometry correction.
+     */
+    public void startOdometryCorrection () {
+        odometerCorrection.start();
     }
 
     /**

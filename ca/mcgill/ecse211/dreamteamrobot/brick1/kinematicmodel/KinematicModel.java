@@ -6,9 +6,9 @@ package ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel;
 public class KinematicModel {
 
     /** Robot Physical Constants */
-    public static final double WHEEL_RADIUS_L = 2.01;
-    public static final double WHEEL_RADIUS_R = 2.01;
-    public static final double WHEELBASE = 13.00;
+    public static final double WHEEL_RADIUS_L = 1.95; // Might change if we increase/reduce weight of the robot.
+    public static final double WHEEL_RADIUS_R = 1.95;
+    public static final double WHEELBASE = 14.25; // DON'T CHANGE THIS.
     public static final double COLOR_SENSOR_FORWARD_OFFSET = 3.5;
 
 
@@ -23,12 +23,26 @@ public class KinematicModel {
      */
     public static final int ultrasonicLocalizationRotateSpeed = 50;
     public static final double d = 20;
-    public static final double k = 2;
+    public static final double k = 6;
     public static final double pDTolerance = 50;
     public static final double tolDistanceToWall = 4;
-    public static final double thetaCompensation = 0.09; // amount to add to final theta value to compensate for error.
+    public static final double thetaCompensation = 0.00; // amount to add to final theta value to compensate for error.
 
 
+    /** Navigator Constants
+     *
+     *  Constants related to navigator. There are two tolerances on the theta. The tight tolerance is too low for
+     *  the odometry correction, but it's perfect for the ultrasonic localization. So during the first half of the localization
+     *  the low tolerance is used (makes rotations at low speed MUCH more accurate), and for the light localization
+     *  it's pumped up to 0.16.
+     *
+     */
+    public static final double navigator_tolThetaLow = 0.06;
+    public static final double navigator_tolThetaHigh = 0.16;
+    public static final double navigator_tolEuclideanDistance = 1.0;
+    public static final int    navigator_obstacleDistanceTolerance = 15;
+    public static final int    navigator_forwardSpeed = 100;
+    public static final int    navigator_rotateSpeed = 70;
 
     /** Odometry Correction
      *

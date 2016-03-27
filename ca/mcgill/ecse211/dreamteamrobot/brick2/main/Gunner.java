@@ -56,7 +56,7 @@ public class Gunner extends Thread {
     public boolean performPreExecute () {
 
         // Start colour poller.
-        colourPoller.start();
+        //colourPoller.start();
 
         // Reset tacho count on clasp motor.
         claspMotor.resetTachoCount();
