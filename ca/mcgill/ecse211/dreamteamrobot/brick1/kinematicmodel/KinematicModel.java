@@ -29,6 +29,10 @@ public class KinematicModel {
     public static final double thetaCompensation = 0.00; // amount to add to final theta value to compensate for error.
 
 
+    public static final int    lightLocalization_forwardSpeed = 80;
+    public static final int    lightLocalization_backwardSpeed = 60;
+    public static final double lightLocalization_colourSensorSeparation = 12.00;
+
     /** Navigator Constants
      *
      *  Constants related to navigator. There are two tolerances on the theta. The tight tolerance is too low for

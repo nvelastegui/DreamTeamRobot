@@ -37,6 +37,7 @@ public class Main {
         Gunner gunner = new Gunner(shootMotor, claspMotor, colourSensorPort);
         gunner.performPreExecute();
         gunner.openClasp();
+        gunner.dropArmToBottomPosition();
 
         // Debugging: Testing shooting mechanism.
         while (true) {

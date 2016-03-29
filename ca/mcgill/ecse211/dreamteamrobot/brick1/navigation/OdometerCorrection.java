@@ -151,23 +151,21 @@ public class OdometerCorrection extends Thread {
      */
     private boolean checkCorrectionCandidate(){
 
-        //hVal:false --- head:1.6836905350918145,headingErr:0.7289510592489893
-
         // Check if heading is within accepted heading error:
-//        double headingErr = Math.abs(odometer.getTheta() % (Math.PI/2.0));
-        double headingErr = Math.PI/4 - Math.abs((this.odometer.getTheta() % (Math.PI/2)) - Math.PI/4);
-        boolean headingValid = headingErr < HEADING_ERROR;
+        boolean headingValid = (Math.PI/4 - Math.abs((this.odometer.getTheta() % (Math.PI/2)) - Math.PI/4)) < HEADING_ERROR;
 
         // Check if coords are within acceptable distances
-        //double xErr = Math.abs(odometer.getX())%30);
-        double xCoord = odometer.getX();
-        double yCoord = odometer.getY();
-        double xErr = 15 - Math.abs(Math.abs(xCoord)%30 - 15);
-        double yErr = 15 - Math.abs(Math.abs(yCoord)%30 - 15);
+        double xErr = 15 - Math.abs(Math.abs(odometer.getX() % 30) - 15);
+        double yErr = 15 - Math.abs(Math.abs(odometer.getY() % 30) - 15);
 
         // if in the first box check for lines..
-        boolean coordValid = xErr < POSITION_ERROR || yErr < POSITION_ERROR || (xCoord<0 && yCoord<0);
-        //System.out.println("" + (coordValid && headingValid) +" : hVal:" + headingValid + " --- head:"+this.odometer.getTheta()+",headingErr:"+headingErr+ " - x:"+this.odometer.getX()+",xErr:"+xErr+" - y:"+this.odometer.getY()+":yErr : "+yErr);
+        boolean coordValid = xErr < POSITION_ERROR || yErr < POSITION_ERROR;
+        // Note: I took out the xCoord and yCoord thing since it was causing problems on some runs.
+        //       Basically, it would be in "checkCorrectionCandidate" mode continuously when in the bottom
+        //       left square. Sometimes, it would pick up a false positive early and subsequently grab the
+        //       other positive (actually on the line on top) and due to the huge tacho count difference
+        //       overturn a shit ton.
+        // boolean coordValid = xErr < POSITION_ERROR || yErr < POSITION_ERROR || (xCoord<0 && yCoord<0);
         return coordValid && headingValid;
 
     }
@@ -187,14 +185,14 @@ public class OdometerCorrection extends Thread {
      */
     private void beginOdoCorrection(){
 
-        // poll left color sensor
+        // Poll left color sensor
         boolean leftSensorHitLine = colourSensorHitLine(leftColourPoller);
         if(leftSensorHitLine && (leftDetectleftTacho == 0 && leftDetectrightTacho == 0)){
             leftDetectleftTacho = odometer.getLeftMotor().getTachoCount();
             leftDetectrightTacho = odometer.getRightMotor().getTachoCount();
             odometer.getPosition(leftLoc, aUpdateArr);
         }
-        // poll right color sensor
+        // Poll right color sensor
         boolean rightSensorHitLine = colourSensorHitLine(rightColourPoller);
         if(rightSensorHitLine && (rightDetectleftTacho == 0 && rightDetectrightTacho == 0)){
             rightDetectleftTacho = odometer.getLeftMotor().getTachoCount();
@@ -293,16 +291,13 @@ public class OdometerCorrection extends Thread {
 
     @Override
     public void run() {
-        boolean nearCandidate;
 
         // We don't want to waste processing power or anything, so if
         // we determine that we're close to a spot where we have to correct,
         // then we do so. Otherwise, we rest for a longer period.
         while(true){
 
-            nearCandidate = checkCorrectionCandidate();
-
-            if(nearCandidate){
+            if(checkCorrectionCandidate()){
                 beginOdoCorrection();
                 try {
                     Thread.sleep(SHORT_SLEEP);

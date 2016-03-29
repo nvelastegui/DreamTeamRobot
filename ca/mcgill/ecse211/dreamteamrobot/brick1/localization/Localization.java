@@ -69,18 +69,18 @@ public class Localization {
         ultrasonicLocalizer.doLocalization();
 
         // Turn to vertical.
-        //System.out.println("About to turn to 0 -> Theta: " + odometer.getTheta());
         navigator.turnToAngle(0.00);
-        //System.out.println("Done turning to 0 -> Theta: " + odometer.getTheta());
-
-        //System.out.println("Facing forward...");
-
-        // Start odometry correction.
-        navigator.setThetaToleranceHigh();
-        odometerCorrection.start();
 
         // Begin lightLocalizer routine
         lightLocalizer.doLocalization();
+
+//        //System.out.println("Facing forward...");
+//
+//        // Start odometry correction.
+//        navigator.setThetaToleranceHigh();
+//        odometerCorrection.start();
+
+
 
     }
 
