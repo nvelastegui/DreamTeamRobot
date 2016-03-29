@@ -68,17 +68,17 @@ public class LightLocalizer {
 		rightMotor.forward();
 		while (true) {
 
-			if (!leftSensorHasSeenLine) if (colourPollerLeft.getSensorValue() < 50) {
+			if (!leftSensorHasSeenLine) if (colourPollerLeft.getSensorValue() < KinematicModel.lightLocalization_lineThreshold) {
 				leftSensorSeesLine_LeftTachoCount = leftMotor.getTachoCount();
 				leftSensorSeesLine_RightTachoCount = rightMotor.getTachoCount();
-				Sound.beep();
+				Sound.twoBeeps();
 				leftSensorHasSeenLine = true;
 				if (firstSensor == firstSensorToHit.NONE) firstSensor = firstSensorToHit.LEFT;
 			}
-			if (!rightSensorHasSeenLine) if (colourPollerRight.getSensorValue() < 50) {
+			if (!rightSensorHasSeenLine) if (colourPollerRight.getSensorValue() < KinematicModel.lightLocalization_lineThreshold) {
 				rightSensorSeesLine_LeftTachoCount = leftMotor.getTachoCount();
 				rightSensorSeesLine_RightTachoCount = rightMotor.getTachoCount();
-				Sound.beep();
+				Sound.twoBeeps();
 				rightSensorHasSeenLine = true;
 				if (firstSensor == firstSensorToHit.NONE) firstSensor = firstSensorToHit.RIGHT;
 			}
@@ -99,8 +99,11 @@ public class LightLocalizer {
 				// wheelbase and the line and set theta to the appropriate angle as a result of the calculation.
 				int deltaTachoRight = Math.abs(leftSensorSeesLine_RightTachoCount - rightSensorSeesLine_RightTachoCount);
 				odo.setTheta(
-						Math.PI/2.0 + Math.atan(deltaTachoRight/KinematicModel.lightLocalization_colourSensorSeparation)
+						Math.PI/2.0 - Math.atan((((double)deltaTachoRight/360)*Math.PI*2*KinematicModel.WHEEL_RADIUS_L)/KinematicModel.lightLocalization_colourSensorSeparation)
 				);
+				System.out.println("Passed Left First - Theta: " + odo.getTheta());
+				// If we're already roughly straight, then just keep theta at 0.00.
+				if (deltaTachoRight < 3) odo.setTheta(0.00);
 				break;
 
 			case RIGHT:
@@ -108,20 +111,29 @@ public class LightLocalizer {
 				// wheelbase and the line and set theta to the appropriate angle as a result of the calculation.
 				int deltaTachoLeft = Math.abs(leftSensorSeesLine_LeftTachoCount - rightSensorSeesLine_LeftTachoCount);
 				odo.setTheta(
-						(3/2)*Math.PI - Math.atan(deltaTachoLeft/KinematicModel.lightLocalization_colourSensorSeparation)
+						2.0*Math.PI - Math.atan((((double)deltaTachoLeft/360)*Math.PI*2*KinematicModel.WHEEL_RADIUS_L)/KinematicModel.lightLocalization_colourSensorSeparation)
 				);
+				System.out.println("Passed Right First - Theta: " + odo.getTheta());
+				// If we're already roughly straight, then just keep theta at 0.00.
+				if (deltaTachoLeft < 3) odo.setTheta(0.00);
 				break;
 
 		}
+
+		System.out.println("Final Theta: " + odo.getTheta());
+		//nav.turnToAngle(0.00);
 
 		// Turn to 180 degrees.
 		nav.turnToAngle(Math.PI);
 		// Go in reverse for a bit to make sure line is IN FRONT of robot.
 		leftMotor.backward();
 		rightMotor.backward();
-		pause(1500);
-		leftMotor.stop();
+		pause(2500);
 		rightMotor.stop();
+		leftMotor.stop();
+
+
+		// !!!!!! >>>>> EVERYTHING ABOVE THIS IS WORKING <<<<<<<<<<< !!!!!!!!!
 
 		// Drive until robot sees line.
 		leftMotor.setSpeed(KinematicModel.lightLocalization_backwardSpeed);
@@ -132,9 +144,10 @@ public class LightLocalizer {
 		// Robot is *theoretically* straight at this point, so check for "first"
 		// sensor to detect line.
 		while (true) {
-			if ((colourPollerLeft.getSensorValue() < 50) || (colourPollerRight.getSensorValue() < 50)) {
-				odo.setY(0.00);
-				pause(2000); // Let robot go past line a little.
+			if ((colourPollerLeft.getSensorValue() < KinematicModel.lightLocalization_lineThreshold) || (colourPollerRight.getSensorValue() < KinematicModel.lightLocalization_lineThreshold)) {
+				odo.setY(KinematicModel.lightLocalization_colourSensorOffsetWheelBase);
+				Sound.twoBeeps();
+				pause(4000); // Let robot go past line a little.
 				leftMotor.stop();
 				rightMotor.stop();
 				break;
@@ -150,8 +163,10 @@ public class LightLocalizer {
 		leftMotor.forward();
 		rightMotor.forward();
 		while (true) {
-			if ((colourPollerLeft.getSensorValue() < 50) || (colourPollerRight.getSensorValue() < 50)) {
-				odo.setX(0.00);
+			if ((colourPollerRight.getSensorValue() < KinematicModel.lightLocalization_lineThreshold)) {
+				// Only checking right sensor since left sensor is typically too close to intersection.
+				odo.setX(-KinematicModel.lightLocalization_colourSensorOffsetWheelBase);
+				Sound.twoBeeps();
 				leftMotor.stop();
 				rightMotor.stop();
 				break;
@@ -160,6 +175,7 @@ public class LightLocalizer {
 
 		// All values calibrated. Go to (0,0).
 		nav.travelTo(0.00, 0.00);
+		nav.turnToAngle(0.00);
 
 		LCDDisplay.sendToDisplay("Compl: LightLocalization", true);
 
