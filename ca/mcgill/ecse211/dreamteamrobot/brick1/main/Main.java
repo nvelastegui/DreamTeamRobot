@@ -86,10 +86,22 @@ public class Main {
 				driver.getOdometerCorrection()
 		);
 		localizer.setupLocalizer();
-
-
 		localizer.doLocalization(null);
 
+        // Start odometry correction.
+        driver.getNavigator().setThetaToleranceHigh();
+        driver.getOdometerCorrection().start();
+
+		// Start obstacle avoidance on navigator.
+		driver.getNavigator().setObstacleAvoidanceOn();
+
+		// Navigate to ball platform
+
+
+		// Grab balls?
+
+
+		// Shoot
 
 
 

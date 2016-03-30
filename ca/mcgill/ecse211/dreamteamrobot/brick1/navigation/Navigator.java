@@ -17,7 +17,8 @@ public class Navigator extends Thread {
 
 	/** Variables: Sub Threads */
 	private Odometer odometer;
-	private UltrasonicPoller usPoller;
+	private UltrasonicPoller usPollerLeft;
+	private UltrasonicPoller usPollerRight;
 	private ObstacleAvoider obstacleAvoider;
 
 	/** Variables: Status */
@@ -43,13 +44,19 @@ public class Navigator extends Thread {
 	private static int    tolCloseness = KinematicModel.navigator_obstacleDistanceTolerance;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * @param odometer Robot odometer.
-	 * @param usPoller Robot ultrasonic poller used for checkEmergency()
-	 */
-	public Navigator(Odometer odometer, UltrasonicPoller usPoller, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3LargeRegulatedMotor leftUltrasonicSensorMotor, EV3LargeRegulatedMotor rightUltrasonicSensorMotor) {
+	 * @param usPollerLeft Left ultrasonic poller.
+	 * @param usPollerRight Right ultrasonic poller.
+	 * @param leftMotor Left motor.
+	 * @param rightMotor Right motor.
+	 * @param leftUltrasonicSensorMotor Left ultrasonic sensor motor.
+	 * @param rightUltrasonicSensorMotor Right ultrasonic sensor motor.
+     */
+	public Navigator(Odometer odometer, UltrasonicPoller usPollerLeft, UltrasonicPoller usPollerRight, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, EV3LargeRegulatedMotor leftUltrasonicSensorMotor, EV3LargeRegulatedMotor rightUltrasonicSensorMotor) {
 		this.odometer = odometer;
-		this.usPoller = usPoller;
+		this.usPollerLeft = usPollerLeft;
+		this.usPollerRight = usPollerRight;
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
 		this.leftUltrasonicSensorMotor = leftUltrasonicSensorMotor;
@@ -97,7 +104,21 @@ public class Navigator extends Thread {
 	 * @return Navigator's ultrasonic poller.
 	 */
 	public UltrasonicPoller getUsPoller() {
-		return usPoller;
+		return usPollerLeft;
+	}
+
+	/**
+	 * @return Navigator's left ultrasonic poller.
+     */
+	public UltrasonicPoller getUsPollerLeft() {
+		return usPollerLeft;
+	}
+
+	/**
+	 * @return Navigator's right ultrasonic poller.
+     */
+	public UltrasonicPoller getUsPollerRight() {
+		return usPollerRight;
 	}
 
 	/**
@@ -283,7 +304,8 @@ public class Navigator extends Thread {
 	 * @return True if in state of emergency. False if not.
 	 */
 	private boolean checkEmergency() {
-		return usPoller.getDistance() < tolCloseness;
+		// Return true if either sensor is reading a value below tolerance. (ie. an object might be nearby).
+		return ((usPollerLeft.getDistance() < tolCloseness) || (usPollerRight.getDistance() < tolCloseness));
 	}
 
 	public static int convertDistance(double radius, double distance) {
@@ -302,7 +324,7 @@ public class Navigator extends Thread {
 	public void run() {
 
 		State state = State.INIT;
-		ObstacleAvoider avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, leftMotor, rightMotor);
+		ObstacleAvoider avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor, leftMotor, rightMotor);
 
 		while (true) {
 //			System.out.println("State: " + state);
@@ -333,7 +355,7 @@ public class Navigator extends Thread {
 					if (checkEmergency()) {
 						if (stateOA == StateObstacleAvoidance.ON) {
 							state = State.EMERGENCY;
-							avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, leftMotor, rightMotor);
+							avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor, leftMotor, rightMotor);
 							avoidance.start();
 						}
 					}

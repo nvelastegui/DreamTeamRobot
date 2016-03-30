@@ -45,7 +45,7 @@ public class Driver extends Thread {
         this.odometerCorrection = new OdometerCorrection(odometer, colourPollerLeft, colourPollerRight);
         this.ultrasonicPollerLeft = new UltrasonicPoller(ultrasonicSensorPortLeft);
         this.ultrasonicPollerRight = new UltrasonicPoller(ultrasonicSensorPortRight);
-        this.navigator = new Navigator(odometer, ultrasonicPollerLeft, leftMotor, rightMotor, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor);
+        this.navigator = new Navigator(odometer, ultrasonicPollerLeft, ultrasonicPollerRight, leftMotor, rightMotor, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor);
 
         // Set state to OFF.
         state = State.OFF;

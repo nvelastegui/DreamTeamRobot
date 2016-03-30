@@ -53,6 +53,12 @@ public class KinematicModel {
     public static final int    navigator_forwardSpeed = 100;
     public static final int    navigator_rotateSpeed = 70;
 
+    /** Obstacle Avoider Constants
+     *
+     */
+    public static final int    obstacleAvoider_tolCloseness = 15;
+    public static final int    obstacleAvoider_ultrasonicSensorRotationSpeedLow = 20;
+
     /** Odometry Correction
      *
      */

@@ -74,12 +74,6 @@ public class Localization {
         // Begin lightLocalizer routine
         lightLocalizer.doLocalization();
 
-//        //System.out.println("Facing forward...");
-//
-//        // Start odometry correction.
-//        navigator.setThetaToleranceHigh();
-//        odometerCorrection.start();
-
 
 
     }
