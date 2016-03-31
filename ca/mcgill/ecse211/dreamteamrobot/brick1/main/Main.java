@@ -2,6 +2,8 @@ package ca.mcgill.ecse211.dreamteamrobot.brick1.main;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.display.LCDDisplay;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.localization.Localization;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
 import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
@@ -87,6 +89,7 @@ public class Main {
 		);
 		localizer.setupLocalizer();
 		localizer.doLocalization(null);
+		System.out.println("------ FINISHED Localization -------");
 
         // Start odometry correction.
         driver.getNavigator().setThetaToleranceHigh();
@@ -96,8 +99,32 @@ public class Main {
 		driver.getNavigator().setObstacleAvoidanceOn();
 
 		// Navigate to ball platform
+		Navigator nav = driver.getNavigator();
+		Odometer odo = driver.getOdometer();
 
+		double destX = 5.95*30.0;
+		double destY = 5.5*30.0;
 
+		//double destX = 1.95*30.0;
+		//double destY = 2.5*30.0;
+
+		nav.travelTo(15, 0);
+		System.out.println("Travelling to (15, 0)");
+		while(nav.isNavigating()){
+			//System.out.println("dest : (15, 0) -- pos : ("+((int)(odo.getX()*100))/100+","+((int)(odo.getY()*100))/100+")");
+			pause(50);
+		}
+		// travel up y axis
+		nav.travelTo(15, destY);
+		System.out.println("Travelling to (15, "+destY+")");
+		while(nav.isNavigating()){
+			pause(50);
+		}
+		// travel along x axis
+		nav.travelTo(destX, destY);
+		while(nav.isNavigating()){
+			pause(50);
+		}
 		// Grab balls?
 
 

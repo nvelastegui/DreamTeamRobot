@@ -51,7 +51,9 @@ public class Connection {
 			
 			System.out.println("Client has connected to " + socket.getRemoteSocketAddress());
 		    outData = new DataOutputStream(socket.getOutputStream());
+			this.out = new Out(outData);
 		    inData = new DataInputStream(socket.getInputStream());
+			this.in = new In(inData);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -254,7 +254,9 @@ public class Navigator extends Thread {
 	 */
 	private boolean isFacingDestination (double destinationAngle) {
 		double currentTheta = odometer.getTheta();
-		return ((destinationAngle - tolTheta) < currentTheta) && (currentTheta < (destinationAngle + tolTheta));
+		double err = Math.min(Math.abs(destinationAngle-currentTheta), Math.abs(Math.PI*2-currentTheta - destinationAngle));
+		return err < tolTheta;
+		//return ((destinationAngle - tolTheta) < currentTheta) && (currentTheta < (destinationAngle + tolTheta));
 	}
 
 	/**
@@ -339,14 +341,14 @@ public class Navigator extends Thread {
 				/** */
 				case TURNING:
 					// If robot is facing the right way, set state to travelling.
-					if (isFacingDestination(destinationAngle)) {
+					if (isFacingDestination(getDestinationAngle())) {
 						state = State.TRAVELLING;
 					}
 					// Otherwise, turn until facing the right way.
 					else {
-						System.out.println("turning from nav class : " + destinationAngle);
 						// This method returns only when the motion is complete.
-						turnToAngle(destinationAngle);
+						turnToAngle(getDestinationAngle());
+						state = State.TRAVELLING;
 					}
 					break;
 				/** */
@@ -360,9 +362,10 @@ public class Navigator extends Thread {
 						}
 					}
 					else if (!checkIfAtDestination(currentPosition)) {
-						if (isFacingDestination(destinationAngle)) {
+						if (isFacingDestination(getDestinationAngle())) {
 							updateTravel();
 						} else {
+							System.out.println("Not facing destination");
 							state = State.TURNING;
 						}
 					}

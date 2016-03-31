@@ -99,7 +99,7 @@ public class LightLocalizer {
 				// wheelbase and the line and set theta to the appropriate angle as a result of the calculation.
 				int deltaTachoRight = Math.abs(leftSensorSeesLine_RightTachoCount - rightSensorSeesLine_RightTachoCount);
 				odo.setTheta(
-						Math.PI/2.0 - Math.atan((((double)deltaTachoRight/360)*Math.PI*2*KinematicModel.WHEEL_RADIUS_L)/KinematicModel.lightLocalization_colourSensorSeparation)
+						Math.atan((((double)deltaTachoRight/360)*Math.PI*2*KinematicModel.WHEEL_RADIUS_L)/KinematicModel.lightLocalization_colourSensorSeparation)
 				);
 				System.out.println("Passed Left First - Theta: " + odo.getTheta());
 				// If we're already roughly straight, then just keep theta at 0.00.
@@ -175,6 +175,9 @@ public class LightLocalizer {
 
 		// All values calibrated. Go to (0,0).
 		nav.travelTo(0.00, 0.00);
+		while(nav.isNavigating()){
+			pause(50);
+		}
 		nav.turnToAngle(0.00);
 
 		LCDDisplay.sendToDisplay("Compl: LightLocalization", true);

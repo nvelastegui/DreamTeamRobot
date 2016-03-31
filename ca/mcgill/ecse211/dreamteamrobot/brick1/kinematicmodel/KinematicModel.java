@@ -47,7 +47,7 @@ public class KinematicModel {
      *
      */
     public static final double navigator_tolThetaLow = 0.06;
-    public static final double navigator_tolThetaHigh = 0.16;
+    public static final double navigator_tolThetaHigh = 0.10;
     public static final double navigator_tolEuclideanDistance = 1.0;
     public static final int    navigator_obstacleDistanceTolerance = 15;
     public static final int    navigator_forwardSpeed = 100;
