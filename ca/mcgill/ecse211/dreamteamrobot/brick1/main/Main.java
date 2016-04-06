@@ -99,7 +99,7 @@ public class Main {
 
 		// Grab balls?
 		/*
-		Grabbing Balls is as follows :
+		Grabbing Balls is as follows : (hehehe)
 			- Send message to brick2 to close grips to certain angle
 			-
 		 */
