@@ -11,6 +11,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
+import org.json.simple.JSONObject;
 
 /**
  * Central class.
@@ -39,9 +40,12 @@ public class Main {
         t.drawString("<                >", 0, 4);
         t.drawString("<                >", 0, 5);
 
-        brick1 = connectToBrick1();
+        //brick1 = connectToBrick1();
         comp = connectToComp();
 
+        JSONObject welcomeMsg = new JSONObject();
+        welcomeMsg.put("client", "brick2");
+        comp.out.sendJSONObj("CLIENT_CONNECTED", welcomeMsg);
 
         // Display initial screen
         t.clear();
@@ -107,7 +111,7 @@ public class Main {
         Connection brick1 = new Connection();
 
         // wait for brick1 to connect.. 10 second timeout
-        brick1.accept(KinematicModel.BRICK_PORT, KinematicModel.BRICK_TIMEOUT);
+        brick1.connect(KinematicModel.BRICK1_HOST, KinematicModel.BRICK_PORT);
         brick1.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
 
         brick1.listen(100);
@@ -127,6 +131,8 @@ public class Main {
         comp.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
 
         comp.listen(500);
+
+        System.out.println("brick2 Connected to comp and listening");
 
         return comp;
     }

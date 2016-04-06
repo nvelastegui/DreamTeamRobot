@@ -121,7 +121,7 @@ public class Queue {
 		if(curQueue != null){
 			try{
 				obj = (JSONObject)parser.parse(curQueue.pop());
-				return obj;
+				return (JSONObject)obj.get("body");
 			} catch (ParseException e){
 				e.printStackTrace();
 				return null;

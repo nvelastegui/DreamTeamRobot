@@ -70,9 +70,9 @@ public class KinematicModel {
     public static final int BRICK_PORT = 8080;
     public static final int COMP_PORT = 8081;
 
-    public static final String BRICK1_HOST = "";
-    public static final String BRICK2_HOST = "";
-    public static final String COMP_HOST = "";
+    public static final String BRICK1_HOST = "10.0.1.1";
+    public static final String BRICK2_HOST = "10.0.1.4";
+    public static final String COMP_HOST = "10.0.1.3";
 
     public static final int BRICK_TIMEOUT = 10000;      // 10 seconds
 

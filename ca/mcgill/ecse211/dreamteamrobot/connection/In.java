@@ -1,5 +1,7 @@
 package ca.mcgill.ecse211.dreamteamrobot.connection;
 
+import lejos.hardware.Sound;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -8,55 +10,50 @@ import java.util.ArrayDeque;
 
 public class In extends Thread {
 	private DataInputStream inData;
+	private BufferedReader inBuffer;
 	
 	private Object lock;
 	private Boolean running;
 	private Queue queue;
 	
-	public int sleepTime;
+	private int sleepTime;
 	private ArrayDeque<String> Incoming;
+
 	
-	public In(DataInputStream inData){
-		this.inData = inData;
-		
+	public In(InputStreamReader stream){
+		this.inBuffer = new BufferedReader(stream);
 		this.Incoming = new ArrayDeque<String>();
 		this.lock = new Object();
-		
+
 		this.running = true;
 	}
-	
-//	public In(InputStreamReader stream){
-//		this.inBuffer = new BufferedReader(stream);
-//		this.Incoming = new ArrayDeque<String>();
-//		this.lock = new Object();
-//		
-//		this.running = true;
-//		this.sleepTime = sleepTime;
-//	}
-	
+
 	/*
 	 * Reads one line from the TCP socket connection
 	 */
-//	public String readLine(){
-//		StringBuilder sb = new StringBuilder();
-//		try {
-//			sb.append(inBuffer.readLine());
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return sb.toString();
-//	}
-	
 	public String readLine(){
+		StringBuilder sb = new StringBuilder();
 		try {
-			return this.inData.readUTF();
+			sb.append(inBuffer.readLine());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
 		}
+		return sb.toString();
 	}
+	
+//	public String readLine(){
+//		try {
+//
+//			String inDataStr = this.inData.readUTF();
+//			System.out.println("inDataStr : "+inDataStr);
+//			return inDataStr;
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
 	
 	/*
 	 * Polls for new lines in the socket connection.
@@ -65,15 +62,15 @@ public class In extends Thread {
 	 */
 	public void run() {
 		this.running = true;
+		System.out.println("Starting to listen");
 		String curLine;
 		while(isRunning()){
 			curLine = readLine();
 			if(curLine != null && curLine != ""){
 				synchronized(lock){
-					//System.out.println("incoming : "+curLine);
+					System.out.println("incoming : "+curLine);
 					this.queue.processLine(curLine);
 				}
-				
 			}
 			try {
 				Thread.sleep(sleepTime);
@@ -92,7 +89,7 @@ public class In extends Thread {
 	}
 	
 	public Boolean isRunning(){
-		synchronized(lock){
+		synchronized(lock) {
 			return this.running;
 		}
 	}

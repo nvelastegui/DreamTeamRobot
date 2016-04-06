@@ -40,6 +40,9 @@ public class Gunner extends Thread {
         this.colourPoller = new ColourPoller(colourSensorPort);
         this.brick1 = brick1;
         this.comp = comp;
+
+        comp.queue.registerQueue(KinematicModel.ROUTES.CLAWS_MOVE.toString());
+        comp.queue.registerQueue(KinematicModel.ROUTES.READ_BALL.toString());
     }
 
     /**
@@ -221,11 +224,15 @@ public class Gunner extends Thread {
     }
 
     private void handleClaws(Connection con){
-        JSONObject incomingMsg = con.queue.popJSON(KinematicModel.ROUTES.CLAWS_MOVE.toString());
+        if(con == null) return;
+
+        String routeName = KinematicModel.ROUTES.CLAWS_MOVE.toString();
+        JSONObject incomingMsg = con.queue.popJSON(routeName);
 
         if(incomingMsg != null){
-
-            moveClasp((int)incomingMsg.get("claws_angle"));     // waits until motion finished
+            System.out.println("CLAWS_MOVE to : "+incomingMsg.get("claws_angle"));
+            int angle = ((Long)incomingMsg.get("claws_angle")).intValue();
+            moveClasp(angle);     // waits until motion finished
 
             // send brick1 confirmation that closing the clasps is done
             con.out.sendJSONObj(KinematicModel.ROUTES.CLAWS_CLOSED.toString(), null);
@@ -233,6 +240,8 @@ public class Gunner extends Thread {
     }
 
     private void handleColourRead(Connection con){
+        if(con == null) return;
+
         JSONObject incomingMessage = con.queue.popJSON(KinematicModel.ROUTES.READ_BALL.toString());
         if(incomingMessage != null){
 

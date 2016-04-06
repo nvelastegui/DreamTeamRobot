@@ -1,12 +1,10 @@
 package ca.mcgill.ecse211.dreamteamrobot.connection;
 
-import java.io.IOException;
+import java.io.*;
 
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,7 +36,7 @@ public class Connection {
 		    outData = new DataOutputStream(socket.getOutputStream());
 		    this.out = new Out(outData);
 		    inData = new DataInputStream(socket.getInputStream());
-		    this.in = new In(inData);
+			this.in = new In(new InputStreamReader(socket.getInputStream()));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -48,12 +46,11 @@ public class Connection {
 	public void connect(String serverName, int port){
 		try {
 			socket = new Socket(serverName, port);
-			
-			System.out.println("Client has connected to " + socket.getRemoteSocketAddress());
+
 		    outData = new DataOutputStream(socket.getOutputStream());
 			this.out = new Out(outData);
 		    inData = new DataInputStream(socket.getInputStream());
-			this.in = new In(inData);
+			this.in = new In(new InputStreamReader(socket.getInputStream()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -19,6 +19,7 @@ public class Out {
 	public void sendRaw(String str) {
 		try {
 			synchronized(lock){
+				System.out.println("outgoing : "+str);
 				this.outData.writeUTF(str);;
 			}
 		} catch (IOException e) {

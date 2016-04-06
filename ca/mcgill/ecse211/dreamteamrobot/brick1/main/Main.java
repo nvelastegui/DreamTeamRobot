@@ -96,60 +96,7 @@ public class Main {
 		BallLoader ballLoader = new BallLoader(brick2, comp, driver);
 		ballLoader.computeCoordsOfBalls(new double[]{0.0,0.0},new double[]{0.0,0.0});
 
-		// Set up lcdDisplay and run it.
-		LCDDisplay lcdDisplay = new LCDDisplay(driver);
-		lcdDisplay.start();
 
-		// Perform localization.
-		Localization localizer = new Localization(
-				leftMotor,
-				rightMotor,
-				driver.getOdometer(),
-				driver.getNavigator(),
-				driver.getUltrasonicPollerLeft(),
-				driver.getUltrasonicPollerRight(),
-				driver.getColourPollerLeft(),
-				driver.getColourPollerRight(),
-				driver.getOdometerCorrection()
-		);
-		localizer.setupLocalizer();
-		localizer.doLocalization(null);
-		System.out.println("------ FINISHED Localization -------");
-
-        // Start odometry correction.
-        driver.getNavigator().setThetaToleranceHigh();
-        driver.getOdometerCorrection().start();
-
-		// Start obstacle avoidance on navigator.
-		driver.getNavigator().setObstacleAvoidanceOn();
-
-		// Navigate to ball platform
-		Navigator nav = driver.getNavigator();
-		Odometer odo = driver.getOdometer();
-
-		double destX = 5.95*30.0;
-		double destY = 5.5*30.0;
-
-		//double destX = 1.95*30.0;
-		//double destY = 2.5*30.0;
-
-		nav.travelTo(15, 0);
-		System.out.println("Travelling to (15, 0)");
-		while(nav.isNavigating()){
-			//System.out.println("dest : (15, 0) -- pos : ("+((int)(odo.getX()*100))/100+","+((int)(odo.getY()*100))/100+")");
-			pause(50);
-		}
-		// travel up y axis
-		nav.travelTo(15, destY);
-		System.out.println("Travelling to (15, "+destY+")");
-		while(nav.isNavigating()){
-			pause(50);
-		}
-		// travel along x axis
-		nav.travelTo(destX, destY);
-		while(nav.isNavigating()){
-			pause(50);
-		}
 		// Grab balls?
 		/*
 		Grabbing Balls is as follows :
