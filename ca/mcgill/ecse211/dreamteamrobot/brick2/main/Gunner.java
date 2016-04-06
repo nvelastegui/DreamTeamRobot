@@ -6,6 +6,7 @@ import ca.mcgill.ecse211.dreamteamrobot.connection.Connection;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 
 /**
  * Main thread on brick 2, in charge of loading and shooting balls.
@@ -43,6 +44,7 @@ public class Gunner extends Thread {
 
         comp.queue.registerQueue(KinematicModel.ROUTES.CLAWS_MOVE.toString());
         comp.queue.registerQueue(KinematicModel.ROUTES.READ_BALL.toString());
+        comp.queue.registerQueue(KinematicModel.ROUTES.EXECUTE_SHOOT.toString());
     }
 
     /**
@@ -57,15 +59,17 @@ public class Gunner extends Thread {
         // Reset tacho count on clasp motor.
         claspMotor.resetTachoCount();
 
+        // Start shooting foot in closed position
+        shootMotor.resetTachoCount();
+
         // Open clasp
         openClasp();
 
-        // Drop shooter arm to bottom position (in case it is not)
-        // This also resets the tacho count to 0 at the bottom position.
-        dropArmToBottomPosition();
-
         // Move the motor to the top position
         moveArmToTopPosition();
+
+        // Move Arm back down
+        moveArmToBottomPosition();
 
         // Close clasp
         closeClasp();
@@ -79,7 +83,7 @@ public class Gunner extends Thread {
     public void moveClasp (int destAngle) {
         claspMotor.setAcceleration(KinematicModel.CLASP_MOTOR_ACCELERATION);
         claspMotor.setSpeed(KinematicModel.CLASP_MOTOR_SPEED);
-        claspMotor.rotate(destAngle);
+        claspMotor.rotateTo(destAngle);
         while (claspMotor.isMoving()){}
     }
 
@@ -89,7 +93,7 @@ public class Gunner extends Thread {
     public void openClasp () {
         claspMotor.setAcceleration(KinematicModel.CLASP_MOTOR_ACCELERATION);
         claspMotor.setSpeed(KinematicModel.CLASP_MOTOR_SPEED);
-        claspMotor.rotate(KinematicModel.CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE);
+        claspMotor.rotate(-KinematicModel.CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE);
         while (claspMotor.isMoving()){}
     }
 
@@ -99,7 +103,7 @@ public class Gunner extends Thread {
     public void closeClasp () {
         claspMotor.setAcceleration(KinematicModel.CLASP_MOTOR_ACCELERATION);
         claspMotor.setSpeed(KinematicModel.CLASP_MOTOR_SPEED);
-        claspMotor.rotate(-KinematicModel.CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE);
+        claspMotor.rotate(KinematicModel.CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE);
         while (claspMotor.isMoving()){}
     }
 
@@ -125,6 +129,8 @@ public class Gunner extends Thread {
             // apparently doesn't work - ie. it returns immediately no matter what - I wrote this method
             // to ensure that the motion is allowed to finish.
 
+            openClasp();
+
             // Set the acceleration and speed.
             shootMotor.setAcceleration(acceleration);
             shootMotor.setSpeed(speed);
@@ -136,7 +142,13 @@ public class Gunner extends Thread {
                 // then stop the motor.
                 if (shootMotor.getTachoCount() > cutOffAngle) {
                     shootMotor.stop();
-                    return dropArmToBottomPosition();
+
+                    // move kicker back to 0
+                    shootMotor.rotateTo(0, false);
+
+                    this.state = State.IDLE;
+
+                    return true;
                 }
             }
         }
@@ -162,7 +174,7 @@ public class Gunner extends Thread {
         int currentTacho = shootMotor.getTachoCount(); // Is this needed?
         shootMotor.rotateTo(0); // TODO: Figure out what parameter should be here?
         while (shootMotor.isMoving()) {}
-        shootMotor.resetTachoCount();
+        //shootMotor.resetTachoCount();
         return true;
     }
 
@@ -170,12 +182,12 @@ public class Gunner extends Thread {
      * Drops shooting arm to bottom position. Resets tacho count.
      * @return True if successful. False if not.
      */
-    public boolean dropArmToBottomPosition () {
-        shootMotor.flt();
-        pause(1500);
-        shootMotor.resetTachoCount();
-        return true;
-    }
+//    public boolean dropArmToBottomPosition () {
+//        shootMotor.flt();
+//        pause(1500);
+//        shootMotor.resetTachoCount();
+//        return true;
+//    }
 
     /**
      * Rotates shooter arm to top position.
@@ -201,8 +213,12 @@ public class Gunner extends Thread {
             // handle various Queues
             handleClaws(this.brick1);
             handleClaws(this.comp);
+
             handleColourRead(this.brick1);
             handleColourRead(this.comp);
+
+            handleShoot(this.brick1);
+            handleShoot(this.comp);
 
             switch (state) {
 
@@ -231,11 +247,13 @@ public class Gunner extends Thread {
 
         if(incomingMsg != null){
             System.out.println("CLAWS_MOVE to : "+incomingMsg.get("claws_angle"));
-            int angle = ((Long)incomingMsg.get("claws_angle")).intValue();
+            int angle = Integer.parseInt((String)incomingMsg.get("claws_angle"));
             moveClasp(angle);     // waits until motion finished
 
             // send brick1 confirmation that closing the clasps is done
-            con.out.sendJSONObj(KinematicModel.ROUTES.CLAWS_CLOSED.toString(), null);
+            JSONObject claspAngle = new JSONObject();
+            claspAngle.put("clasp_angle", claspMotor.getTachoCount());
+            con.out.sendJSONObj(KinematicModel.ROUTES.CLAWS_MOVED.toString(), claspAngle);
         }
     }
 
@@ -247,10 +265,32 @@ public class Gunner extends Thread {
 
             float[] RGB_val = colourPoller.getRGB();
 
+            JSONArray list = new JSONArray();
+            list.add(RGB_val[0]);
+            //list.add(RGB_val[1]);
+            //list.add(RGB_val[2]);
+
             // send brick1 confirmation that closing the clasps is done
             JSONObject colorReading = new JSONObject();
-            colorReading.put("ball_colour", colorReading);
+            colorReading.put("ball_colour", list);
             con.out.sendJSONObj(KinematicModel.ROUTES.BALL_COLOUR.toString(), colorReading);
+        }
+    }
+
+    private void handleShoot(Connection con){
+        if(con == null) return;
+
+        String routeName = KinematicModel.ROUTES.EXECUTE_SHOOT.toString();
+        JSONObject incomingMsg = con.queue.popJSON(routeName);
+
+        if(incomingMsg != null){
+            System.out.println("EXECUTE_SHOOT");
+
+            executeShoot();
+
+            // send brick1 confirmation that closing the clasps is done
+            JSONObject confObj = new JSONObject();
+            con.out.sendJSONObj(KinematicModel.ROUTES.FINISHED_SHOOT.toString(), confObj);
         }
     }
 

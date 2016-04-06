@@ -40,12 +40,13 @@ public class Main {
         t.drawString("<                >", 0, 4);
         t.drawString("<                >", 0, 5);
 
-        //brick1 = connectToBrick1();
         comp = connectToComp();
-
         JSONObject welcomeMsg = new JSONObject();
         welcomeMsg.put("client", "brick2");
         comp.out.sendJSONObj("CLIENT_CONNECTED", welcomeMsg);
+
+
+        brick1 = connectToBrick1();
 
         // Display initial screen
         t.clear();
@@ -62,7 +63,6 @@ public class Main {
         Gunner gunner = new Gunner(shootMotor, claspMotor, colourSensorPort, brick1, comp);
         gunner.performPreExecute();
         gunner.openClasp();
-        gunner.dropArmToBottomPosition();
 
         // start listening for messages
         gunner.start();

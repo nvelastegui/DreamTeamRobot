@@ -77,7 +77,7 @@ public class KinematicModel {
     public static final int BRICK_TIMEOUT = 10000;      // 10 seconds
 
     public static final String ROUTE_PROPERTY = "route";
-    public enum ROUTES{CLAWS_CLOSED, CLAWS_MOVE, READ_BALL, BALL_COLOUR};
+    public enum ROUTES{CLAWS_CLOSED, CLAWS_MOVE, CLAWS_MOVED, READ_BALL, BALL_COLOUR, EXECUTE_SHOOT, FINISHED_SHOOT};
 
     /**
      * Gripper and Shooter Brick1 Constants
@@ -86,13 +86,13 @@ public class KinematicModel {
     public static final double GRIPPER_OPEN_ANGLE = 180.0;
 
     /** Constants: Clasp Motor */
-    public static final int CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE = 10; // Angle of rotation required to open or close
+    public static final int CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE = 180; // Angle of rotation required to open or close
     // the clasp exactly ONCE.
     public static final int CLASP_MOTOR_SPEED = 200;
     public static final int CLASP_MOTOR_ACCELERATION = 3000;
 
     /** Constants: Shooting */
-    public static final int SHOOTER_ROTATION_ANGLE = 17; // in degrees
+    public static final int SHOOTER_ROTATION_ANGLE = 90; // in degrees
     public static final int SHOOTER_ARM_ROTATION_SPEED = 900; // in deg/sec -> theoretical maximum of 960 deg/s.
     public static final int SHOOTER_ARM_ACCELERATION   = 3000; // Used the same as previously used.
 

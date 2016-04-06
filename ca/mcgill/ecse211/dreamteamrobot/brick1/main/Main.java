@@ -14,6 +14,7 @@ import lejos.hardware.port.Port;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import ca.mcgill.ecse211.dreamteamrobot.connection.Connection;
+import org.json.simple.JSONObject;
 
 /**
  * Central class.
@@ -59,8 +60,15 @@ public class Main {
 		t.drawString("<                >", 0, 4);
 		t.drawString("<                >", 0, 5);
 
-		brick2 = connectToBrick2();
+
 		comp = connectToComp();
+		JSONObject welcomeMsg = new JSONObject();
+		welcomeMsg.put("client", "brick1");
+		comp.out.sendJSONObj("CLIENT_CONNECTED", welcomeMsg);
+
+		brick2 = connectToBrick2();
+		JSONObject welcomeMsg2 = new JSONObject();
+		comp.out.sendJSONObj("BRICKS_CONNECTED", welcomeMsg2);
 
 		// Set initial diplay.
 		t.clear();
