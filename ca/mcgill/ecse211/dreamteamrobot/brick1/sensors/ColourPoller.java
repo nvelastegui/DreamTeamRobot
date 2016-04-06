@@ -25,12 +25,22 @@ public class ColourPoller extends Thread {
         this.sampleProvider = colorSensor.getMode("Red");			// colorValue provides samples from this instance;
         this.colourData = new float[sampleProvider.sampleSize()];;
     }
+    public ColourPoller(Port colorSensorPort, String mode) {
+        SensorModes colorSensor = new EV3ColorSensor(colorSensorPort);
+        this.sampleProvider = colorSensor.getMode(mode);			// colorValue provides samples from this instance;
+        this.colourData = new float[sampleProvider.sampleSize()];
+    }
 
     /**
      * @return Current sensor value.
      */
     public double getSensorValue() {
         return sensorValue;
+    }
+
+    public float[] getRGB(){
+        sampleProvider.fetchSample(colourData, 0);
+        return colourData;
     }
 
     /**

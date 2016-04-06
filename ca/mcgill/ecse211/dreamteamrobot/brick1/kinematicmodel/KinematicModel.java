@@ -63,4 +63,52 @@ public class KinematicModel {
      *
      */
     public static final double COLOUR_SENSOR_SPACING = 8.0;
+
+    /**
+     * Communication Constants
+     */
+    public static final int BRICK_PORT = 8080;
+    public static final int COMP_PORT = 8081;
+
+    public static final String BRICK1_HOST = "";
+    public static final String BRICK2_HOST = "";
+    public static final String COMP_HOST = "";
+
+    public static final int BRICK_TIMEOUT = 10000;      // 10 seconds
+
+    public static final String ROUTE_PROPERTY = "route";
+    public enum ROUTES{CLAWS_CLOSED, CLAWS_MOVE, READ_BALL, BALL_COLOUR};
+
+    /**
+     * Gripper and Shooter Brick1 Constants
+     */
+    public static final double GRIPPER_CLOSED_ANGLE = 0.0;
+    public static final double GRIPPER_OPEN_ANGLE = 180.0;
+
+    /** Constants: Clasp Motor */
+    public static final int CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE = 10; // Angle of rotation required to open or close
+    // the clasp exactly ONCE.
+    public static final int CLASP_MOTOR_SPEED = 200;
+    public static final int CLASP_MOTOR_ACCELERATION = 3000;
+
+    /** Constants: Shooting */
+    public static final int SHOOTER_ROTATION_ANGLE = 17; // in degrees
+    public static final int SHOOTER_ARM_ROTATION_SPEED = 900; // in deg/sec -> theoretical maximum of 960 deg/s.
+    public static final int SHOOTER_ARM_ACCELERATION   = 3000; // Used the same as previously used.
+
+    /** Constants: Shooting Arm Localization */
+    // Assuming the resting position for the arm is zero
+    // degrees, this is the angle of the arm in the top
+    // position.
+    public static final int SHOOTER_ARM_TOP_POSITION_ANGLE = 120;
+    public static final int SHOOTER_ARM_LOCALIZATION_ACCELERATION = 3000;
+    public static final int SHOOTER_ARM_LOCALIZATION_SPEED = 250;
+
+
+    /**
+     * Ball Color constants
+     */
+    public enum BALL_COLORS{RED, BLUE};
+    public static final double[] BLUE_RGB = {0,0,100};
+    public static final double[] RED_RGB = {100,0,0};
 }

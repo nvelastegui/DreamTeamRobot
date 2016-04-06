@@ -1,8 +1,11 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick2.main;
 
+import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
+import ca.mcgill.ecse211.dreamteamrobot.connection.Connection;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
+import org.json.simple.JSONObject;
 
 /**
  * Main thread on brick 2, in charge of loading and shooting balls.
@@ -13,23 +16,7 @@ public class Gunner extends Thread {
     enum State {IDLE, LOADING, SHOOTING};
     private State state;
 
-    /** Constants: Clasp Motor */
-    private static final int CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE = 10; // Angle of rotation required to open or close
-                                                                                // the clasp exactly ONCE.
-    private static final int CLASP_MOTOR_SPEED = 200;
-    private static final int CLASP_MOTOR_ACCELERATION = 3000;
 
-    /** Constants: Shooting */
-    private static final int SHOOTER_ROTATION_ANGLE = 17; // in degrees
-    private static final int SHOOTER_ARM_ROTATION_SPEED = 900; // in deg/sec -> theoretical maximum of 960 deg/s.
-    private static final int SHOOTER_ARM_ACCELERATION   = 3000; // Used the same as previously used.
-
-    /** Constants: Shooting Arm Localization */
-    private static final int SHOOTER_ARM_TOP_POSITION_ANGLE = 120; // Assuming the resting position for the arm is zero
-                                                                   // degrees, this is the angle of the arm in the top
-                                                                   // position.
-    private static final int SHOOTER_ARM_LOCALIZATION_ACCELERATION = 3000;
-    private static final int SHOOTER_ARM_LOCALIZATION_SPEED = 250;
 
 
     /** Instance Variables */
@@ -37,16 +24,22 @@ public class Gunner extends Thread {
     private EV3LargeRegulatedMotor claspMotor;
     private ColourPoller colourPoller;
 
+    /** Communication */
+    private Connection brick1;
+    private Connection comp;
+
     /**
      * Constructor
      * @param shootMotor Motor for shooter.
      * @param claspMotor Motor for clasp mechanism.
      * @param colourSensorPort Colour sensor for detecting ball.
      */
-    public Gunner (EV3LargeRegulatedMotor shootMotor, EV3LargeRegulatedMotor claspMotor, Port colourSensorPort) {
+    public Gunner (EV3LargeRegulatedMotor shootMotor, EV3LargeRegulatedMotor claspMotor, Port colourSensorPort, Connection brick1, Connection comp) {
         this.shootMotor = shootMotor;
         this.claspMotor = claspMotor;
         this.colourPoller = new ColourPoller(colourSensorPort);
+        this.brick1 = brick1;
+        this.comp = comp;
     }
 
     /**
@@ -56,7 +49,7 @@ public class Gunner extends Thread {
     public boolean performPreExecute () {
 
         // Start colour poller.
-        //colourPoller.start();
+        colourPoller.start();
 
         // Reset tacho count on clasp motor.
         claspMotor.resetTachoCount();
@@ -80,10 +73,20 @@ public class Gunner extends Thread {
     /**
      * Opens front clasp.
      */
+    public void moveClasp (int destAngle) {
+        claspMotor.setAcceleration(KinematicModel.CLASP_MOTOR_ACCELERATION);
+        claspMotor.setSpeed(KinematicModel.CLASP_MOTOR_SPEED);
+        claspMotor.rotate(destAngle);
+        while (claspMotor.isMoving()){}
+    }
+
+    /**
+     * Opens front clasp.
+     */
     public void openClasp () {
-        claspMotor.setAcceleration(CLASP_MOTOR_ACCELERATION);
-        claspMotor.setSpeed(CLASP_MOTOR_SPEED);
-        claspMotor.rotate(CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE);
+        claspMotor.setAcceleration(KinematicModel.CLASP_MOTOR_ACCELERATION);
+        claspMotor.setSpeed(KinematicModel.CLASP_MOTOR_SPEED);
+        claspMotor.rotate(KinematicModel.CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE);
         while (claspMotor.isMoving()){}
     }
 
@@ -91,9 +94,9 @@ public class Gunner extends Thread {
      * Closes front clasp.
      */
     public void closeClasp () {
-        claspMotor.setAcceleration(CLASP_MOTOR_ACCELERATION);
-        claspMotor.setSpeed(CLASP_MOTOR_SPEED);
-        claspMotor.rotate(-CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE);
+        claspMotor.setAcceleration(KinematicModel.CLASP_MOTOR_ACCELERATION);
+        claspMotor.setSpeed(KinematicModel.CLASP_MOTOR_SPEED);
+        claspMotor.rotate(-KinematicModel.CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE);
         while (claspMotor.isMoving()){}
     }
 
@@ -143,7 +146,7 @@ public class Gunner extends Thread {
      * @return True if successful. False if shooting not available.
      */
     public boolean executeShoot () {
-        return executeShoot(SHOOTER_ARM_ACCELERATION, SHOOTER_ARM_ROTATION_SPEED, SHOOTER_ROTATION_ANGLE);
+        return executeShoot(KinematicModel.SHOOTER_ARM_ACCELERATION, KinematicModel.SHOOTER_ARM_ROTATION_SPEED, KinematicModel.SHOOTER_ROTATION_ANGLE);
     }
 
     /**
@@ -176,9 +179,9 @@ public class Gunner extends Thread {
      * @return True if successful.
      */
     public boolean moveArmToTopPosition () {
-        shootMotor.setAcceleration(SHOOTER_ARM_LOCALIZATION_ACCELERATION);
-        shootMotor.setSpeed(SHOOTER_ARM_LOCALIZATION_SPEED);
-        shootMotor.rotateTo(SHOOTER_ARM_TOP_POSITION_ANGLE);
+        shootMotor.setAcceleration(KinematicModel.SHOOTER_ARM_LOCALIZATION_ACCELERATION);
+        shootMotor.setSpeed(KinematicModel.SHOOTER_ARM_LOCALIZATION_SPEED);
+        shootMotor.rotateTo(KinematicModel.SHOOTER_ARM_TOP_POSITION_ANGLE);
         while (shootMotor.isMoving()) {}
         return true;
     }
@@ -192,6 +195,11 @@ public class Gunner extends Thread {
 
         // Loop indefinitely.
         while (true) {
+            // handle various Queues
+            handleClaws(this.brick1);
+            handleClaws(this.comp);
+            handleColourRead(this.brick1);
+            handleColourRead(this.comp);
 
             switch (state) {
 
@@ -209,10 +217,32 @@ public class Gunner extends Thread {
                     break;
 
             }
-
         }
+    }
 
+    private void handleClaws(Connection con){
+        JSONObject incomingMsg = con.queue.popJSON(KinematicModel.ROUTES.CLAWS_MOVE.toString());
 
+        if(incomingMsg != null){
+
+            moveClasp((int)incomingMsg.get("claws_angle"));     // waits until motion finished
+
+            // send brick1 confirmation that closing the clasps is done
+            con.out.sendJSONObj(KinematicModel.ROUTES.CLAWS_CLOSED.toString(), null);
+        }
+    }
+
+    private void handleColourRead(Connection con){
+        JSONObject incomingMessage = con.queue.popJSON(KinematicModel.ROUTES.READ_BALL.toString());
+        if(incomingMessage != null){
+
+            float[] RGB_val = colourPoller.getRGB();
+
+            // send brick1 confirmation that closing the clasps is done
+            JSONObject colorReading = new JSONObject();
+            colorReading.put("ball_colour", colorReading);
+            con.out.sendJSONObj(KinematicModel.ROUTES.BALL_COLOUR.toString(), colorReading);
+        }
     }
 
     /**

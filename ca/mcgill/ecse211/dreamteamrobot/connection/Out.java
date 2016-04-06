@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 
+import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import org.json.simple.*;
 
 public class Out {
@@ -29,7 +30,7 @@ public class Out {
 	// Sends : "{"url":"<routeName>","data":"<data>"}
 	public void sendStr(String routeName, String body){
 		JSONObject json = new JSONObject();
-		json.put("url", routeName);
+		json.put(KinematicModel.ROUTE_PROPERTY, routeName);
 		json.put("body", body);
 		StringWriter out = new StringWriter();
 		try {
@@ -44,7 +45,7 @@ public class Out {
 	// Sends : "{"url":"<routeName>","data":"JSON.stringify(<data>)"}
 	public void sendJSONObj(String routeName, JSONObject body){
 		JSONObject json = new JSONObject();
-		json.put("url", routeName);
+		json.put(KinematicModel.ROUTE_PROPERTY, routeName);
 		json.put("body", body);
 		StringWriter out = new StringWriter();
 		try {

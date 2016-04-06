@@ -1,5 +1,8 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick2.main;
 
+import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
+import ca.mcgill.ecse211.dreamteamrobot.connection.Connection;
+import ca.mcgill.ecse211.dreamteamrobot.connection.Queue;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.port.Port;
@@ -14,6 +17,10 @@ import lejos.robotics.SampleProvider;
  */
 public class Main {
 
+    // /** Constants: Communication Objects */
+    private static Connection brick1;
+    private static Connection comp;
+
     /** Static Resources */
     private static EV3LargeRegulatedMotor shootMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
     private static EV3LargeRegulatedMotor claspMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
@@ -21,6 +28,20 @@ public class Main {
     private static TextLCD t = LocalEV3.get().getTextLCD();
 
 	public static void main(String[] args) throws InterruptedException {
+
+
+        // Set initial diplay.
+        t.clear();
+        t.drawString("< DreamTeamRobot >", 0, 0);
+        t.drawString("<                >", 0, 1);
+        t.drawString("<  Initializing  >", 0, 2);
+        t.drawString("<  Communication >", 0, 3);
+        t.drawString("<                >", 0, 4);
+        t.drawString("<                >", 0, 5);
+
+        brick1 = connectToBrick1();
+        comp = connectToComp();
+
 
         // Display initial screen
         t.clear();
@@ -34,44 +55,81 @@ public class Main {
         // Await some orders?
 
         // Initialize threads
-        Gunner gunner = new Gunner(shootMotor, claspMotor, colourSensorPort);
+        Gunner gunner = new Gunner(shootMotor, claspMotor, colourSensorPort, brick1, comp);
         gunner.performPreExecute();
         gunner.openClasp();
         gunner.dropArmToBottomPosition();
 
+        // start listening for messages
+        gunner.start();
+
         // Debugging: Testing shooting mechanism.
-        while (true) {
-
-            // Display home screen prompt.
-            // Wait for user to press button.
-            t.drawString("Super Ultra Mega", 0, 0);
-            t.drawString("    Catapult    ", 0, 1);
-            t.drawString("                ", 0, 2);
-            t.drawString("Press any button", 0, 3);
-            t.drawString("to shoot the    ", 0, 4);
-            t.drawString("load.           ", 0, 5);
-
-            Button.waitForAnyPress();
-
-            // Shoot
-            t.drawString("Super Ultra Mega", 0, 0);
-            t.drawString("    Catapult    ", 0, 1);
-            t.drawString("                ", 0, 2);
-            t.drawString("    Shooting    ", 0, 3);
-            t.drawString("    ********    ", 0, 4);
-            t.drawString("                ", 0, 5);
-            gunner.executeShoot();
-
-            // Wait
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
+//        while (true) {
+//
+//
+//
+//            // Display home screen prompt.
+//            // Wait for user to press button.
+//            t.drawString("Super Ultra Mega", 0, 0);
+//            t.drawString("    Catapult    ", 0, 1);
+//            t.drawString("                ", 0, 2);
+//            t.drawString("Press any button", 0, 3);
+//            t.drawString("to shoot the    ", 0, 4);
+//            t.drawString("load.           ", 0, 5);
+//
+//            Button.waitForAnyPress();
+//
+//            // Shoot
+//            t.drawString("Super Ultra Mega", 0, 0);
+//            t.drawString("    Catapult    ", 0, 1);
+//            t.drawString("                ", 0, 2);
+//            t.drawString("    Shooting    ", 0, 3);
+//            t.drawString("    ********    ", 0, 4);
+//            t.drawString("                ", 0, 5);
+//            gunner.executeShoot();
+//
+//            // Wait
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
 
 	}
+
+    /**
+     * Initialized the connection with brick2. Returns a connection object
+     * @return Connection object with brick2
+     */
+    private static Connection connectToBrick1(){
+        Connection brick1 = new Connection();
+
+        // wait for brick1 to connect.. 10 second timeout
+        brick1.accept(KinematicModel.BRICK_PORT, KinematicModel.BRICK_TIMEOUT);
+        brick1.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
+
+        brick1.listen(100);
+
+        return brick1;
+    }
+
+    /**
+     * Initialized the connection with comp. Returns a connection object
+     * @return Connection object with comp
+     */
+    private static Connection connectToComp(){
+        Connection comp = new Connection();
+
+        // wait for comp to connect.. 10 second timeout
+        comp.connect(KinematicModel.COMP_HOST, KinematicModel.COMP_PORT);
+        comp.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
+
+        comp.listen(500);
+
+        return comp;
+    }
 
 
 }
