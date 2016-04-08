@@ -77,7 +77,7 @@ public class KinematicModel {
     public static final int BRICK_TIMEOUT = 10000;      // 10 seconds
 
     public static final String ROUTE_PROPERTY = "route";
-    public enum ROUTES{CLAWS_CLOSED, CLAWS_MOVE, CLAWS_MOVED, READ_BALL, BALL_COLOUR, EXECUTE_SHOOT, FINISHED_SHOOT};
+    public enum ROUTES{HEARTBEAT_B1, CLAWS_CLOSED, CLAWS_MOVE, CLAWS_MOVED, READ_BALL, BALL_COLOUR, EXECUTE_SHOOT, FINISHED_SHOOT, NAV_TO, TURN_TO, UPDATE_ODO};
 
     /**
      * Gripper and Shooter Brick1 Constants

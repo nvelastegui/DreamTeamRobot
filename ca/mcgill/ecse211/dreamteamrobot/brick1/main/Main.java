@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.main;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.ballloader.BallLoader;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.communication.Communication;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.display.LCDDisplay;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.localization.Localization;
@@ -100,9 +101,14 @@ public class Main {
 		// Run pre-execute procedure (starts subthreads).
 		driver.performPreExecute();
 
+		// initialize communication and handle incoming messages
+		Communication com = new Communication(driver, brick2, comp);
+		com.setCYCLE_TIME(1000);
+		com.start();
+
 		// initialize the BallLoader
 		BallLoader ballLoader = new BallLoader(brick2, comp, driver);
-		ballLoader.computeCoordsOfBalls(new double[]{0.0,0.0},new double[]{0.0,0.0});
+		//ballLoader.computeCoordsOfBalls(new double[]{0.0,0.0},new double[]{0.0,0.0});
 
 
 		// Grab balls?

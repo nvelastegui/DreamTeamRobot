@@ -57,6 +57,7 @@ public class Queue {
 	 * Can uncomment so that unregistered messages are queued in an unsortedQueue
 	 */
 	private void queueMsgObj(JSONObject obj, String msg){
+		if(obj == null) return;
 		if(obj.get(routeProperty) != null){
 			ArrayDeque<String> curQueue = queueTable.get(obj.get(routeProperty));
 			if(curQueue != null){
