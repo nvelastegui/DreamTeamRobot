@@ -106,9 +106,16 @@ public class Main {
 		com.setCYCLE_TIME(1000);
 		com.start();
 
+		// get ball platform coordinates lying along y-axis
+		double[][] ballPlatformCoords = {
+				{60,60},
+				{60 + 3*2.54, 60 + 12*2.54}
+		};
+		KinematicModel.BALL_COLORS targColor = KinematicModel.BALL_COLORS.RED;
+
 		// initialize the BallLoader
-		BallLoader ballLoader = new BallLoader(brick2, comp, driver);
-		//ballLoader.computeCoordsOfBalls(new double[]{0.0,0.0},new double[]{0.0,0.0});
+		BallLoader ballLoader = new BallLoader(brick2, comp, driver, targColor, ballPlatformCoords);
+
 
 
 		// Grab balls?

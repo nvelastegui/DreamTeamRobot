@@ -104,6 +104,15 @@ public class KinematicModel {
     public static final int SHOOTER_ARM_LOCALIZATION_ACCELERATION = 3000;
     public static final int SHOOTER_ARM_LOCALIZATION_SPEED = 250;
 
+    /**
+     * Loader Constants (approach distance, etc)
+     */
+    public static final double APPROACH_DISTANCE = 10.0;
+    public static final double GRAB_DISTANCE = 0.5;
+    public static final double[] SHOOTING_POS = {5*30, 7*30};
+    public static final int SHOOTING_HEADING = 90;
+    public static final int THROWAWAY_HEADING = 270;
+
 
     /**
      * Ball Color constants

@@ -5,6 +5,7 @@ import ca.mcgill.ecse211.dreamteamrobot.brick1.main.Driver;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.main.Main;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.connection.Connection;
+import com.sun.beans.util.Cache;
 import lejos.robotics.mapping.NavigationModel;
 import org.json.simple.JSONObject;
 
@@ -13,7 +14,9 @@ import org.json.simple.JSONObject;
  */
 public class BallLoader {
 
-    public static enum STATES{OPEN, CLOSED, HOLDING_RED, HOLDING_BLUE, MANEUVERING};
+    public enum STATES{OPEN, CLOSED, HOLDING_RED, HOLDING_BLUE, MANEUVERING};
+
+    private static final double inchToCm = 2.54;
 
     private Connection brick2;
     private Connection comp;
@@ -24,36 +27,196 @@ public class BallLoader {
     private STATES state;
 
     private int TargetBall;
+    private KinematicModel.BALL_COLORS TargetColor;
 
-    public BallLoader(Connection brick2, Connection comp, Driver driver){
+    /**
+     *
+     * @param brick2
+     * @param comp
+     * @param driver
+     */
+    public BallLoader(Connection brick2, Connection comp, Driver driver, KinematicModel.BALL_COLORS targColor, double[][] ballPlatformCorners){
         // initialize the state
         this.state = STATES.CLOSED;
         this.availableBalls = new boolean[]{true, true, true, true};
         this.TargetBall = 0;
+        this.TargetColor = targColor;
+        this.ballCoordinates = computeCoordsOfBalls(ballPlatformCorners[0], ballPlatformCorners[1]);
+
 
         this.brick2 = brick2;
         this.comp = comp;
         this.driver = driver;
 
         // initialize the queues as needed :
-        this.brick2.queue.registerQueue("CLAWS_CLOSED");
-        this.brick2.queue.registerQueue("BALL_COLOUR");
+        this.brick2.queue.registerQueue(KinematicModel.ROUTES.CLAWS_CLOSED.toString());
+        this.brick2.queue.registerQueue(KinematicModel.ROUTES.BALL_COLOUR.toString());
     }
 
+    /**
+     * Iterates the navigating, loading and shooting operations for all 4 balls
+     */
+    public void shootAllBalls(){
+        while(this.TargetBall <= 3){
+            fetchBall();
+
+            // validate if the ball is the right color
+            boolean blue = (this.state == STATES.HOLDING_BLUE && this.TargetColor == KinematicModel.BALL_COLORS.BLUE);
+            boolean red = (this.state == STATES.HOLDING_RED && this.TargetColor == KinematicModel.BALL_COLORS.RED);
+            if(red || blue){
+                // holding a valid ball
+                moveToShoot();
+            } else {
+                // throw away the ball
+                moveToThrowAway();
+            }
+            shootBall();
+        }
+    }
+
+    /**
+     * Given the current target ball, this method will
+     *  - navigate based on the best approach
+     *  - close the clasps
+     *  - read and determine the ball color
+     *  - updates class variables
+     */
+    public void fetchBall(){
+        // move to closing position in front of target ball
+        moveToTargetBall();
+
+        // close the clasp
+        closeGripsSync();
+
+        this.state = STATES.CLOSED;
+
+        //@TODO : back away from platform
+
+        // read ball color
+        KinematicModel.BALL_COLORS ballC = readBallColour(true);
+
+        // update constants and states etc
+        if(ballC == KinematicModel.BALL_COLORS.BLUE){
+            this.state = STATES.HOLDING_BLUE;
+        } else {
+            this.state = STATES.HOLDING_RED;
+        }
+        this.TargetBall ++;
+    }
+
+    /**
+     * Moves robot to shooting position
+     */
+    public void moveToShoot(){
+        Navigator tempNav = driver.getNavigator();
+
+        // move to firing position..
+        tempNav.travelTo(KinematicModel.SHOOTING_POS[0], KinematicModel.SHOOTING_POS[1]);
+        while (tempNav.isNavigating()){
+            Main.pause(500);
+        }
+
+        // aim the robot..
+        tempNav.turnToAngle(((double)KinematicModel.SHOOTING_HEADING) * Math.PI / 180.0);
+        while (tempNav.isNavigating()){
+            Main.pause(500);
+        }
+    }
+
+    /**
+     * Turns robot so that it can throw away an invalid ball
+     */
+    public void moveToThrowAway(){
+        Navigator tempNav = driver.getNavigator();
+
+        // aim the robot..
+        tempNav.turnToAngle(((double)KinematicModel.THROWAWAY_HEADING) * Math.PI / 180.0);
+        while (tempNav.isNavigating()){
+            Main.pause(500);
+        }
+    }
+
+    /**
+     * Executes the shooting of the ball operation
+     */
+    public void shootBall(){
+        JSONObject shootMsg = new JSONObject();
+        this.brick2.out.sendJSONObj(KinematicModel.ROUTES.EXECUTE_SHOOT.toString(), shootMsg);
+
+        this.brick2.queue.get(KinematicModel.ROUTES.FINISHED_SHOOT.toString()).clear();
+        while(this.brick2.queue.get(KinematicModel.ROUTES.FINISHED_SHOOT.toString()).pollLast() == null){
+            Main.pause(200);
+        }
+    }
+
+    /**
+     * Given the lowerLeft and UpperRight Corners, will return the coordinates of the centers of all the balls
+     * @param lowerLeft double[] = {xCoord, yCoord}
+     * @param upperRight double[] = {xCoord, yCoord}
+     * @return double[][] = {{coordsOfBall1}, {coordsOfBall2}}
+     */
     public double[][] computeCoordsOfBalls(double[] lowerLeft, double[] upperRight){
-        double[][] a = {{0.0,0.0},{0.0,0.0},{0.0,0.0},{0.0,0.0}};
-        return a;
+
+        double xDist = upperRight[0] - lowerLeft[0];
+        double yDist = upperRight[1] - lowerLeft[1];
+
+        if(xDist > yDist){
+            // balls are along the xAxis
+            double[][] x = {
+                    {lowerLeft[0] + 1.5 * inchToCm, lowerLeft[1] + 1.5 * inchToCm},
+                    {lowerLeft[0] + (3 + 1.5) * inchToCm, lowerLeft[1] + 1.5 * inchToCm},
+                    {lowerLeft[0] + (6 + 1.5) * inchToCm, lowerLeft[1] + 1.5 * inchToCm},
+                    {lowerLeft[0] + (9 + 1.5) * inchToCm, lowerLeft[1] + 1.5 * inchToCm}
+            };
+            return x;
+
+        } else {
+            // balls are along the yAxis
+            double[][] y = {
+                    {lowerLeft[0] + 1.5 * inchToCm, lowerLeft[1] + 1.5 * inchToCm},
+                    {lowerLeft[0] + 1.5 * inchToCm, lowerLeft[1] + (3 + 1.5) * inchToCm},
+                    {lowerLeft[0] + 1.5 * inchToCm, lowerLeft[1] + (6 + 1.5) * inchToCm},
+                    {lowerLeft[0] + 1.5 * inchToCm, lowerLeft[1] + (9 + 1.5) * inchToCm}
+            };
+            return y;
+        }
     }
 
-    public void closeGripsSync(boolean waitUntilDone){
+    /**
+     *
+     * @param ballIndex int
+     * @param ballLocationsArr double[][] = {{coordsOfBall1}, {coordsOfBall2}}
+     * @return
+     */
+    public double[][] getBestApproach(int ballIndex, double[][] ballLocationsArr){
+        // y coordinates are the same for balls 1 and 2.. Therefore the platform is lying along the xAxis
+        boolean isXAxis = (ballLocationsArr[0][1] == ballLocationsArr[1][1]);
+
+        if(isXAxis){
+            // Line up with the ball's xCoordinate and approach from below
+            double[] first = {ballLocationsArr[ballIndex][0], ballLocationsArr[ballIndex][1] - KinematicModel.APPROACH_DISTANCE};
+            double[] end = {ballLocationsArr[ballIndex][0], ballLocationsArr[ballIndex][1] - KinematicModel.GRAB_DISTANCE};
+
+            double[][] a = {first, end};
+            return a;
+        } else {
+            // Line up with the ball's yCoordinate and approach from the left
+            double[] first = {ballLocationsArr[ballIndex][0] - KinematicModel.APPROACH_DISTANCE, ballLocationsArr[ballIndex][1]};
+            double[] end = {ballLocationsArr[ballIndex][0] - KinematicModel.GRAB_DISTANCE, ballLocationsArr[ballIndex][1]};
+
+            double[][] a = {first, end};
+            return a;
+        }
+    }
+
+    public void closeGripsSync(){
         JSONObject closeAngle = new JSONObject();
         closeAngle.put("claws_angle", -KinematicModel.CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE);
-        this.brick2.out.sendJSONObj("CLAWS_MOVE", closeAngle);
+        this.brick2.out.sendJSONObj(KinematicModel.ROUTES.CLAWS_MOVE.toString(), closeAngle);
 
-        if(waitUntilDone){
-            while(this.brick2.queue.get("CLAWS_CLOSED").pollLast() == null){
-                Main.pause(200);
-            }
+        this.brick2.queue.get(KinematicModel.ROUTES.CLAWS_CLOSED.toString()).clear();
+        while(this.brick2.queue.get(KinematicModel.ROUTES.CLAWS_CLOSED.toString()).pollLast() == null){
+            Main.pause(200);
         }
     }
 
@@ -102,21 +265,23 @@ public class BallLoader {
         return Math.sqrt(squaresSum);
     }
 
-    public void moveToTargetBall(boolean waitUntilDone){
+    public void moveToTargetBall(){
         Navigator tempNav = driver.getNavigator();
 
         //@TODO : need to set up better approach than driving right in to the ball..
-        tempNav.travelTo(this.ballCoordinates[this.TargetBall][0], this.ballCoordinates[this.TargetBall][1]);
+        double[][] wayPoints = getBestApproach(this.TargetBall, this.ballCoordinates);
 
-        if(waitUntilDone){
-            while (tempNav.isNavigating()){
-                Main.pause(500);
-            }
+        // line up with target ball..
+        tempNav.travelTo(wayPoints[0][0], wayPoints[0][1]);
+        while (tempNav.isNavigating()){
+            Main.pause(500);
         }
-    }
 
-    public void shootBall(){
-
+        // slowly approach the ball
+        tempNav.travelTo(wayPoints[1][0], wayPoints[1][1]);
+        while (tempNav.isNavigating()){
+            Main.pause(500);
+        }
     }
 
     public STATES getState() {
