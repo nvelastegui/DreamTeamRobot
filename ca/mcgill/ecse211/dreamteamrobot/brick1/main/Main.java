@@ -7,13 +7,18 @@ import ca.mcgill.ecse211.dreamteamrobot.brick1.localization.Localization;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.wifi.WifiConnection;
 import ca.mcgill.ecse211.dreamteamrobot.connection.Queue;
+import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.port.Port;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import ca.mcgill.ecse211.dreamteamrobot.connection.Connection;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Central class.
@@ -50,7 +55,7 @@ public class Main {
      */
 	public static void main(String[] args) throws InterruptedException {
 
-		// Set initial diplay.
+		/** Begin initializing communications. */
 		t.clear();
 		t.drawString("< DreamTeamRobot >", 0, 0);
 		t.drawString("<                >", 0, 1);
@@ -62,21 +67,17 @@ public class Main {
 		brick2 = connectToBrick2();
 		comp = connectToComp();
 
-		// Set initial diplay.
-		t.clear();
-		t.drawString("<DreamTeamRobot >", 0, 0);
-		t.drawString("<               >", 0, 1);
-		t.drawString("<  Initializing >", 0, 2);
-		t.drawString("<   Classes     >", 0, 3);
-		t.drawString("<               >", 0, 4);
-		t.drawString("<               >", 0, 5);
-
-		// Wait for signal
+		/** Connect to WIFI. */
+		boolean safeToContinue = connectToWifi();
+		// If connecting to wifi proved perilous, then wait for ESC button
+		// to quit program.
+		if (!safeToContinue) {
+			Button.ESCAPE.waitForPress();
+			return;
+		}
 
 
-		// Process signal
-
-
+		/** Do Brick 1 Driver setup stuff */
 		// Create a new instance of driver thread.
 		Driver driver = new Driver(
 				leftMotor,
@@ -91,6 +92,23 @@ public class Main {
 
 		// Run pre-execute procedure (starts subthreads).
 		driver.performPreExecute();
+
+		// Set up lcdDisplay and run it.
+		LCDDisplay lcdDisplay = new LCDDisplay(driver);
+		lcdDisplay.start();
+
+		/** Do Localization */
+		getLocalized(driver);
+
+		/** Start stuff that wasn't started because it interfered with localization */
+		// Start odometry correction.
+		driver.getNavigator().setThetaToleranceHigh();
+		driver.getOdometerCorrection().start();
+
+		// Start obstacle avoidance on navigator.
+		driver.getNavigator().setObstacleAvoidanceOn();
+
+		/** more stuff */
 
 		// initialize the BallLoader
 		BallLoader ballLoader = new BallLoader(brick2, comp, driver);
@@ -108,6 +126,26 @@ public class Main {
 
 
 
+	}
+
+	/**
+	 * Performs localization (method is just abstraction layer).
+	 * @param driver driver.
+     */
+	private static void getLocalized (Driver driver) {
+		Localization localizer = new Localization(
+				leftMotor,
+				rightMotor,
+				driver.getOdometer(),
+				driver.getNavigator(),
+				driver.getUltrasonicPollerLeft(),
+				driver.getUltrasonicPollerRight(),
+				driver.getColourPollerLeft(),
+				driver.getColourPollerRight(),
+				driver.getOdometerCorrection()
+		);
+		localizer.setupLocalizer();
+		localizer.doLocalization(null);
 	}
 
 
@@ -141,6 +179,58 @@ public class Main {
 		comp.listen(500);
 
 		return comp;
+	}
+
+	/**
+	 * Connects to server wifi to retrieve initialization info.
+	 * @return A HashMap containing stat data, if connection is successful. Null if connection is not successful.
+     */
+	private static HashMap<String, Integer> retrieveStartData () {
+
+		try {
+			WifiConnection conn = new WifiConnection(KinematicModel.WIFI_SERVER_IP, KinematicModel.TEAM_NUMBER);
+			return conn.StartData;
+		} catch (IOException e) {
+			return null;
+		}
+
+	}
+
+	/**
+	 * Performs initialization procedures relevant to wifi connection. Puts start data into KinematicModel.roundData.
+	 * @return True if operations successful and program can move on. False if
+	 * operations not successful and program cannot move on.
+     */
+	private static boolean connectToWifi () {
+
+		// Display message on screen.
+		t.clear();
+		t.drawString("<DreamTeamRobot >", 0, 0);
+		t.drawString("<               >", 0, 1);
+		t.drawString("< Connecting to >", 0, 2);
+		t.drawString("<     Wifi      >", 0, 3);
+		t.drawString("<               >", 0, 4);
+		t.drawString("<               >", 0, 5);
+
+		// Try wifi connection.
+		HashMap<String, Integer> startData = retrieveStartData();
+		if (startData == null) {
+			// If there is an error connecting to wifi, return false.
+			t.clear();
+			t.drawString("<DreamTeamRobot >", 0, 0);
+			t.drawString("< Connecting to >", 0, 1);
+			t.drawString("<    Wifi       >", 0, 2);
+			t.drawString("<     FAILED    >", 0, 3);
+			t.drawString("<               >", 0, 4);
+			t.drawString("<  ESC to quit  >", 0, 5);
+			return false;
+		}
+
+		// If there are no problems, then save the round data into Kinematic Model.
+		KinematicModel.roundData = startData;
+		// and return true.
+		return true;
+
 	}
 
 	/**
