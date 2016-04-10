@@ -3,8 +3,7 @@ package ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Location;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class containing static methods for generating and manipulating paths between points on the board.
@@ -15,13 +14,14 @@ public class PathFinder {
     public static Graph board;
 
     /** Variables For Static Procedures */
-    public static List<Integer> listBlockPath;
-    public static List<Integer> recSearchPreviouslySeenVertices;
+    public static Queue<bfsSearchNode> bfsQueue;
+    public static List<Integer> visitedNodes;
 
     /**
      * Sets up board without any obstacles.
      */
     public static void setupFullyConnectedBoard () {
+
         // Connect all the things!
         for (int i = 0 ; i < 144 ; i++ ) {
 
@@ -198,7 +198,6 @@ public class PathFinder {
         /** 4. Simplify block path */
         // TODO: Develop algorithm for simplifying block path.
 
-
         /** 5. Return. */
         return convertBlockPathToLocationPath(blockPath);
 
@@ -213,61 +212,64 @@ public class PathFinder {
     private static List<Integer> generateBlockPath (int startBlock, int endBlock) {
 
         // Reset path list and search history.
-        listBlockPath = new ArrayList<>();
-        recSearchPreviouslySeenVertices = new ArrayList<>();
+        bfsQueue = new LinkedList<>();
+        visitedNodes = new ArrayList<>();
 
         // Run breadth-first search.
-        boolean wasPathGenerated = recSearch(startBlock, endBlock);
-
-        // If breadth-first search found a path, return it. If
-        // it didn't, return null.
-        if (wasPathGenerated) return listBlockPath;
-        else return null;
+        return bfsSearch(startBlock, endBlock);
 
     }
 
     /**
-     * Recursive depth-first search modified to save path to end block.
-     * @param currentVertex Current node in the graph.
+     * Iterative breadth-first search modified to output shortest path to end block.
+     * @param root Current node in the graph.
      * @param searchingForVertex Node being searched for.
      * @return
      */
-    private static boolean recSearch (int currentVertex, int searchingForVertex) {
+    private static List<Integer> bfsSearch (int root, int searchingForVertex) {
 
-        // TODO: Write actual breadth-first search...
+        // Add the root to visited nodes.
+        visitedNodes.add(root);
 
-        // Check if current vertex is the one we want.
-        // If it is, add it to the list (it will be the first one / last one on the list)
-        // and return true.
-        if (currentVertex == searchingForVertex) {
-            listBlockPath.add(currentVertex);
-            return true;
-        }
+        // Add the root to the queue (using the bfsSearchNode structure).
+        bfsSearchNode rootNode = new bfsSearchNode(root);
+        bfsQueue.add(rootNode);
 
-        // If we didn't get lucky, continue search.
-        // Grab all neighbours to the current vertex.
-        List<Integer> listNeighbours = board.getVerticesAdjacentTo(currentVertex);
-        // Remove any vertices that we've seen before from the list.
-        for (Integer neighbour : listNeighbours) {
-            if (recSearchPreviouslySeenVertices.contains(neighbour)) listNeighbours.remove(neighbour);
-        }
+        while (!bfsQueue.isEmpty()) {
 
-        // If it has no new neighbours, return false (clearly vertex we want is not here)
-        if (listNeighbours.size() == 0) return false;
+            // Grab top node off queue.
+            bfsSearchNode current = bfsQueue.poll();
 
-        // Otherwise go through list of neighbours, checking if any lead to vertex we want.
-        for (Integer currentNeighbour : listNeighbours) {
-            // Mark that we've seen this vertex.
-            recSearchPreviouslySeenVertices.add(currentNeighbour);
-            // If this neighbour is or continues path to searchingForVertex,
-            // then add it to the block path list (at the beginning) and return true.
-            if (recSearch(currentNeighbour, searchingForVertex)) {
-                listBlockPath.add(0, currentVertex);
-                return true;
+            // Get path up to that node (ie. path from root to current)
+            List<Integer> pathToNode = current.getPathToNode();
+            pathToNode.add(current.getBlock());
+
+            // Is it the vertex we want?
+            if (current.getBlock() == searchingForVertex) {
+                // If it is, return the path to it plus itself appended to the end.
+                return pathToNode;
+            }
+
+            // If it's not, add its neighbours to the queue and
+            // log their individual paths.
+            List<Integer> neighboursOfCurrent = board.getVerticesAdjacentTo(current.getBlock());
+            for (Integer neighbourOfCurrent : neighboursOfCurrent) {
+                // ONLY if we have not visited the vertex before...
+                if (!visitedNodes.contains(neighbourOfCurrent)) {
+                    // Log that we have visited it.
+                    visitedNodes.add(neighbourOfCurrent);
+                    // Create a new bfsSearchNode for it and add it to queue.
+                    bfsSearchNode newNode = new bfsSearchNode(
+                            pathToNode,
+                            neighbourOfCurrent
+                    );
+                    bfsQueue.add(newNode);
+                }
             }
         }
 
-        return false;
+        // If we never found anything, it's because no path exists.
+        return null;
 
     }
 

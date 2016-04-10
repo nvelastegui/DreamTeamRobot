@@ -108,6 +108,9 @@ public class Main {
 		// Start obstacle avoidance on navigator.
 		driver.getNavigator().setObstacleAvoidanceOn();
 
+		/** START OFFENSIVE! */
+		driver.turnOn();
+
 		/** more stuff */
 
 		// initialize the BallLoader

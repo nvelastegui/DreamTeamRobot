@@ -1,7 +1,7 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding;
 
 /******************************************************************************
- *  ATTENTION: This class is based on code from
+ *  ATTENTION: This class is somewhat based on code from
  *  http://algs4.cs.princeton.edu/41graph/AdjMatrixGraph.java.html
  ******************************************************************************/
 
@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Undirected graph representation used for modelling game board.
+ * Undirected graph used for modelling game board. Stored with adjacency matrix.
  */
 public class Graph {
 
-    private static final String NEWLINE = System.getProperty("line.separator");
+    /** Variables */
     private int V;
     private int E;
     private boolean[][] adj;
@@ -90,14 +90,11 @@ public class Graph {
      * @return List of vertices adjacent to v.
      */
     public List<Integer> getVerticesAdjacentTo (int givenVertex) {
-
         List<Integer> listNeighbours = new ArrayList<>();
         for (int i = 0; i < V; i++) {
             if (adj[givenVertex][i]) listNeighbours.add(i);
         }
-
         return listNeighbours;
-
     }
 
 

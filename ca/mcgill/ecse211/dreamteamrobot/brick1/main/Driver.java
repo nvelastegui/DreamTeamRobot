@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.main;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.communication.DriverStatusPacket;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.display.LCDDisplay;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Location;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
@@ -10,6 +11,8 @@ import ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding.Graph;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding.PathFinder;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
+import lejos.hardware.Button;
+import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
 
@@ -133,9 +136,13 @@ public class Driver extends Thread {
      * Sets state to INIT and starts thread.
      */
     public void turnOn () {
+        // Set the state to the one-time INIT state.
         state = State.INIT;
+        // Reset the board to a blank 12 by 12.
         PathFinder.board = new Graph(12*12);
+        // Fully connect the board.
         PathFinder.setupFullyConnectedBoard();
+        // Ready?! Fight! (cue Mortal Kombat theme)
         start();
     }
 
@@ -154,6 +161,7 @@ public class Driver extends Thread {
             switch (state) {
 
                 /** CASE: INIT
+                 *  DEPENDENCIES: Robot has localized relative to a corner.
                  *  Checks round data to determine starting point. Drives there.
                  */
                 case INIT:
@@ -189,28 +197,41 @@ public class Driver extends Thread {
                             break;
                     }
 
+                    // Process roundData to log initial obstacles
+                    PathFinder.blockOutDefenseZone();   // Defense Zone must be blocked off.
+                    PathFinder.blockOutBallBox();       // Ball Box must be blocked off.
 
-                    // Process roundData to determine initial obstacles (defender zone, ball zone)
-                    PathFinder.blockOutDefenseZone();
-                    PathFinder.blockOutBallBox();
-
-                    // Generate path to offensive zone.
+                    // Generate path to offensive zone. Always move to same point in offensive zone (independent of how tall
+                    // the zone is.
                     List<Location> pathToOffensiveZone = PathFinder.generatePath(
                             new Location(odometer.getX(), odometer.getY()),
                             new Location(135.00, 15.00)
                     );
 
-                    // Drive to offense zone. (standard: to block 17)
-                    for (Location loc : pathToOffensiveZone) {
-                        navigator.travelTo(loc.getX(), loc.getY());
-                        while (navigator.isNavigating()) {
-                            try {Thread.sleep(30);}
-                            catch (InterruptedException e) {e.printStackTrace();}
+                    // If a path was made, drive to offense zone along that path.
+                    if (pathToOffensiveZone != null) {
+                        Sound.twoBeeps();
+                        // Basically: cycle through the locations in the path, telling nav to go each one.
+                        for (Location loc : pathToOffensiveZone) {
+                            navigator.travelTo(loc.getX(), loc.getY());
+                            while (navigator.isNavigating()) {
+                                try {Thread.sleep(30);}
+                                catch (InterruptedException e) {e.printStackTrace();}
+                            }
                         }
+                    }
+                    else {
+                        // If for whatever reason a path could not be made, notify and beep.
+                        // Basically, just cop the freak out.
+                        Sound.beep();
+                        Button.ESCAPE.waitForPress();
+                        LCDDisplay.sendToDisplay("PathGen Failed", true);
+                        return;
                     }
 
                     // Once located at offensive zone, switch status to idle.
                     state = State.IDLE;
+                    Sound.twoBeeps();
                     break;
 
                 /** CASE: IDLE
@@ -220,16 +241,28 @@ public class Driver extends Thread {
                     state = State.DRIVING_TO_BALLS;
                     break;
 
+                /** CASE: DRIVING_TO_BALLS
+                 *  Creates path to
+                 */
                 case DRIVING_TO_BALLS:
-                    
+
                     break;
 
+                /** CASE: LOADING
+                 *  Basically does nothing while waiting for brick2 to load balls.
+                 */
                 case LOADING:
                     break;
 
+                /** CASE: DRIVING_TO_SHOOT
+                 *
+                 */
                 case DRIVING_TO_SHOOT:
                     break;
 
+                /** CASE: SHOOTING
+                 *
+                 */
                 case SHOOTING:
                     break;
 
