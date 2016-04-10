@@ -82,14 +82,25 @@ public class Main {
 		}
 
 		/** Connect to WIFI. */
-		boolean safeToContinue = connectToWifi();
-		// If connecting to wifi proved perilous, then wait for ESC button
-		// to quit program.
-		if (!safeToContinue) {
-			Button.ESCAPE.waitForPress();
-			return;
-		}
-
+//		boolean safeToContinue = connectToWifi();
+//		// If connecting to wifi proved perilous, then wait for ESC button
+//		// to quit program.
+//		if (!safeToContinue) {
+//			Button.ESCAPE.waitForPress();
+//			return;
+//		}
+		HashMap<String, Integer> spoofRoundData = new HashMap<>();
+		spoofRoundData.put("SC", 1);
+		spoofRoundData.put("Role", 0);
+		spoofRoundData.put("w1", 4);
+		spoofRoundData.put("d1", 5);
+		spoofRoundData.put("d2", 5);
+		spoofRoundData.put("ll-x", 5);
+		spoofRoundData.put("ll-y", 1);
+		spoofRoundData.put("ur-x", 6);
+		spoofRoundData.put("ur-y", 2);
+		spoofRoundData.put("BC", 2);
+		KinematicModel.roundData = spoofRoundData;
 
 		/** Do Brick 1 Driver setup stuff */
 		// Create a new instance of driver thread.
