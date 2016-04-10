@@ -1,13 +1,22 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.main;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.communication.DriverStatusPacket;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.display.LCDDisplay;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Location;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.OdometerCorrection;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding.Graph;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding.PathFinder;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
+import lejos.hardware.Button;
+import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
+
+import java.util.List;
 
 /**
  * This is the main offensive thread for the navigational brick. It runs as a state machine.
@@ -15,7 +24,7 @@ import lejos.hardware.port.Port;
 public class Driver extends Thread {
 
     /** Constants: State */
-    enum State {OFF, INIT};
+    enum State {OFF, INIT, IDLE, DRIVING_TO_BALLS, LOADING, DRIVING_TO_SHOOT, SHOOTING};
     private State state;
 
     /** Variables: Sub Threads */
@@ -124,6 +133,20 @@ public class Driver extends Thread {
     }
 
     /**
+     * Sets state to INIT and starts thread.
+     */
+    public void turnOn () {
+        // Set the state to the one-time INIT state.
+        state = State.INIT;
+        // Reset the board to a blank 12 by 12.
+        PathFinder.board = new Graph(12*12);
+        // Fully connect the board.
+        PathFinder.setupFullyConnectedBoard();
+        // Ready?! Fight! (cue Mortal Kombat theme)
+        start();
+    }
+
+    /**
      * Thread Run.
      * This is the main run method for the driver. Structure is heavily based on material
      * from threadTutorial.pdf and code from Lab 3.
@@ -131,34 +154,130 @@ public class Driver extends Thread {
     @Override
     public void run() {
 
-        // turn on obstacle avoidance on navigator
+        navigator.setObstacleAvoidanceOn();
 
-        //ObstacleAvoider avoidance = new ObstacleAvoider(this);
+        while (true) {
 
-//        while (true) {
-//
-//            switch (state) {
-//                /** */
-//                case INIT:
-//                    if (status) {
-//                        state = State.TURNING;
-//                    }
-//                    break;
-//
-//                default:
-//                    leftMotor.stop();
-//                    rightMotor.stop();
-//                    break;
-//            }
-//
-//            try {
-//                Thread.sleep(30);
-//            }
-//            catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
+            switch (state) {
+
+                /** CASE: INIT
+                 *  DEPENDENCIES: Robot has localized relative to a corner.
+                 *  Checks round data to determine starting point. Drives there.
+                 */
+                case INIT:
+
+                    // Localize robot relative to board, given starting corner.
+                    // 1: BL, 2: BR, 3: TR, 4: TL
+                    int startingCorner = KinematicModel.roundData.get("SC");
+                    switch (startingCorner) {
+                        case 1:
+                            // Do nothing.
+                            // Localization was done assuming robot started in this corner.
+                            break;
+                        case 2:
+                            // Set x and y.
+                            odometer.setX(300.00);
+                            odometer.setY(0.00);
+                            // Set theta.
+                            odometer.setTheta(3 * Math.PI / 2); // robot currently facing West
+                            break;
+                        case 3:
+                            // Set x and y.
+                            odometer.setX(300.00);
+                            odometer.setY(300.00);
+                            // Set theta.
+                            odometer.setTheta(Math.PI); // robot currently facing South
+                            break;
+                        case 4:
+                            // Set x and y.
+                            odometer.setX(0.00);
+                            odometer.setY(300.00);
+                            // Set theta.
+                            odometer.setTheta(Math.PI / 2); // robot currently facing East
+                            break;
+                    }
+
+                    // Process roundData to log initial obstacles
+                    PathFinder.blockOutDefenseZone();   // Defense Zone must be blocked off.
+                    PathFinder.blockOutBallBox();       // Ball Box must be blocked off.
+
+                    // Generate path to offensive zone. Always move to same point in offensive zone (independent of how tall
+                    // the zone is.
+                    List<Location> pathToOffensiveZone = PathFinder.generatePath(
+                            new Location(odometer.getX(), odometer.getY()),
+                            new Location(135.00, 15.00)
+                    );
+
+                    // If a path was made, drive to offense zone along that path.
+                    if (pathToOffensiveZone != null) {
+                        Sound.twoBeeps();
+                        // Basically: cycle through the locations in the path, telling nav to go each one.
+                        for (Location loc : pathToOffensiveZone) {
+                            navigator.travelTo(loc.getX(), loc.getY());
+                            while (navigator.isNavigating()) {
+                                try {Thread.sleep(30);}
+                                catch (InterruptedException e) {e.printStackTrace();}
+                            }
+                        }
+                    }
+                    else {
+                        // If for whatever reason a path could not be made, notify and beep.
+                        // Basically, just cop the freak out.
+                        Sound.beep();
+                        Button.ESCAPE.waitForPress();
+                        LCDDisplay.sendToDisplay("PathGen Failed", true);
+                        return;
+                    }
+
+                    // Once located at offensive zone, switch status to idle.
+                    state = State.IDLE;
+                    Sound.twoBeeps();
+                    break;
+
+                /** CASE: IDLE
+                 *  Waits for signal to go!
+                 */
+                case IDLE:
+                    state = State.DRIVING_TO_BALLS;
+                    break;
+
+                /** CASE: DRIVING_TO_BALLS
+                 *  Creates path to
+                 */
+                case DRIVING_TO_BALLS:
+
+                    break;
+
+                /** CASE: LOADING
+                 *  Basically does nothing while waiting for brick2 to load balls.
+                 */
+                case LOADING:
+                    break;
+
+                /** CASE: DRIVING_TO_SHOOT
+                 *
+                 */
+                case DRIVING_TO_SHOOT:
+                    break;
+
+                /** CASE: SHOOTING
+                 *
+                 */
+                case SHOOTING:
+                    break;
+
+                default:
+                    break;
+            }
+
+            try {
+                Thread.sleep(30);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
 
     }
 

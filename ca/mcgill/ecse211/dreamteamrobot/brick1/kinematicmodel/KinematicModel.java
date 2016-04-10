@@ -1,9 +1,14 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel;
 
+import java.util.HashMap;
+
 /**
  * Class holding constants for kinematic model of robot.
  */
 public class KinematicModel {
+
+    /** Current Round Data */
+    public static HashMap<String, Integer> roundData;
 
     /** Robot Physical Constants */
     public static final double WHEEL_RADIUS_L = 1.95; // Might change if we increase/reduce weight of the robot.
@@ -63,6 +68,12 @@ public class KinematicModel {
      *
      */
     public static final double COLOUR_SENSOR_SPACING = 8.0;
+
+    /** Wifi Connection Constants
+     *  Constants related to wifi connection.
+     */
+    public static final String WIFI_SERVER_IP = "192.168.0.101"; //"localhost";
+    public static final int    TEAM_NUMBER = 12;
 
     /**
      * Communication Constants
