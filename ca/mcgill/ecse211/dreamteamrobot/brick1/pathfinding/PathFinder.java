@@ -133,12 +133,21 @@ public class PathFinder {
      * Removes edges into ball box.
      */
     public static void blockOutBallBox () {
-        int ll_x = KinematicModel.roundData.get("ll-x");
-        int ll_y = KinematicModel.roundData.get("ll-y");
-        int ur_x = KinematicModel.roundData.get("ur-x");
-        int ur_y = KinematicModel.roundData.get("ur-y");
 
-        // TODO: Figure out efficient method for blocking out ball box.
+        // Grab bounding parameters for ball box.
+        int ll_x = KinematicModel.roundData.get("ll-x") + 1; // [-1, 11] -> if it's 10, corresponds to box 11 -> [0, 11]
+        int ll_y = KinematicModel.roundData.get("ll-y") + 1; // [-1, 11] -> if it's 10, corresponds to box 11 -> [0, 11]
+        int ur_x = KinematicModel.roundData.get("ur-x"); // [-1, 11] -> [0, 11]
+        int ur_y = KinematicModel.roundData.get("ur-y"); // [-1, 11] -> [0, 11]
+
+        // Block out the box.
+        for (int x = ll_x ; x <= ur_x ; x++) {
+            for (int y = ll_y ; y <= ur_y ; y++) {
+                int block = x + y*12;
+                board.disconnectVertex(block);
+            }
+        }
+
     }
 
     /**
