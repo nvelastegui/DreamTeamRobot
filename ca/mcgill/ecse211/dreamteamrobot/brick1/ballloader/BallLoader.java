@@ -36,13 +36,28 @@ public class BallLoader {
      * @param comp
      * @param driver
      */
-    public BallLoader(Connection brick2, Connection comp, Driver driver, KinematicModel.BALL_COLORS targColor, double[][] ballPlatformCorners){
+    public BallLoader(Connection brick2, Connection comp, Driver driver){
         // initialize the state
         this.state = STATES.CLOSED;
         this.availableBalls = new boolean[]{true, true, true, true};
         this.TargetBall = 0;
-        this.TargetColor = targColor;
-        this.ballCoordinates = computeCoordsOfBalls(ballPlatformCorners[0], ballPlatformCorners[1]);
+        if(KinematicModel.roundData.get("BC") == 0){
+            this.TargetColor = KinematicModel.BALL_COLORS.RED;
+        } else if(KinematicModel.roundData.get("BC") == 1){
+            this.TargetColor = KinematicModel.BALL_COLORS.BLUE;
+        } else {
+            this.TargetColor = KinematicModel.BALL_COLORS.ANY;
+        }
+
+        int ll_x = KinematicModel.roundData.get("ll-x"); // [-1, 11] -> if it's 10, corresponds to box 11 -> [0, 11]
+        int ll_y = KinematicModel.roundData.get("ll-y"); // [-1, 11] -> if it's 10, corresponds to box 11 -> [0, 11]
+        int ur_x = KinematicModel.roundData.get("ur-x"); // [-1, 11] -> [0, 11]
+        int ur_y = KinematicModel.roundData.get("ur-y"); // [-1, 11] -> [0, 11]
+
+        double[] ll = {ll_x*30, ll_y*30};
+        double[] ur = {ur_x*30, ur_y*30};
+
+        this.ballCoordinates = computeCoordsOfBalls(ll, ur);
 
 
         this.brick2 = brick2;

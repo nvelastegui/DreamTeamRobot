@@ -133,7 +133,7 @@ public class Main {
 		/** more stuff */
 		// initialize the BallLoader
 		System.out.println("initializing ballLoader");
-		BallLoader ballLoader = new BallLoader(brick2, comp, driver, targColor, ballPlatformCoords);
+		BallLoader ballLoader = new BallLoader(brick2, comp, driver);
 
 		System.out.println("initialized ballLoader.. Start fetch procedure");
 

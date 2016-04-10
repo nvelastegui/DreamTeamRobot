@@ -128,7 +128,7 @@ public class KinematicModel {
     /**
      * Ball Color constants
      */
-    public enum BALL_COLORS{RED, BLUE};
+    public enum BALL_COLORS{RED, BLUE, ANY};
     public static final double[] BLUE_RGB = {0,0,100};
     public static final double[] RED_RGB = {100,0,0};
 }
