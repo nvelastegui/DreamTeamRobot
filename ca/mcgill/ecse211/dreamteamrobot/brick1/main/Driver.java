@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.main;
 
+import ca.mcgill.ecse211.dreamteamrobot.brick1.ballloader.BallLoader;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.communication.DriverStatusPacket;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.display.LCDDisplay;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
@@ -11,6 +12,7 @@ import ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding.Graph;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding.PathFinder;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
+import ca.mcgill.ecse211.dreamteamrobot.connection.Connection;
 import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -24,7 +26,7 @@ import java.util.List;
 public class Driver extends Thread {
 
     /** Constants: State */
-    enum State {OFF, INIT, IDLE, DRIVING_TO_BALLS, LOADING, DRIVING_TO_SHOOT, SHOOTING};
+    enum State {OFF, INIT, IDLE, DRIVING_TO_BALLS, LOADING, DRIVING_TO_THROW_AWAY, DRIVING_TO_SHOOT, SHOOTING};
     private State state;
 
     /** Variables: Sub Threads */
@@ -35,6 +37,7 @@ public class Driver extends Thread {
     private ColourPoller colourPollerLeft;
     private ColourPoller colourPollerRight;
     private Navigator navigator;
+    private BallLoader ballLoader;
 
     /**
      * Constructor.
@@ -101,6 +104,16 @@ public class Driver extends Thread {
     public ColourPoller getColourPollerRight() {
         return colourPollerRight;
     }
+
+    /**
+     *
+     * @param brick2
+     * @param comp
+     */
+    public void initializeBallLoader (Connection brick2, Connection comp) {
+        ballLoader = new BallLoader(brick2, comp, navigator);
+    }
+
 
     /**
      * Set up sub threads before running.
@@ -245,25 +258,44 @@ public class Driver extends Thread {
                  *  Creates path to
                  */
                 case DRIVING_TO_BALLS:
-
+                    ballLoader.moveToTargetBall();
+                    state = State.LOADING;
                     break;
 
                 /** CASE: LOADING
                  *  Basically does nothing while waiting for brick2 to load balls.
                  */
                 case LOADING:
+                    ballLoader.fetchBall();
+                    if (ballLoader.isValidBall()) {
+                        state = State.DRIVING_TO_SHOOT;
+                    } else {
+                        state = State.DRIVING_TO_THROW_AWAY;
+                    }
+                    break;
+
+                /** CASE:
+                 *
+                 */
+                case DRIVING_TO_THROW_AWAY:
+                    ballLoader.moveToThrowAway();
+                    state = State.SHOOTING;
                     break;
 
                 /** CASE: DRIVING_TO_SHOOT
                  *
                  */
                 case DRIVING_TO_SHOOT:
+                    ballLoader.moveToShoot();
+                    state = State.SHOOTING;
                     break;
 
                 /** CASE: SHOOTING
                  *
                  */
                 case SHOOTING:
+                    ballLoader.shootBall();
+                    state = State.IDLE;
                     break;
 
                 default:

@@ -21,7 +21,7 @@ public class BallLoader {
 
     private Connection brick2;
     private Connection comp;
-    private Driver driver;
+    private Navigator navigator;
 
     private boolean[] availableBalls;
     private double[][] ballCoordinates;
@@ -34,12 +34,12 @@ public class BallLoader {
      *
      * @param brick2
      * @param comp
-     * @param driver
+     * @param navigator
      */
-    public BallLoader(Connection brick2, Connection comp, Driver driver){
+    public BallLoader(Connection brick2, Connection comp, Navigator navigator){
         // initialize the state
         this.state = STATES.CLOSED;
-        this.availableBalls = new boolean[]{true, true, true, true};
+        //this.availableBalls = new boolean[]{true, true, true, true};
         this.TargetBall = 0;
         if(KinematicModel.roundData.get("BC") == 0){
             this.TargetColor = KinematicModel.BALL_COLORS.RED;
@@ -62,7 +62,7 @@ public class BallLoader {
 
         this.brick2 = brick2;
         this.comp = comp;
-        this.driver = driver;
+        this.navigator = navigator;
 
         // initialize the queues as needed :
         this.brick2.queue.registerQueue(KinematicModel.ROUTES.CLAWS_CLOSED.toString());
@@ -95,6 +95,14 @@ public class BallLoader {
         }
     }
 
+    public boolean isValidBall(){
+        // validate if the ball is the right color
+        boolean blue = (this.state == STATES.HOLDING_BLUE && this.TargetColor == KinematicModel.BALL_COLORS.BLUE);
+        boolean red = (this.state == STATES.HOLDING_RED && this.TargetColor == KinematicModel.BALL_COLORS.RED);
+        boolean any = this.TargetColor == KinematicModel.BALL_COLORS.ANY;
+        return (red || blue || any);
+    }
+
     /**
      * Given the current target ball, this method will
      *  - navigate based on the best approach
@@ -103,8 +111,6 @@ public class BallLoader {
      *  - updates class variables
      */
     public void fetchBall(){
-        // move to closing position in front of target ball
-        moveToTargetBall();
 
         // close the clasp
         closeGripsSync();
@@ -129,7 +135,7 @@ public class BallLoader {
      * Moves robot to shooting position
      */
     public void moveToShoot(){
-        Navigator tempNav = driver.getNavigator();
+        Navigator tempNav = navigator;
 
         // move to firing position..
         tempNav.travelTo(KinematicModel.SHOOTING_POS[0], KinematicModel.SHOOTING_POS[1]);
@@ -148,7 +154,7 @@ public class BallLoader {
      * Turns robot so that it can throw away an invalid ball
      */
     public void moveToThrowAway(){
-        Navigator tempNav = driver.getNavigator();
+        Navigator tempNav = navigator;
 
         // aim the robot..
         tempNav.turnToAngle(((double)KinematicModel.THROWAWAY_HEADING) * Math.PI / 180.0);
@@ -292,7 +298,7 @@ public class BallLoader {
     }
 
     public void moveToTargetBall(){
-        Navigator tempNav = driver.getNavigator();
+        Navigator tempNav = navigator;
 
         //@TODO : need to set up better approach than driving right in to the ball..
         double[][] wayPoints = getBestApproach(this.TargetBall, this.ballCoordinates);

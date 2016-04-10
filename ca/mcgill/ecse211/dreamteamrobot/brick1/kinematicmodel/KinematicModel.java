@@ -27,6 +27,7 @@ public class KinematicModel {
      *  thetaCompensation is the constant value added to theta at the end (to correct for systematic error - ie. consistent errors of x amount).
      */
     public static final int ultrasonicLocalizationRotateSpeed = 50;
+    public static final int ultrasonicLocalizationRotateSpeedFast = 150;
     public static final double d = 20;
     public static final double k = 6;
     public static final double pDTolerance = 50;

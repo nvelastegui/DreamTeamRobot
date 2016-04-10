@@ -127,28 +127,11 @@ public class Main {
 		// Start obstacle avoidance on navigator.
 		driver.getNavigator().setObstacleAvoidanceOn();
 
+		/** Initialize the BallLoader */
+		driver.initializeBallLoader(brick2, comp);
+
 		/** START OFFENSIVE! */
 		driver.turnOn();
-
-		/** more stuff */
-		// initialize the BallLoader
-		System.out.println("initializing ballLoader");
-		BallLoader ballLoader = new BallLoader(brick2, comp, driver);
-
-		System.out.println("initialized ballLoader.. Start fetch procedure");
-
-		ballLoader.shootAllBalls();
-
-
-		// Grab balls?
-		/*
-		Grabbing Balls is as follows : (hehehe)
-			- Send message to brick2 to close grips to certain angle
-			-
-		 */
-
-		// Shoot
-
 
 
 	}

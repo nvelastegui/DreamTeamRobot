@@ -18,6 +18,7 @@ public class UltrasonicLocalizer {
 	/** Localization Related Constants */
 	/** NOTE: These values should be changed in KinematicModel.java, NOT HERE. */
 	private static int ROTATE_SPEED = KinematicModel.ultrasonicLocalizationRotateSpeed;
+	private static int ROTATE_SPEED_FAST = KinematicModel.ultrasonicLocalizationRotateSpeedFast;
 	private static double d = KinematicModel.d;
 	private static double k = KinematicModel.k;
 	private static double pDTolerance = KinematicModel.pDTolerance;
@@ -187,13 +188,18 @@ public class UltrasonicLocalizer {
 		List<Double> listThetas = new ArrayList<Double>();
 
 		// Start motors going right.
-		leftMotor.setSpeed(ROTATE_SPEED);
-		rightMotor.setSpeed(ROTATE_SPEED);
+		leftMotor.setSpeed(ROTATE_SPEED_FAST);
+		rightMotor.setSpeed(ROTATE_SPEED_FAST);
 		leftMotor.backward();
 		rightMotor.forward();
 
 		// Sleep thread for a bit so that right-side wall doesn't confuse readings.
 		pause(5000);
+
+		leftMotor.setSpeed(ROTATE_SPEED);
+		rightMotor.setSpeed(ROTATE_SPEED);
+		leftMotor.backward();
+		rightMotor.forward();
 
 		// Start by grabbing an initial reading and setting the conditional variables.
 		List<Double> currentDistances = getFilteredData();
