@@ -45,6 +45,10 @@ public class Gunner extends Thread {
         comp.queue.registerQueue(KinematicModel.ROUTES.CLAWS_MOVE.toString());
         comp.queue.registerQueue(KinematicModel.ROUTES.READ_BALL.toString());
         comp.queue.registerQueue(KinematicModel.ROUTES.EXECUTE_SHOOT.toString());
+
+        brick1.queue.registerQueue(KinematicModel.ROUTES.CLAWS_MOVE.toString());
+        brick1.queue.registerQueue(KinematicModel.ROUTES.READ_BALL.toString());
+        brick1.queue.registerQueue(KinematicModel.ROUTES.EXECUTE_SHOOT.toString());
     }
 
     /**
@@ -247,7 +251,7 @@ public class Gunner extends Thread {
 
         if(incomingMsg != null){
             System.out.println("CLAWS_MOVE to : "+incomingMsg.get("claws_angle"));
-            int angle = Integer.parseInt((String)incomingMsg.get("claws_angle"));
+            int angle = Integer.parseInt(incomingMsg.get("claws_angle").toString());
             moveClasp(angle);     // waits until motion finished
 
             // send brick1 confirmation that closing the clasps is done
@@ -262,7 +266,7 @@ public class Gunner extends Thread {
 
         JSONObject incomingMessage = con.queue.popJSON(KinematicModel.ROUTES.READ_BALL.toString());
         if(incomingMessage != null){
-
+            System.out.println("start handleColourRead");
             float[] RGB_val = colourPoller.getRGB();
 
             JSONArray list = new JSONArray();
@@ -274,6 +278,8 @@ public class Gunner extends Thread {
             JSONObject colorReading = new JSONObject();
             colorReading.put("ball_colour", list);
             con.out.sendJSONObj(KinematicModel.ROUTES.BALL_COLOUR.toString(), colorReading);
+
+            System.out.println("end handleColourRead");
         }
     }
 

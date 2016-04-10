@@ -8,6 +8,9 @@ import java.util.ArrayDeque;
 import java.util.Hashtable;
 import java.util.NoSuchElementException;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class Queue {
 	public final String routeProperty;
@@ -35,19 +38,37 @@ public class Queue {
 		try {
 			obj = (JSONObject)parser.parse(msg);
 			queueMsgObj(obj, msg);
+			//System.out.println("processLine : "+msg);
 		} catch (ParseException e) {
-			
-			String[] splitMessages = msg.replaceAll("\\}\\{", "}\u0000{").split("\\u0000");
-			for(int i=0;i<splitMessages.length;i++){
-				try{
-					obj = (JSONObject)parser.parse(splitMessages[i]);
-					//System.out.println("processLine : "+splitMessages[i]);
-					queueMsgObj(obj, splitMessages[i]);
-				} catch (ParseException e2){
-					System.out.println("Failed Parse : "+splitMessages[i]);
-					e2.printStackTrace();
+
+//			String pattern = "\\}\\{";
+//			Pattern r = Pattern.compile(pattern);			// Create a Pattern object
+//			// Now create matcher object.
+//			Matcher m = r.matcher(msg);
+//			if(m.find()){
+				String[] splitMessages = msg.replaceAll("\\}\\{", "}\u0000{").split("\\u0000");
+				for(int i=0;i<splitMessages.length;i++){
+					try{
+						splitMessages[i].replace("^.\\{","{");		// replace the occasional leading character (byte order mark possibly?)
+						obj = (JSONObject)parser.parse(splitMessages[i]);
+						queueMsgObj(obj, splitMessages[i]);
+						//System.out.println("processLine : "+splitMessages[i]);
+					} catch (ParseException e2){
+						System.out.println("Failed Parse : "+splitMessages[i]);
+						e2.printStackTrace();
+					}
 				}
-			}
+//			} else {
+//				try{
+//					obj = (JSONObject)parser.parse(msg);
+//					//System.out.println("processLine : "+msg);
+//					queueMsgObj(obj, msg);
+//				} catch (ParseException e2){
+//					System.out.println("Failed Parse : "+msg);
+//					e2.printStackTrace();
+//				}
+//			}
+
 		}
 	}
 	
@@ -111,7 +132,7 @@ public class Queue {
 	
 	/*
 	 *  pops string off the given queue and tries to parse the json.
-	 *  if fails to parse.. returns null
+	 *  if fails to parse.. returns null otherwise returns the body or empty object if body is null
 	 */
 	public JSONObject popJSON(String routeValue){
 		JSONParser parser = new JSONParser();
@@ -122,7 +143,12 @@ public class Queue {
 		if(curQueue != null){
 			try{
 				obj = (JSONObject)parser.parse(curQueue.pop());
-				return (JSONObject)obj.get("body");
+				if((JSONObject)obj.get("body") == null){
+					return new JSONObject();
+				} else {
+					return (JSONObject)obj.get("body");
+				}
+
 			} catch (ParseException e){
 				e.printStackTrace();
 				return null;

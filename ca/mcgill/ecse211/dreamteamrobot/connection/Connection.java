@@ -24,7 +24,7 @@ public class Connection {
 		
 	}
 	
-	public void accept(int port, int timeout){
+	public boolean accept(int port, int timeout){
 		try {
 			serverSocket = new ServerSocket(port);
 			serverSocket.setSoTimeout(timeout);
@@ -34,31 +34,46 @@ public class Connection {
 		
 		    System.out.println("Connected to " + socket.getRemoteSocketAddress());
 		    outData = new DataOutputStream(socket.getOutputStream());
-		    this.out = new Out(outData);
+		    this.out = new Out(socket.getOutputStream());
 		    inData = new DataInputStream(socket.getInputStream());
 			this.in = new In(new InputStreamReader(socket.getInputStream()));
+
+			return true;
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+			this.out = new Out(null);
+			this.in = new In(null);
+
+			return false;
 		}
 	}
 	
-	public void connect(String serverName, int port){
+	public boolean connect(String serverName, int port){
 		try {
 			socket = new Socket(serverName, port);
+			socket.setTcpNoDelay(true);
 
 		    outData = new DataOutputStream(socket.getOutputStream());
 			this.out = new Out(outData);
 		    inData = new DataInputStream(socket.getInputStream());
 			this.in = new In(new InputStreamReader(socket.getInputStream()));
+
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
+			this.out = new Out(null);
+			this.in = new In(null);
+
+			return false;
 		}
 	}
 	
 	public void listen(int sleepTime){
 		this.in.setSleepTime(sleepTime);
 		this.in.setQueue(this.queue);
-		this.in.start();
+		if(this.in != null) {
+			this.in.start();
+		}
 	}
 }

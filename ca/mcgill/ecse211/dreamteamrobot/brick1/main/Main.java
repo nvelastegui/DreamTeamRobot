@@ -63,13 +63,18 @@ public class Main {
 
 
 		comp = connectToComp();
-		JSONObject welcomeMsg = new JSONObject();
-		welcomeMsg.put("client", "brick1");
-		comp.out.sendJSONObj("CLIENT_CONNECTED", welcomeMsg);
+		if(comp != null){
+			JSONObject welcomeMsg = new JSONObject();
+			welcomeMsg.put("client", "brick1");
+			comp.out.sendJSONObj("CLIENT_CONNECTED", welcomeMsg);
+		}
+
 
 		brick2 = connectToBrick2();
-		JSONObject welcomeMsg2 = new JSONObject();
-		comp.out.sendJSONObj("BRICKS_CONNECTED", welcomeMsg2);
+		if(comp != null){
+			JSONObject welcomeMsg2 = new JSONObject();
+			comp.out.sendJSONObj("BRICKS_CONNECTED", welcomeMsg2);
+		}
 
 		// Set initial diplay.
 		t.clear();
@@ -108,14 +113,18 @@ public class Main {
 
 		// get ball platform coordinates lying along y-axis
 		double[][] ballPlatformCoords = {
-				{60,60},
-				{60 + 3*2.54, 60 + 12*2.54}
+				{30,30},
+				{30 + 3*2.54, 30 + 12*2.54}
 		};
 		KinematicModel.BALL_COLORS targColor = KinematicModel.BALL_COLORS.RED;
 
 		// initialize the BallLoader
+		System.out.println("initializing ballLoader");
 		BallLoader ballLoader = new BallLoader(brick2, comp, driver, targColor, ballPlatformCoords);
 
+		System.out.println("initialized ballLoader.. Start fetch procedure");
+
+		ballLoader.shootAllBalls();
 
 
 		// Grab balls?
@@ -133,19 +142,22 @@ public class Main {
 
 
 	/**
-	 * Initialized the connection with brick2. Returns a connection object
+	 * Initialized the connection with brick2. Returns a connection object or
 	 * @return Connection object with brick2
      */
 	private static Connection connectToBrick2(){
 		Connection brick2 = new Connection();
 
 		// wait for brick2 to connect.. 10 second timeout
-		brick2.accept(KinematicModel.BRICK_PORT, KinematicModel.BRICK_TIMEOUT);
-		brick2.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
+		boolean success = brick2.accept(KinematicModel.BRICK_PORT, KinematicModel.BRICK_TIMEOUT);
+		if(success){
+			brick2.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
+			brick2.listen(100);
 
-		brick2.listen(100);
-
-		return brick2;
+			return brick2;
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -156,12 +168,14 @@ public class Main {
 		Connection comp = new Connection();
 
 		// wait for comp to connect.. 10 second timeout
-		comp.connect(KinematicModel.COMP_HOST, KinematicModel.COMP_PORT);
-		comp.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
-
-		comp.listen(500);
-
-		return comp;
+		boolean successfullyConnected = comp.connect(KinematicModel.COMP_HOST, KinematicModel.COMP_PORT);
+		if(successfullyConnected){
+			comp.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
+			comp.listen(500);
+			return comp;
+		} else {
+			return null;
+		}
 	}
 
 	/**

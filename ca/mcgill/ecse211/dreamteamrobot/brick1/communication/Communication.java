@@ -16,8 +16,6 @@ public class Communication extends Thread{
     private Connection brick2;
     private Connection comp;
 
-
-
     private int CYCLE_TIME;
 
     public Communication(Driver driver, Connection brick2, Connection comp){
@@ -25,8 +23,8 @@ public class Communication extends Thread{
         this.brick2 = brick2;
         this.comp = comp;
 
-        this.initializeRoutes(this.brick2);
-        this.initializeRoutes(this.comp);
+        if(this.comp != null) this.initializeRoutes(this.comp);
+        if(this.brick2 != null) this.initializeRoutes(this.brick2);
     }
 
     private void initializeRoutes(Connection con){
@@ -40,21 +38,22 @@ public class Communication extends Thread{
     public void run(){
         while(true){
 
-            // send the heartbeat to computer
-            sendHeartBeat(this.comp);
 
-            // execute various handlers
-            handleNavTo(this.comp);
-            handleNavTo(this.brick2);
+            if(this.comp != null){
+                // send the heartbeat to computer
+                sendHeartBeat(this.comp);
 
-            handleTurnTo(this.comp);
-            handleTurnTo(this.brick2);
+                // execute various handlers
+                handleNavTo(this.comp);
+                handleTurnTo(this.comp);
+                handleUpdateOdo(this.comp);
+            }
 
-            handleUpdateOdo(this.comp);
-            handleUpdateOdo(this.brick2);
-
-
-
+            if(this.brick2 != null){
+                handleNavTo(this.brick2);
+                handleTurnTo(this.brick2);
+                handleUpdateOdo(this.brick2);
+            }
 
             // sleep the thread
             try {

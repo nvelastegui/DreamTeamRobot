@@ -41,10 +41,11 @@ public class Main {
         t.drawString("<                >", 0, 5);
 
         comp = connectToComp();
-        JSONObject welcomeMsg = new JSONObject();
-        welcomeMsg.put("client", "brick2");
-        comp.out.sendJSONObj("CLIENT_CONNECTED", welcomeMsg);
-
+        if(comp != null){
+            JSONObject welcomeMsg = new JSONObject();
+            welcomeMsg.put("client", "brick2");
+            comp.out.sendJSONObj("CLIENT_CONNECTED", welcomeMsg);
+        }
 
         brick1 = connectToBrick1();
 
@@ -111,7 +112,10 @@ public class Main {
         Connection brick1 = new Connection();
 
         // wait for brick1 to connect.. 10 second timeout
-        brick1.connect(KinematicModel.BRICK1_HOST, KinematicModel.BRICK_PORT);
+        boolean success = brick1.connect(KinematicModel.BRICK1_HOST, KinematicModel.BRICK_PORT);
+        while(!success){
+            success = brick1.connect(KinematicModel.BRICK1_HOST, KinematicModel.BRICK_PORT);
+        }
         brick1.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
 
         brick1.listen(100);

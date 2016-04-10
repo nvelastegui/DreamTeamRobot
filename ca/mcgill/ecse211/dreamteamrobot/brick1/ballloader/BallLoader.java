@@ -7,6 +7,7 @@ import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.connection.Connection;
 import com.sun.beans.util.Cache;
 import lejos.robotics.mapping.NavigationModel;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -50,7 +51,9 @@ public class BallLoader {
 
         // initialize the queues as needed :
         this.brick2.queue.registerQueue(KinematicModel.ROUTES.CLAWS_CLOSED.toString());
+        this.brick2.queue.registerQueue(KinematicModel.ROUTES.CLAWS_MOVED.toString());
         this.brick2.queue.registerQueue(KinematicModel.ROUTES.BALL_COLOUR.toString());
+        this.brick2.queue.registerQueue(KinematicModel.ROUTES.FINISHED_SHOOT.toString());
     }
 
     /**
@@ -58,6 +61,7 @@ public class BallLoader {
      */
     public void shootAllBalls(){
         while(this.TargetBall <= 3){
+            System.out.println("fetching ball : "+this.TargetBall);
             fetchBall();
 
             // validate if the ball is the right color
@@ -65,9 +69,11 @@ public class BallLoader {
             boolean red = (this.state == STATES.HOLDING_RED && this.TargetColor == KinematicModel.BALL_COLORS.RED);
             if(red || blue){
                 // holding a valid ball
+                System.out.println("shooting ball : "+this.TargetBall);
                 moveToShoot();
             } else {
                 // throw away the ball
+                System.out.println("throwing ball : "+this.TargetBall);
                 moveToThrowAway();
             }
             shootBall();
@@ -211,11 +217,11 @@ public class BallLoader {
 
     public void closeGripsSync(){
         JSONObject closeAngle = new JSONObject();
-        closeAngle.put("claws_angle", -KinematicModel.CLASP_MOTOR_ROTATION_ANGLE_FOR_OPEN_OR_CLOSE);
+        closeAngle.put("claws_angle", 0);
         this.brick2.out.sendJSONObj(KinematicModel.ROUTES.CLAWS_MOVE.toString(), closeAngle);
 
-        this.brick2.queue.get(KinematicModel.ROUTES.CLAWS_CLOSED.toString()).clear();
-        while(this.brick2.queue.get(KinematicModel.ROUTES.CLAWS_CLOSED.toString()).pollLast() == null){
+        this.brick2.queue.get(KinematicModel.ROUTES.CLAWS_MOVED.toString()).clear();
+        while(this.brick2.queue.get(KinematicModel.ROUTES.CLAWS_MOVED.toString()).pollLast() == null){
             Main.pause(200);
         }
     }
@@ -236,13 +242,18 @@ public class BallLoader {
         this.brick2.out.sendJSONObj("READ_BALL", null);
 
         if(waitUntilDone){
-            JSONObject response = (JSONObject)this.brick2.queue.get(KinematicModel.ROUTES.BALL_COLOUR.toString()).pollLast();
+            JSONObject response = (JSONObject)this.brick2.queue.popJSON(KinematicModel.ROUTES.BALL_COLOUR.toString());
             while(response == null){
                 Main.pause(200);
-                response = (JSONObject)this.brick2.queue.get(KinematicModel.ROUTES.BALL_COLOUR.toString()).pollLast();
+                response = this.brick2.queue.popJSON(KinematicModel.ROUTES.BALL_COLOUR.toString());
             }
-            double blueDist = euclidDist(KinematicModel.BLUE_RGB, (double[])response.get("ball_colour"));
-            double redDist = euclidDist(KinematicModel.RED_RGB, (double[])response.get("ball_colour"));
+            JSONArray jsonArr = (JSONArray)response.get("ball_colour");
+            double[] javaArr = new double[jsonArr.size()];
+            for(int i=0;i<jsonArr.size();i++){
+                javaArr[i] = Double.parseDouble(jsonArr.get(i).toString());
+            }
+            double blueDist = euclidDist(KinematicModel.BLUE_RGB, javaArr);
+            double redDist = euclidDist(KinematicModel.RED_RGB, javaArr);
 
             if(blueDist < redDist){
                 this.state = STATES.HOLDING_BLUE;
@@ -259,7 +270,7 @@ public class BallLoader {
 
     private double euclidDist(double[] a, double[] b){
         double squaresSum = 0;
-        for (int i=0;i<a.length;i++){
+        for (int i=0;(i<a.length && i<b.length);i++){
             squaresSum += Math.pow(a[i]-b[i], 2);
         }
         return Math.sqrt(squaresSum);

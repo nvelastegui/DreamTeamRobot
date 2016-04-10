@@ -1,26 +1,41 @@
 package ca.mcgill.ecse211.dreamteamrobot.connection;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
+//import java.io.DataOutputStream;
+import java.io.*;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import org.json.simple.*;
 
 public class Out {
-	private DataOutputStream outData;
+	private OutputStream outStream;
+	private OutputStreamWriter outWritter;
+	//private OutputStream outData;
 	private Object lock;
 	
-	public Out(DataOutputStream outData){
-		this.outData = new DataOutputStream (outData);
+	public Out(OutputStream outData){
+		this.outStream = outData;
+
+		if(outData == null){
+			this.outWritter = null;
+		} else {
+			try {
+				this.outWritter = new OutputStreamWriter(outData, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+
 		this.lock = new Object();
 	}
 	
 	public void sendRaw(String str) {
+		if(this.outStream == null || this.outWritter == null) return;
 		try {
 			synchronized(lock){
 				System.out.println("outgoing : "+str);
-				this.outData.writeUTF(str);;
+				this.outWritter.write(str);
+				this.outWritter.write("\n");
+				outWritter.flush();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

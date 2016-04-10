@@ -21,25 +21,33 @@ public class In extends Thread {
 
 	
 	public In(InputStreamReader stream){
-		this.inBuffer = new BufferedReader(stream);
-		this.Incoming = new ArrayDeque<String>();
 		this.lock = new Object();
+		if(stream == null) {
+			this.inBuffer = null;
+		} else {
+			this.inBuffer = new BufferedReader(stream);
+			this.Incoming = new ArrayDeque<String>();
 
-		this.running = true;
+			this.running = true;
+		}
+
 	}
 
 	/*
 	 * Reads one line from the TCP socket connection
 	 */
 	public String readLine(){
+		if(this.inBuffer == null)return null;
+
 		StringBuilder sb = new StringBuilder();
 		try {
 			sb.append(inBuffer.readLine());
+			return sb.toString();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return sb.toString();
 	}
 	
 //	public String readLine(){
@@ -66,7 +74,7 @@ public class In extends Thread {
 		String curLine;
 		while(isRunning()){
 			curLine = readLine();
-			if(curLine != null && curLine != ""){
+			if(curLine != null && curLine != "" && curLine != "null"){
 				synchronized(lock){
 					System.out.println("incoming : "+curLine);
 					this.queue.processLine(curLine);
