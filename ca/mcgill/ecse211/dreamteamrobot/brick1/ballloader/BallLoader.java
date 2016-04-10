@@ -5,8 +5,6 @@ import ca.mcgill.ecse211.dreamteamrobot.brick1.main.Driver;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.main.Main;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.connection.Connection;
-import com.sun.beans.util.Cache;
-import lejos.robotics.mapping.NavigationModel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
