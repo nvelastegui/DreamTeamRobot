@@ -144,6 +144,9 @@ public class Main {
 		/** START OFFENSIVE! */
 		driver.turnOn();
 
+		Button.ESCAPE.waitForPress();
+		System.exit(0);
+
 
 	}
 

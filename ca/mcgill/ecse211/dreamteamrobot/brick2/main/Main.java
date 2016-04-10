@@ -68,6 +68,9 @@ public class Main {
         // start listening for messages
         gunner.start();
 
+        Button.ESCAPE.waitForPress();
+        System.exit(0);
+
         // Debugging: Testing shooting mechanism.
 //        while (true) {
 //
