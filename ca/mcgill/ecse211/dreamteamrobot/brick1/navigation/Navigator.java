@@ -356,6 +356,8 @@ public class Navigator extends Thread {
 					Location currentPosition = getPositionFromOdometer();
 					if (checkEmergency()) {
 						if (stateOA == StateObstacleAvoidance.ON) {
+							leftMotor.stop();
+							rightMotor.stop();
 							state = State.EMERGENCY;
 							avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor, leftMotor, rightMotor);
 							avoidance.start();
