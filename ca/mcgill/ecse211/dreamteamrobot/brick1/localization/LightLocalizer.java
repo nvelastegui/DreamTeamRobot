@@ -68,14 +68,17 @@ public class LightLocalizer {
 		rightMotor.forward();
 		while (true) {
 
-			if (!leftSensorHasSeenLine) if (colourPollerLeft.getSensorValue() < KinematicModel.lightLocalization_lineThreshold) {
+			double leftVal = colourPollerLeft.getSensorValue();
+			double rightVal = colourPollerRight.getSensorValue();
+
+			if (!leftSensorHasSeenLine) if (leftVal < KinematicModel.lightLocalization_lineThreshold) {
 				leftSensorSeesLine_LeftTachoCount = leftMotor.getTachoCount();
 				leftSensorSeesLine_RightTachoCount = rightMotor.getTachoCount();
 				Sound.twoBeeps();
 				leftSensorHasSeenLine = true;
 				if (firstSensor == firstSensorToHit.NONE) firstSensor = firstSensorToHit.LEFT;
 			}
-			if (!rightSensorHasSeenLine) if (colourPollerRight.getSensorValue() < KinematicModel.lightLocalization_lineThreshold) {
+			if (!rightSensorHasSeenLine) if (rightVal < KinematicModel.lightLocalization_lineThreshold) {
 				rightSensorSeesLine_LeftTachoCount = leftMotor.getTachoCount();
 				rightSensorSeesLine_RightTachoCount = rightMotor.getTachoCount();
 				Sound.twoBeeps();
