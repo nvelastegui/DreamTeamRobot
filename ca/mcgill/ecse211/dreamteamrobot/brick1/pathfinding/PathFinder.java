@@ -216,7 +216,7 @@ public class PathFinder {
      * Given starting block and ending block, generates path between them.
      * @param startBlock start block
      * @param endBlock end block
-     * @return Path between startBlock and endBlock if such a path exists. Null if not path exists.
+     * @return Path between startBlock and endBlock if such a path exists. Null if no path exists.
      */
     private static List<Integer> generateBlockPath (int startBlock, int endBlock) {
 
@@ -224,8 +224,18 @@ public class PathFinder {
         bfsQueue = new LinkedList<>();
         visitedNodes = new ArrayList<>();
 
-        // Run breadth-first search.
-        return bfsSearch(startBlock, endBlock);
+        // Get the raw block path from BFS
+        List<Integer> blockPathWithStartBlockAtFront = bfsSearch(startBlock, endBlock);
+        if (blockPathWithStartBlockAtFront == null) return null;
+
+        // We don't want the starting block in the path (at the start) because having the
+        // first destination be so close to the starting point will mess up navigator.
+        // So we remove the first block from the list, which corresponds to (x,y) in the center
+        // of the block that the robot starts in.
+        blockPathWithStartBlockAtFront.remove(0);
+
+        // Return block path now
+        return blockPathWithStartBlockAtFront;
 
     }
 
