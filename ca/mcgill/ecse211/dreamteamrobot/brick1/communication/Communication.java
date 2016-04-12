@@ -97,7 +97,7 @@ public class Communication extends Thread{
         // Navigator data
         try{
             //JSONObject navData = new JSONObject();
-            heartBeat.put("nav_state", nav.getState().toString());
+            heartBeat.put("nav_state", nav.getNavState());
             heartBeat.put("nav_X", nav.getCurrentDestination().getX());
             heartBeat.put("nav_Y", nav.getCurrentDestination().getY());
             //heartBeat.put("navigator", navData);

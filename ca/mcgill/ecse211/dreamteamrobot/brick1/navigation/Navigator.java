@@ -25,6 +25,7 @@ public class Navigator extends Thread {
 	enum State {INIT, TURNING, TRAVELLING, EMERGENCY};
 	enum StateObstacleAvoidance {OFF, ON};
 	private boolean status;
+	private State navState;
 	private StateObstacleAvoidance stateOA;
 
 	/** Variables: Motors */
@@ -42,6 +43,7 @@ public class Navigator extends Thread {
 	private double tolTheta;
 	private static double tolEuclideanDistance = KinematicModel.navigator_tolEuclideanDistance;
 	private static int    tolCloseness = KinematicModel.navigator_obstacleDistanceTolerance;
+	private static double wallDetectionTolerance = 10.0;
 
 	/**
 	 * Constructor.
@@ -302,12 +304,30 @@ public class Navigator extends Thread {
 		return status;
 	}
 
+	public String getNavState () {
+		return this.navState.toString();
+	}
 	/**
 	 * @return True if in state of emergency. False if not.
 	 */
 	private boolean checkEmergency() {
 		// Return true if either sensor is reading a value below tolerance. (ie. an object might be nearby).
-		return ((usPollerLeft.getDistance() < tolCloseness) || (usPollerRight.getDistance() < tolCloseness));
+		double leftP = usPollerLeft.getDistance();
+		double rightP = usPollerRight.getDistance();
+		if((leftP < tolCloseness) || (rightP < tolCloseness)){
+			System.out.println("leftP:" + leftP + ", isDetectingWall:"+isDetectingWall(leftP)+" - rightP:"+rightP + ", isDetectingWall:"+isDetectingWall(rightP));
+		}
+		return ((leftP < tolCloseness) || (rightP < tolCloseness)) && !isDetectingWall(leftP) && !isDetectingWall(rightP);
+	}
+
+	private boolean isDetectingWall(double pollerDist){
+		double detectionX = this.odometer.getX() + pollerDist * Math.sin(this.odometer.getTheta());
+		double detectionY = this.odometer.getY() + pollerDist * Math.cos(this.odometer.getTheta());
+
+		boolean xWall = Math.min(Math.abs(detectionX - (-30)), Math.abs(detectionX - (330))) < wallDetectionTolerance;
+		boolean yWall = Math.min(Math.abs(detectionY - (-30)), Math.abs(detectionY - (330))) < wallDetectionTolerance;
+
+		return xWall || yWall;
 	}
 
 	public static int convertDistance(double radius, double distance) {
@@ -329,7 +349,7 @@ public class Navigator extends Thread {
 		ObstacleAvoider avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor, leftMotor, rightMotor);
 
 		while (true) {
-//			System.out.println("State: " + state);
+			this.navState = state;
 
 			switch (state) {
 				/** */

@@ -38,7 +38,7 @@ public class KinematicModel {
     /** Light Localization Constants
      *
      */
-    public static final int    lightLocalization_forwardSpeed = 80;
+    public static final int    lightLocalization_forwardSpeed = 50;
     public static final int    lightLocalization_backwardSpeed = 60;
     public static final double lightLocalization_colourSensorSeparation = 8.00;
     public static final int    lightLocalization_lineThreshold = 40;
@@ -82,9 +82,11 @@ public class KinematicModel {
     public static final int BRICK_PORT = 8080;
     public static final int COMP_PORT = 8081;
 
-    public static final String BRICK1_HOST = "10.0.1.1";
-    public static final String BRICK2_HOST = "10.0.1.4";
-    public static final String COMP_HOST = "10.0.1.2";
+    //public static final String BRICK1_HOST = "10.0.1.1";
+    //public static final String BRICK2_HOST = "10.0.1.4";
+    public static final String BRICK1_HOST = "192.168.43.67";
+    public static final String BRICK2_HOST = "192.168.43.111";
+    public static final String COMP_HOST = "192.168.43.104";
 
     public static final int BRICK_TIMEOUT = 10000;      // 10 seconds
 

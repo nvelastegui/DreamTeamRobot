@@ -127,22 +127,48 @@ public class Main {
 		LCDDisplay lcdDisplay = new LCDDisplay(driver);
 		lcdDisplay.start();
 
-		/** Do Localization */
-		getLocalized(driver);
+		// decide between manual and autonomous modes
+		Sound.beepSequenceUp();
+		int b = Button.waitForAnyPress(5000);
+		Sound.beepSequenceUp();
 
-		/** Start stuff that wasn't started because it interfered with localization */
-		// Start odometry correction.
-		driver.getNavigator().setThetaToleranceHigh();
-		driver.getOdometerCorrection().start();
+		switch (b){
+			case Button.ID_DOWN:
+				// manual mode
 
-		// Start obstacle avoidance on navigator.
-		driver.getNavigator().setObstacleAvoidanceOn();
+				/** Start stuff that wasn't started because it interfered with localization */
+				// Start odometry correction.
+				driver.getNavigator().setThetaToleranceHigh();
+				driver.getOdometerCorrection().start();
 
-		/** Initialize the BallLoader */
-		driver.initializeBallLoader(brick2, comp);
+				// Start obstacle avoidance on navigator.
+				driver.getNavigator().setObstacleAvoidanceOn();
 
-		/** START OFFENSIVE! */
-		driver.turnOn();
+				/** Initialize the BallLoader */
+				driver.initializeBallLoader(brick2, comp);
+
+				break;
+			default:
+				// autonomous
+				/** Do Localization */
+				getLocalized(driver);
+
+				/** Start stuff that wasn't started because it interfered with localization */
+				// Start odometry correction.
+				driver.getNavigator().setThetaToleranceHigh();
+				driver.getOdometerCorrection().start();
+
+				// Start obstacle avoidance on navigator.
+				driver.getNavigator().setObstacleAvoidanceOn();
+
+				/** Initialize the BallLoader */
+				driver.initializeBallLoader(brick2, comp);
+
+				/** START OFFENSIVE! */
+				driver.turnOn();
+				break;
+		}
+
 
 		Button.ESCAPE.waitForPress();
 		System.exit(0);
