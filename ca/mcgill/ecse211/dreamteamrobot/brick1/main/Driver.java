@@ -167,7 +167,7 @@ public class Driver extends Thread {
     @Override
     public void run() {
 
-        navigator.setObstacleAvoidanceOn();
+        //navigator.setObstacleAvoidanceOn();
 
         while (true) {
 
@@ -223,6 +223,7 @@ public class Driver extends Thread {
 
                     // If a path was made, drive to offense zone along that path.
                     if (pathToOffensiveZone != null) {
+                        pathToOffensiveZone.remove(0);
                         Sound.twoBeeps();
                         // Basically: cycle through the locations in the path, telling nav to go each one.
                         for (Location loc : pathToOffensiveZone) {

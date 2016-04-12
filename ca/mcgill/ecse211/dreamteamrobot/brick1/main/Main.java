@@ -141,9 +141,6 @@ public class Main {
 				driver.getNavigator().setThetaToleranceHigh();
 				driver.getOdometerCorrection().start();
 
-				// Start obstacle avoidance on navigator.
-				driver.getNavigator().setObstacleAvoidanceOn();
-
 				/** Initialize the BallLoader */
 				driver.initializeBallLoader(brick2, comp);
 
@@ -159,7 +156,7 @@ public class Main {
 				driver.getOdometerCorrection().start();
 
 				// Start obstacle avoidance on navigator.
-				driver.getNavigator().setObstacleAvoidanceOn();
+				//driver.getNavigator().setObstacleAvoidanceOn();
 
 				/** Initialize the BallLoader */
 				driver.initializeBallLoader(brick2, comp);
