@@ -223,6 +223,14 @@ public class Driver extends Thread {
 
                     // If a path was made, drive to offense zone along that path.
                     if (pathToOffensiveZone != null) {
+
+                        // DEBUG
+                        System.out.println("\n\nINITIAL PATH\n");
+                        for (Location current : pathToOffensiveZone) {
+                            System.out.println("Location: (" + current.getX() + "," + current.getY() + ")");
+                        }
+                        System.out.println("\n");
+
                         pathToOffensiveZone.remove(0);
                         Sound.twoBeeps();
                         // Basically: cycle through the locations in the path, telling nav to go each one.
