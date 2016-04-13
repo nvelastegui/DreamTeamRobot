@@ -394,7 +394,10 @@ public class PathFinder {
         expensiveList.remove(0);
 
         // Cycle through expensive list
-        for (Location current : expensiveList) {
+        while (expensiveList.size() > 0) {
+
+            // Grab current location.
+            Location current = expensiveList.get(0);
 
             // Grab next location
             Location nextLocation;
@@ -422,6 +425,8 @@ public class PathFinder {
                 direction = determineDirection(current, nextLocation);
                 // Add the current location to the simplified list.
                 simplifiedPath.add(current);
+                // Set the previous location properly.
+                lastLocation = current;
                 // Remove it from expensive list.
                 expensiveList.remove(current);
             }
