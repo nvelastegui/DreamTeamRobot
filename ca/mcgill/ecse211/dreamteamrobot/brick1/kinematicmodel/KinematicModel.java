@@ -56,8 +56,8 @@ public class KinematicModel {
     public static final double navigator_tolThetaHigh = 0.10;
     public static final double navigator_tolEuclideanDistance = 1.0;
     public static final int    navigator_obstacleDistanceTolerance = 15;
-    public static final int    navigator_forwardSpeed = 100;
-    public static final int    navigator_rotateSpeed = 70;
+    public static final int    navigator_forwardSpeed = 150;
+    public static final int    navigator_rotateSpeed = 80;
 
     /** Obstacle Avoider Constants
      *
@@ -73,7 +73,7 @@ public class KinematicModel {
     /** Wifi Connection Constants
      *  Constants related to wifi connection.
      */
-    public static final String WIFI_SERVER_IP = "192.168.0.101"; //"localhost";
+    public static final String WIFI_SERVER_IP = "192.168.10.200"; //"localhost";
     public static final int    TEAM_NUMBER = 12;
 
     /**
