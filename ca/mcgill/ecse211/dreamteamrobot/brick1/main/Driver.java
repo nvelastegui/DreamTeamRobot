@@ -229,10 +229,10 @@ public class Driver extends Thread {
                                         new Location(15.00, 15.00),
                                         new Location(135.00, 15.00)
                                 );
-                                if (secondPortion != null) pathToOffensiveZone.addAll(secondPortion);
+                                if (secondPortion != null) random.addAll(secondPortion);
+                                pathToOffensiveZone = new ArrayList<>();
+                                pathToOffensiveZone.addAll(random);
                             }
-                            pathToOffensiveZone = new ArrayList<>();
-                            pathToOffensiveZone.addAll(random);
                             break;
                         case 2:
                         case 3:
