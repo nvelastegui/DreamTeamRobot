@@ -36,8 +36,8 @@ public class Main {
 
 	/** Constants: Motor Ports */
 
-	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
-	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+	public static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+	public static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private static final EV3LargeRegulatedMotor leftUltrasonicSensorMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
 	private static final EV3LargeRegulatedMotor rightUltrasonicSensorMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 
@@ -121,89 +121,134 @@ public class Main {
 		}
 
 		/** Connect to WIFI. */
-//		boolean safeToContinue = connectToWifi();
-//		// If connecting to wifi proved perilous, then wait for ESC button
-//		// to quit program.
-//		if (!safeToContinue) {
-//			Button.ESCAPE.waitForPress();
-//			return;
-//		}
-		HashMap<String, Integer> spoofRoundData = new HashMap<>();
-		spoofRoundData.put("SC", 1);
-		spoofRoundData.put("Role", 0);
-		spoofRoundData.put("w1", 4);
-		spoofRoundData.put("d1", 5);
-		spoofRoundData.put("d2", 5);
-		spoofRoundData.put("ll-x", 5);
-		spoofRoundData.put("ll-y", 1);
-		spoofRoundData.put("ur-x", 6);
-		spoofRoundData.put("ur-y", 2);
-		spoofRoundData.put("BC", 2);
-		KinematicModel.roundData = spoofRoundData;
+		boolean safeToContinue = connectToWifi();
+		// If connecting to wifi proved perilous, then wait for ESC button
+		// to quit program.
+		if (!safeToContinue) {
+			Sound.twoBeeps();
+			Sound.twoBeeps();
+			Sound.twoBeeps();
+			Button.ESCAPE.waitForPress();
+			return;
+		}
+//		HashMap<String, Integer> spoofRoundData = new HashMap<>();
+//		spoofRoundData.put("SC", 1);
+//		spoofRoundData.put("Role", 0);
+//		spoofRoundData.put("w1", 4);
+//		spoofRoundData.put("d1", 5);
+//		spoofRoundData.put("d2", 5);
+//		spoofRoundData.put("ll-x", 5);
+//		spoofRoundData.put("ll-y", 1);
+//		spoofRoundData.put("ur-x", 6);
+//		spoofRoundData.put("ur-y", 2);
+//		spoofRoundData.put("BC", 2);
+//		KinematicModel.roundData = spoofRoundData;
 
-		/** Do Brick 1 Driver setup stuff */
-		// Create a new instance of driver thread.
-		Driver driver = new Driver(
-				leftMotor,
-				rightMotor,
-				leftUltrasonicSensorMotor,
-				rightUltrasonicSensorMotor,
-				leftUltrasonicSensorPort,
-				rightUltrasonicSensorPort,
-				leftColorSensorPort,
-				rightColorSensorPort
-		);
+		int role = KinematicModel.roundData.get("Role");
 
-		// Run pre-execute procedure (starts subthreads).
-		driver.performPreExecute();
+		switch (role) {
 
-		// initialize communication and handle incoming messages
-		Communication com = new Communication(driver, brick2, comp);
-		com.setCYCLE_TIME(1000);
-		com.start();
+			/** CASE 0: ROBOT PLAYING FORWARD */
+			case 0:
+				/** Do Brick 1 Driver setup stuff */
+				// Create a new instance of driver thread.
+				Driver driver = new Driver(
+						leftMotor,
+						rightMotor,
+						leftUltrasonicSensorMotor,
+						rightUltrasonicSensorMotor,
+						leftUltrasonicSensorPort,
+						rightUltrasonicSensorPort,
+						leftColorSensorPort,
+						rightColorSensorPort
+				);
 
-		// Set up lcdDisplay and run it.
-		LCDDisplay lcdDisplay = new LCDDisplay(driver);
-		lcdDisplay.start();
+				// Run pre-execute procedure (starts subthreads).
+				driver.performPreExecute();
 
-		// decide between manual and autonomous modes
-		Sound.beepSequenceUp();
-		int b = Button.waitForAnyPress(5000);
-		Sound.beepSequenceUp();
+				// initialize communication and handle incoming messages
+				Communication com = new Communication(driver, brick2, comp);
+				com.setCYCLE_TIME(1000);
+				com.start();
 
-		switch (b){
-			case Button.ID_DOWN:
-				// manual mode
+				// Set up lcdDisplay and run it.
+				LCDDisplay lcdDisplay = new LCDDisplay(driver);
+				lcdDisplay.start();
 
-				/** Start stuff that wasn't started because it interfered with localization */
-				// Start odometry correction.
-				driver.getNavigator().setThetaToleranceHigh();
-				driver.getOdometerCorrection().start();
+				// decide between manual and autonomous modes
+				Sound.beepSequenceUp();
+				int b = Button.waitForAnyPress(5000);
+				Sound.beepSequenceUp();
 
-				/** Initialize the BallLoader */
-				driver.initializeBallLoader(brick2, comp);
+				switch (b){
+					case Button.ID_DOWN:
+						// manual mode
 
+						/** Start stuff that wasn't started because it interfered with localization */
+						// Start odometry correction.
+						driver.getNavigator().setThetaToleranceHigh();
+						driver.getOdometerCorrection().start();
+
+						/** Initialize the BallLoader */
+						driver.initializeBallLoader(brick2, comp);
+
+						break;
+					default:
+						// autonomous
+						/** Do Localization */
+						getLocalized(driver);
+
+						/** Start stuff that wasn't started because it interfered with localization */
+						// Start odometry correction.
+						driver.getNavigator().setThetaToleranceHigh();
+						driver.getOdometerCorrection().start();
+
+						// Start obstacle avoidance on navigator.
+						//driver.getNavigator().setObstacleAvoidanceOn();
+
+						/** Initialize the BallLoader */
+						driver.initializeBallLoader(brick2, comp);
+
+						/** START OFFENSIVE! */
+						driver.turnOn();
+						break;
+				}
 				break;
-			default:
+
+			/** CASE 1: ROBOT PLAYING DEFENSE */
+			case 1:
+
+				// Create a new instance of driver thread.
+				Driver driver2 = new Driver(
+						leftMotor,
+						rightMotor,
+						leftUltrasonicSensorMotor,
+						rightUltrasonicSensorMotor,
+						leftUltrasonicSensorPort,
+						rightUltrasonicSensorPort,
+						leftColorSensorPort,
+						rightColorSensorPort
+				);
+
+				// Run pre-execute procedure (starts subthreads).
+				driver2.performPreExecute();
+
 				// autonomous
 				/** Do Localization */
-				getLocalized(driver);
+				getLocalized(driver2);
 
 				/** Start stuff that wasn't started because it interfered with localization */
 				// Start odometry correction.
-				driver.getNavigator().setThetaToleranceHigh();
-				driver.getOdometerCorrection().start();
+				driver2.getNavigator().setThetaToleranceHigh();
+				driver2.getOdometerCorrection().start();
 
-				// Start obstacle avoidance on navigator.
-				//driver.getNavigator().setObstacleAvoidanceOn();
+				driver2.turnOn();
 
-				/** Initialize the BallLoader */
-				driver.initializeBallLoader(brick2, comp);
-
-				/** START OFFENSIVE! */
-				driver.turnOn();
 				break;
+
 		}
+
+
 
 
 		Button.ESCAPE.waitForPress();
