@@ -18,6 +18,7 @@ import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -219,16 +220,18 @@ public class Driver extends Thread {
                     List<Location> pathToOffensiveZone = null;
                     switch (startingCorner) {
                         case 1:
-                            pathToOffensiveZone = PathFinder.generatePath(
+                            List<Location> random = PathFinder.generatePath(
                                     new Location(odometer.getX(), odometer.getY()),
                                     new Location(15.00, 15.00)
                             );
-                            if (pathToOffensiveZone != null) {
+                            if (random != null) {
                                 List<Location> secondPortion = PathFinder.generatePath(
                                         new Location(15.00, 15.00),
                                         new Location(135.00, 15.00)
                                 );
-                                if (secondPortion != null) pathToOffensiveZone.addAll(secondPortion);
+                                if (secondPortion != null) random.addAll(secondPortion);
+                                pathToOffensiveZone = new ArrayList<>();
+                                pathToOffensiveZone.addAll(random);
                             }
                             break;
                         case 2:
