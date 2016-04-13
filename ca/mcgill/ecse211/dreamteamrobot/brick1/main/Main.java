@@ -36,8 +36,8 @@ public class Main {
 
 	/** Constants: Motor Ports */
 
-	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
-	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+	public static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+	public static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private static final EV3LargeRegulatedMotor leftUltrasonicSensorMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
 	private static final EV3LargeRegulatedMotor rightUltrasonicSensorMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 
@@ -129,15 +129,15 @@ public class Main {
 //			return;
 //		}
 		HashMap<String, Integer> spoofRoundData = new HashMap<>();
-		spoofRoundData.put("SC", 1);
+		spoofRoundData.put("SC", 2);
 		spoofRoundData.put("Role", 0);
 		spoofRoundData.put("w1", 4);
 		spoofRoundData.put("d1", 5);
 		spoofRoundData.put("d2", 5);
-		spoofRoundData.put("ll-x", 5);
-		spoofRoundData.put("ll-y", 1);
-		spoofRoundData.put("ur-x", 6);
-		spoofRoundData.put("ur-y", 2);
+		spoofRoundData.put("ll-x", 10);
+		spoofRoundData.put("ll-y", 6);
+		spoofRoundData.put("ur-x", 11);
+		spoofRoundData.put("ur-y", 7);
 		spoofRoundData.put("BC", 2);
 		KinematicModel.roundData = spoofRoundData;
 
@@ -169,7 +169,7 @@ public class Main {
 		// decide between manual and autonomous modes
 		Sound.beepSequenceUp();
 		int b = Button.waitForAnyPress(5000);
-		Sound.beepSequenceUp();
+		Sound.beepSequence();
 
 		switch (b){
 			case Button.ID_DOWN:

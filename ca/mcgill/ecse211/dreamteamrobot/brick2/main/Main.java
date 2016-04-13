@@ -134,17 +134,14 @@ public class Main {
         Connection comp = new Connection();
 
         // wait for comp to connect.. 10 second timeout
-        boolean success = comp.connect(KinematicModel.COMP_HOST, KinematicModel.COMP_PORT);
-        if(!success){
+        boolean successfullyConnected = comp.connect(KinematicModel.COMP_HOST, KinematicModel.COMP_PORT);
+        if(successfullyConnected){
+            comp.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
+            comp.listen(500);
+            return comp;
+        } else {
             return null;
         }
-        comp.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
-
-        comp.listen(500);
-
-        System.out.println("brick2 Connected to comp and listening");
-
-        return comp;
     }
 
 

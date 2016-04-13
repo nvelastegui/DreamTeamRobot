@@ -1,12 +1,18 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.ballloader;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.localization.Localization;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.main.Driver;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.main.Main;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Location;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding.PathFinder;
 import ca.mcgill.ecse211.dreamteamrobot.connection.Connection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by Angus on 4/5/2016.
@@ -136,7 +142,7 @@ public class BallLoader {
         Navigator tempNav = navigator;
 
         // move to firing position..
-        tempNav.travelTo(KinematicModel.SHOOTING_POS[0], KinematicModel.SHOOTING_POS[1]);
+        travelToPath(KinematicModel.SHOOTING_POS[0], KinematicModel.SHOOTING_POS[1]);
         while (tempNav.isNavigating()){
             Main.pause(500);
         }
@@ -296,22 +302,44 @@ public class BallLoader {
     }
 
     public void moveToTargetBall(){
-        Navigator tempNav = navigator;
+        //Navigator tempNav = navigator;
+        Odometer tempOdo = navigator.getOdometer();
 
         //@TODO : need to set up better approach than driving right in to the ball..
         double[][] wayPoints = getBestApproach(this.TargetBall, this.ballCoordinates);
 
-        // line up with target ball..
-        tempNav.travelTo(wayPoints[0][0], wayPoints[0][1]);
-        while (tempNav.isNavigating()){
-            Main.pause(500);
-        }
+        travelToPath(wayPoints[0][0], wayPoints[0][1]);
 
         // slowly approach the ball
-        tempNav.travelTo(wayPoints[1][0], wayPoints[1][1]);
-        while (tempNav.isNavigating()){
+        navigator.travelTo(wayPoints[1][0], wayPoints[1][1]);
+        while (navigator.isNavigating()){
             Main.pause(500);
         }
+    }
+
+    private void travelToPath(double xCoord, double yCoord){
+        Odometer tempOdo = navigator.getOdometer();
+
+        // line up with target ball..
+        List<Location> pathPoints = PathFinder.generatePath(
+                new Location(tempOdo.getX(), tempOdo.getY()),
+                new Location(xCoord, yCoord)
+        );
+
+        if(pathPoints == null){
+            return;
+        }
+
+        for (Location current:pathPoints) {
+            navigator.travelTo(current.getX(), current.getY());
+            while (navigator.isNavigating()){
+                Main.pause(500);
+            }
+        }
+    }
+
+    private void quickLocalize(){
+
     }
 
     public STATES getState() {
