@@ -272,6 +272,7 @@ public class PathFinder {
             // Is it the vertex we want?
             if (current.getBlock() == searchingForVertex) {
                 // If it is, return the path to it plus itself appended to the end.
+                pathToNode.add(current.getBlock());
                 return pathToNode;
             }
 
