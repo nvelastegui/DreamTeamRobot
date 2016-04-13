@@ -331,9 +331,26 @@ public class Driver extends Thread {
                  *  Creates path to
                  */
                 case DRIVING_TO_BALLS:
-                    ballLoader.moveToTargetBall();
-                    state = State.LOADING;
-                    break;
+                    double[] ll = {KinematicModel.roundData.get("ll-x")*30, KinematicModel.roundData.get("ll-y")*30};
+                    double[] ur = {KinematicModel.roundData.get("ur-x")*30, KinematicModel.roundData.get("ur-y")*30};
+                    double[][] ballCoordinates = ballLoader.computeCoordsOfBalls(ll, ur);
+                    List<Location> pathToBalls = PathFinder.generatePath(
+                            new Location(odometer.getX(), odometer.getY()),
+                            new Location(ballCoordinates[0][0] - 15.00, ballCoordinates[0][1])
+                    );
+
+                    for (Location loc : pathToBalls) {
+                        navigator.travelTo(loc.getX(), loc.getY());
+                        while (navigator.isNavigating()) {
+                            try {Thread.sleep(100);}
+                            catch (InterruptedException e) {e.printStackTrace();}
+                        }
+                    }
+
+                    //ballLoader.moveToTargetBall();
+                    //state = State.LOADING;
+                    //break;
+                    return;
 
                 /** CASE: LOADING
                  *  Basically does nothing while waiting for brick2 to load balls.
