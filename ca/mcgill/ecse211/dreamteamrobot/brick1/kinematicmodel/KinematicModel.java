@@ -53,7 +53,7 @@ public class KinematicModel {
      *
      */
     public static final double navigator_tolThetaLow = 0.06;
-    public static final double navigator_tolThetaHigh = 0.15;
+    public static final double navigator_tolThetaHigh = 0.09;
     public static final double navigator_tolEuclideanDistance = 1.0;
     public static final int    navigator_obstacleDistanceTolerance = 15;
     public static final int    navigator_forwardSpeed = 150;
@@ -84,9 +84,9 @@ public class KinematicModel {
 
     //public static final String BRICK1_HOST = "10.0.1.1";
     //public static final String BRICK2_HOST = "10.0.1.4";
-    public static final String BRICK1_HOST = "192.168.43.67";
-    public static final String BRICK2_HOST = "192.168.43.111";
-    public static final String COMP_HOST = "192.168.43.104";
+    public static final String BRICK1_HOST = "192.168.10.123";
+    public static final String BRICK2_HOST = "192.168.10.124";
+    public static final String COMP_HOST = "192.168.10.102";
 
     public static final int BRICK_TIMEOUT = 10000;      // 10 seconds
 

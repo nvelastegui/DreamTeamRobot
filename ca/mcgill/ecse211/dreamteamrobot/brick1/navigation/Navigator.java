@@ -258,9 +258,17 @@ public class Navigator extends Thread {
 	 */
 	private boolean isFacingDestination (double destinationAngle) {
 		double currentTheta = odometer.getTheta();
+		double err1 = Math.abs(destinationAngle-currentTheta);
+		double err2 = Math.abs(Math.PI*2-currentTheta - destinationAngle);
+
+//		if(currentTheta > Math.PI * 3/2){
+//			return err2 < tolTheta;
+//		} else {
+//			return err1 < tolTheta;
+//		}
 		double err = Math.min(Math.abs(destinationAngle-currentTheta), Math.abs(Math.PI*2-currentTheta - destinationAngle));
 		return err < tolTheta;
-		//return ((destinationAngle - tolTheta) < currentTheta) && (currentTheta < (destinationAngle + tolTheta));
+		// return ((destinationAngle - tolTheta) < currentTheta) && (currentTheta < (destinationAngle + tolTheta));
 	}
 
 	/**
@@ -465,14 +473,12 @@ public class Navigator extends Thread {
 				/** */
 				case TRAVELLING:
 					Location currentPosition = getPositionFromOdometer();
-					if (checkEmergency()) {
-						if (stateOA == StateObstacleAvoidance.ON) {
-							leftMotor.stop();
-							rightMotor.stop();
-							state = State.EMERGENCY;
-							avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor, leftMotor, rightMotor);
-							avoidance.start();
-						}
+					if (stateOA == StateObstacleAvoidance.ON && checkEmergency()) {
+						leftMotor.stop();
+						rightMotor.stop();
+						state = State.EMERGENCY;
+						avoidance = new ObstacleAvoider(this, leftUltrasonicSensorMotor, rightUltrasonicSensorMotor, leftMotor, rightMotor);
+						avoidance.start();
 					}
 					else if (!checkIfAtDestination(currentPosition)) {
 						if (isFacingDestination(getDestinationAngle())) {
