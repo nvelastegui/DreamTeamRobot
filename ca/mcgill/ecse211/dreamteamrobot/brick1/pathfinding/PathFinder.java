@@ -306,6 +306,36 @@ public class PathFinder {
     }
 
     /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public static int determineBlockByCoordinate (double x, double y) {
+
+        int divisibleX = ((int) x) / 30;
+        double remainderX = (x) % 30.00;
+        int divisibleY = ((int) y) / 30;
+        double remainderY = (y) % 30.00;
+
+        int block;
+        // If 30 is divisible into start point x at least once, then
+        // the block is between 2 and 11 in the x direction.
+        if (divisibleX > 0) block = divisibleX + 1;
+        else {
+            if (remainderX > 0) block = 1;
+            else block = 0;
+        }
+        // Now we need to figure out how 'high' on the board the current block is.
+        if (divisibleY > 0) block += (divisibleY+1) * 12;
+        else {
+            if (remainderY > 0) block += 12;
+        }
+
+        return block;
+    }
+
+    /**
      * Converts a path represented by a list of blocks into a path represented by a list of locations (x,y).
      * @param blockPath Block path to convert.
      * @return Block path converted to location path.

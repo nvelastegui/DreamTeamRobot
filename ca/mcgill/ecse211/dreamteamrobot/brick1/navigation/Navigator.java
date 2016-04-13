@@ -1,8 +1,10 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.navigation;
 
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding.PathFinder;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.UltrasonicPoller;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.robotics.pathfinding.Path;
 
 /**
  * Navigator is a state machine running on a thread. It manages movement of the robot in the horizontal plane,
@@ -318,6 +320,12 @@ public class Navigator extends Thread {
 			System.out.println("leftP:" + leftP + ", isDetectingWall:"+isDetectingWall(leftP)+" - rightP:"+rightP + ", isDetectingWall:"+isDetectingWall(rightP));
 		}
 		return ((leftP < tolCloseness) || (rightP < tolCloseness)) && !isDetectingWall(leftP) && !isDetectingWall(rightP);
+
+		// TODO: check if robot is facing a wall or something
+
+//		int currentBlock = PathFinder.determineBlockByCoordinate(odometer.getX(), odometer.getY());
+
+
 	}
 
 	private boolean isDetectingWall(double pollerDist){
