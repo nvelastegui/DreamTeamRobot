@@ -216,10 +216,30 @@ public class Driver extends Thread {
 
                     // Generate path to offensive zone. Always move to same point in offensive zone (independent of how tall
                     // the zone is.
-                    List<Location> pathToOffensiveZone = PathFinder.generatePath(
-                            new Location(odometer.getX(), odometer.getY()),
-                            new Location(135.00, 15.00)
-                    );
+                    List<Location> pathToOffensiveZone = null;
+                    switch (startingCorner) {
+                        case 1:
+                            pathToOffensiveZone = PathFinder.generatePath(
+                                    new Location(odometer.getX(), odometer.getY()),
+                                    new Location(15.00, 15.00)
+                            );
+                            if (pathToOffensiveZone != null) {
+                                List<Location> secondPortion = PathFinder.generatePath(
+                                        new Location(15.00, 15.00),
+                                        new Location(135.00, 15.00)
+                                );
+                                if (secondPortion != null) pathToOffensiveZone.addAll(secondPortion);
+                            }
+                            break;
+                        case 2:
+                        case 3:
+                        case 4:
+                            pathToOffensiveZone = PathFinder.generatePath(
+                                    new Location(odometer.getX(), odometer.getY()),
+                                    new Location(135.00, 15.00)
+                            );
+                            break;
+                    }
 
                     // If a path was made, drive to offense zone along that path.
                     if (pathToOffensiveZone != null) {
