@@ -111,7 +111,7 @@ public class Driver extends Thread {
      * @param brick2
      * @param comp
      */
-    public void initializeBallLoader (Connection brick2, Connection comp, ) {
+    public void initializeBallLoader (Connection brick2, Connection comp) {
         ballLoader = new BallLoader(brick2, comp, navigator);
     }
 

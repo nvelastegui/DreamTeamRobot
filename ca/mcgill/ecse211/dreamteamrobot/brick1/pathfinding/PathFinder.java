@@ -403,7 +403,7 @@ public class PathFinder {
             Location nextLocation;
             try {
                 nextLocation = expensiveList.get(expensiveList.indexOf(current) + 1);
-            } catch (NullPointerException e) {
+            } catch (NullPointerException|IndexOutOfBoundsException e) {
                 // If this is the last location in the list, then just add it the simplified path and break.
                 simplifiedPath.add(current);
                 break;

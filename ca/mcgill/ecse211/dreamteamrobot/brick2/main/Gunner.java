@@ -42,9 +42,12 @@ public class Gunner extends Thread {
         this.brick1 = brick1;
         this.comp = comp;
 
-        comp.queue.registerQueue(KinematicModel.ROUTES.CLAWS_MOVE.toString());
-        comp.queue.registerQueue(KinematicModel.ROUTES.READ_BALL.toString());
-        comp.queue.registerQueue(KinematicModel.ROUTES.EXECUTE_SHOOT.toString());
+        if(comp != null){
+            comp.queue.registerQueue(KinematicModel.ROUTES.CLAWS_MOVE.toString());
+            comp.queue.registerQueue(KinematicModel.ROUTES.READ_BALL.toString());
+            comp.queue.registerQueue(KinematicModel.ROUTES.EXECUTE_SHOOT.toString());
+        }
+
 
         brick1.queue.registerQueue(KinematicModel.ROUTES.CLAWS_MOVE.toString());
         brick1.queue.registerQueue(KinematicModel.ROUTES.READ_BALL.toString());

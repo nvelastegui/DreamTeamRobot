@@ -121,7 +121,7 @@ public class KinematicModel {
     /**
      * Loader Constants (approach distance, etc)
      */
-    public static final double APPROACH_DISTANCE = 10.0;
+    public static final double APPROACH_DISTANCE = 30.0;
     public static final double GRAB_DISTANCE = 0.5;
     public static final double[] SHOOTING_POS = {5*30, 7*30};
     public static final int SHOOTING_HEADING = 90;

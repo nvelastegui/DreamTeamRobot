@@ -302,11 +302,10 @@ public class BallLoader {
     }
 
     public void moveToTargetBall(){
-        //Navigator tempNav = navigator;
-        Odometer tempOdo = navigator.getOdometer();
 
         //@TODO : need to set up better approach than driving right in to the ball..
         double[][] wayPoints = getBestApproach(this.TargetBall, this.ballCoordinates);
+        System.out.println("b");
 
         travelToPath(wayPoints[0][0], wayPoints[0][1]);
 
