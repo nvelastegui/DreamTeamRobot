@@ -309,6 +309,7 @@ public class Navigator extends Thread {
 	public String getNavState () {
 		return this.navState.toString();
 	}
+
 	/**
 	 * @return True if in state of emergency. False if not.
 	 */

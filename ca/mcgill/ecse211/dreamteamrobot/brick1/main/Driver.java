@@ -248,6 +248,7 @@ public class Driver extends Thread {
                                 pathToOffensiveZone = new ArrayList<>();
                                 pathToOffensiveZone.addAll(initialPointCase2);
                             }
+                            break;
                         case 3:
                             List<Location> initialPointCase3 = PathFinder.generatePath(
                                     new Location(odometer.getX(), odometer.getY()),
@@ -262,6 +263,7 @@ public class Driver extends Thread {
                                 pathToOffensiveZone = new ArrayList<>();
                                 pathToOffensiveZone.addAll(initialPointCase3);
                             }
+                            break;
                         case 4:
                             List<Location> initialPointCase4 = PathFinder.generatePath(
                                     new Location(odometer.getX(), odometer.getY()),
