@@ -134,7 +134,10 @@ public class Main {
         Connection comp = new Connection();
 
         // wait for comp to connect.. 10 second timeout
-        comp.connect(KinematicModel.COMP_HOST, KinematicModel.COMP_PORT);
+        boolean success = comp.connect(KinematicModel.COMP_HOST, KinematicModel.COMP_PORT);
+        if(!success){
+            return null;
+        }
         comp.queue = new Queue(KinematicModel.ROUTE_PROPERTY);
 
         comp.listen(500);
