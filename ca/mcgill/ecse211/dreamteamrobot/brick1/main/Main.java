@@ -330,8 +330,10 @@ public class Main {
 			WifiConnection conn = new WifiConnection(KinematicModel.WIFI_SERVER_IP, KinematicModel.TEAM_NUMBER);
 			if(conn.StartData.get("OTN") == KinematicModel.TEAM_NUMBER){
 				conn.StartData.put("Role", 0);
+				conn.StartData.put("SC", conn.StartData.get("OSC"));
 			} else {
 				conn.StartData.put("Role", 1);
+				conn.StartData.put("SC", conn.StartData.get("DSC"));
 			}
 			return conn.StartData;
 		} catch (IOException e) {

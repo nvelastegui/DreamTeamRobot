@@ -187,7 +187,7 @@ public class Driver extends Thread {
 
                             // Localize robot relative to board, given starting corner.
                             // 1: BL, 2: BR, 3: TR, 4: TL
-                            int startingCorner = KinematicModel.roundData.get("OSC");
+                            int startingCorner = KinematicModel.roundData.get("SC");
                             switch (startingCorner) {
                                 case 1:
                                     // Do nothing.
@@ -330,7 +330,7 @@ public class Driver extends Thread {
 
                             // Localize robot relative to board, given starting corner.
                             // 1: BL, 2: BR, 3: TR, 4: TL
-                            int startingCornerDefense = KinematicModel.roundData.get("DSC");
+                            int startingCornerDefense = KinematicModel.roundData.get("SC");
                             switch (startingCornerDefense) {
                                 case 1:
                                     // Do nothing.
@@ -532,7 +532,7 @@ public class Driver extends Thread {
                     Main.leftMotor.backward();
                     Main.rightMotor.backward();
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(3500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         Sound.beep();
