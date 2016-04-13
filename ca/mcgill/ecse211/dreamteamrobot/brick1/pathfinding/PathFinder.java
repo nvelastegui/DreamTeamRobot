@@ -265,9 +265,9 @@ public class PathFinder {
             List<Integer> pathToNode = current.getPathToNode();
 
             // System.out.println("Current path to node: ");
-            for (Integer whtever : pathToNode) {
-                System.out.println(whtever);
-            }
+//            for (Integer whtever : pathToNode) {
+//                System.out.println(whtever);
+//            }
 
             // Is it the vertex we want?
             if (current.getBlock() == searchingForVertex) {

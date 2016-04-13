@@ -313,18 +313,100 @@ public class Navigator extends Thread {
 	 * @return True if in state of emergency. False if not.
 	 */
 	private boolean checkEmergency() {
+
+		// FIRST CHECK: Obstacle ahead?
 		// Return true if either sensor is reading a value below tolerance. (ie. an object might be nearby).
 		double leftP = usPollerLeft.getDistance();
 		double rightP = usPollerRight.getDistance();
 		if((leftP < tolCloseness) || (rightP < tolCloseness)){
 			System.out.println("leftP:" + leftP + ", isDetectingWall:"+isDetectingWall(leftP)+" - rightP:"+rightP + ", isDetectingWall:"+isDetectingWall(rightP));
 		}
-		return ((leftP < tolCloseness) || (rightP < tolCloseness)) && !isDetectingWall(leftP) && !isDetectingWall(rightP);
+		boolean passSeesEmergency =  ((leftP < tolCloseness) || (rightP < tolCloseness)) && !isDetectingWall(leftP) && !isDetectingWall(rightP);
 
-		// TODO: check if robot is facing a wall or something
+		// SECOND CHECK: Facing right direction?
+		int currentBlock = PathFinder.determineBlockByCoordinate(odometer.getX(), odometer.getY());
+		double theta = odometer.getTheta();
+		boolean orientationIsTowardsWall = false;
+		switch (currentBlock) {
+			/** Bottom Left */
+			case 0:
+				// Check if it's facing left or right.
+				orientationIsTowardsWall = ((theta < ((7.0/8.0)*2*Math.PI)) && (theta > (3.0/4.0)*Math.PI));
+				break;
+			/** Bottom Right */
+			case 11:
+				// Check if it's facing right or down.
+				orientationIsTowardsWall = ((theta < ((5.0/8.0)*2*Math.PI)) && (theta > Math.PI/4.0));
+				break;
+			/** Top Left */
+			case 132:
+				// Check if it's facing up or left.
+				orientationIsTowardsWall = ((theta > ((5.0/8.0)*2*Math.PI)) || (theta < Math.PI/4.0));
+				break;
+			/** Top Right */
+			case 143:
+				// Check if it's facing up or right.
+				orientationIsTowardsWall = ((theta > ((7.0/8.0)*2*Math.PI)) || (theta < (3.0/4.0)*Math.PI));
+				break;
+			/** Top Bar */
+			case 133:
+			case 134:
+			case 135:
+			case 136:
+			case 137:
+			case 138:
+			case 139:
+			case 140:
+			case 141:
+			case 142:
+				// Check if it's facing up.
+				orientationIsTowardsWall = ((theta > ((7.0/8.0)*2*Math.PI)) || (theta < (1.0/4.0)*Math.PI));
+				break;
+			/** Left Bar */
+			case 12:
+			case 24:
+			case 36:
+			case 48:
+			case 60:
+			case 72:
+			case 84:
+			case 96:
+			case 108:
+			case 120:
+				// Check if it's facing left.
+				orientationIsTowardsWall = ((theta > ((5.0/8.0)*2*Math.PI)) && (theta < ((7.0/8.0)*2*Math.PI)));
+				break;
+			/** Bottom Bar */
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+				// Check if it's facing down.
+				orientationIsTowardsWall = ((theta > ((3.0/4.0)*Math.PI)) && (theta < (5.0/8.0)*2*Math.PI));
+				break;
+			/** Right Bar */
+			case 35:
+			case 47:
+			case 59:
+			case 71:
+			case 83:
+			case 95:
+			case 107:
+			case 119:
+			case 131:
+				// Check if it's facing right.
+				orientationIsTowardsWall = ((theta > ((1.0/4.0)*Math.PI)) && (theta < (3.0/4.0)*Math.PI));
+				break;
+		}
 
-//		int currentBlock = PathFinder.determineBlockByCoordinate(odometer.getX(), odometer.getY());
-
+		// Return true only if it sees an obstacle and is not facing a wall.
+		return passSeesEmergency && !orientationIsTowardsWall;
 
 	}
 

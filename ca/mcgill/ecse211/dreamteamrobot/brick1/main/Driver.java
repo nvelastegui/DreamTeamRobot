@@ -235,12 +235,51 @@ public class Driver extends Thread {
                             }
                             break;
                         case 2:
-                        case 3:
-                        case 4:
-                            pathToOffensiveZone = PathFinder.generatePath(
+                            List<Location> initialPointCase2 = PathFinder.generatePath(
                                     new Location(odometer.getX(), odometer.getY()),
-                                    new Location(135.00, 15.00)
+                                    new Location(285.00, 15.00)
                             );
+                            if (initialPointCase2 != null) {
+                                List<Location> secondPortion = PathFinder.generatePath(
+                                        new Location(285.00, 15.00),
+                                        new Location(135.00, 15.00)
+                                );
+                                if (secondPortion != null) initialPointCase2.addAll(secondPortion);
+                                pathToOffensiveZone = new ArrayList<>();
+                                pathToOffensiveZone.addAll(initialPointCase2);
+                            }
+                        case 3:
+                            List<Location> initialPointCase3 = PathFinder.generatePath(
+                                    new Location(odometer.getX(), odometer.getY()),
+                                    new Location(285.00, 285.00)
+                            );
+                            if (initialPointCase3 != null) {
+                                List<Location> secondPortion = PathFinder.generatePath(
+                                        new Location(285.00, 285.00),
+                                        new Location(135.00, 15.00)
+                                );
+                                if (secondPortion != null) initialPointCase3.addAll(secondPortion);
+                                pathToOffensiveZone = new ArrayList<>();
+                                pathToOffensiveZone.addAll(initialPointCase3);
+                            }
+                        case 4:
+                            List<Location> initialPointCase4 = PathFinder.generatePath(
+                                    new Location(odometer.getX(), odometer.getY()),
+                                    new Location(15.00, 285.00)
+                            );
+                            if (initialPointCase4 != null) {
+                                List<Location> secondPortion = PathFinder.generatePath(
+                                        new Location(15.00, 285.00),
+                                        new Location(135.00, 15.00)
+                                );
+                                if (secondPortion != null) initialPointCase4.addAll(secondPortion);
+                                pathToOffensiveZone = new ArrayList<>();
+                                pathToOffensiveZone.addAll(initialPointCase4);
+                            }
+//                            pathToOffensiveZone = PathFinder.generatePath(
+//                                    new Location(odometer.getX(), odometer.getY()),
+//                                    new Location(135.00, 15.00)
+//                            );
                             break;
                     }
 
