@@ -259,9 +259,15 @@ public class PathFinder {
             // Grab top node off queue.
             bfsSearchNode current = bfsQueue.poll();
 
+            // System.out.println("Entering while. Current node: " + current.getBlock());
+
             // Get path up to that node (ie. path from root to current)
             List<Integer> pathToNode = current.getPathToNode();
-            pathToNode.add(current.getBlock());
+
+            // System.out.println("Current path to node: ");
+            for (Integer whtever : pathToNode) {
+                System.out.println(whtever);
+            }
 
             // Is it the vertex we want?
             if (current.getBlock() == searchingForVertex) {
@@ -269,17 +275,23 @@ public class PathFinder {
                 return pathToNode;
             }
 
+            // System.out.println("Now checking neighbours...");
+
             // If it's not, add its neighbours to the queue and
             // log their individual paths.
             List<Integer> neighboursOfCurrent = board.getVerticesAdjacentTo(current.getBlock());
             for (Integer neighbourOfCurrent : neighboursOfCurrent) {
                 // ONLY if we have not visited the vertex before...
                 if (!visitedNodes.contains(neighbourOfCurrent)) {
+                    // System.out.println("Unseen node: " + neighbourOfCurrent);
                     // Log that we have visited it.
                     visitedNodes.add(neighbourOfCurrent);
                     // Create a new bfsSearchNode for it and add it to queue.
+                    List<Integer> weGonBeAlright = new ArrayList<>();
+                    weGonBeAlright.addAll(pathToNode);
+                    weGonBeAlright.add(current.getBlock());
                     bfsSearchNode newNode = new bfsSearchNode(
-                            pathToNode,
+                            weGonBeAlright,
                             neighbourOfCurrent
                     );
                     bfsQueue.add(newNode);

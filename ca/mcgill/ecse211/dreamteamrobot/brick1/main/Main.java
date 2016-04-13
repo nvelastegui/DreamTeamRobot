@@ -5,8 +5,11 @@ import ca.mcgill.ecse211.dreamteamrobot.brick1.communication.Communication;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.display.LCDDisplay;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.kinematicmodel.KinematicModel;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.localization.Localization;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Location;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Navigator;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.navigation.Odometer;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding.Graph;
+import ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding.PathFinder;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.sensors.ColourPoller;
 import ca.mcgill.ecse211.dreamteamrobot.brick1.wifi.WifiConnection;
 import ca.mcgill.ecse211.dreamteamrobot.connection.Queue;
@@ -21,16 +24,17 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Central class.
  */
 public class Main {
 
-	// /** Constants */
+	 /** Constants */
 	private static final TextLCD t = LocalEV3.get().getTextLCD();
 
-	// /** Constants: Motor Ports */
+	/** Constants: Motor Ports */
 
 	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
@@ -56,6 +60,41 @@ public class Main {
 	 * @throws InterruptedException
      */
 	public static void main(String[] args) throws InterruptedException {
+
+//		HashMap<String, Integer> spoofRoundData = new HashMap<>();
+//		spoofRoundData.put("SC", 1);
+//		spoofRoundData.put("Role", 0);
+//		spoofRoundData.put("w1", 4);
+//		spoofRoundData.put("d1", 5);
+//		spoofRoundData.put("d2", 5);
+//		spoofRoundData.put("ll-x", 5);
+//		spoofRoundData.put("ll-y", 1);
+//		spoofRoundData.put("ur-x", 6);
+//		spoofRoundData.put("ur-y", 2);
+//		spoofRoundData.put("BC", 2);
+//		KinematicModel.roundData = spoofRoundData;
+//
+//
+//
+//		PathFinder.board = new Graph(12*12);
+//		// Fully connect the board.
+//		PathFinder.setupFullyConnectedBoard();
+//
+//		PathFinder.blockOutDefenseZone();   // Defense Zone must be blocked off.
+//		PathFinder.blockOutBallBox();       // Ball Box must be blocked off.
+//
+//
+//		List<Location> testList = PathFinder.generatePath(
+//				new Location(-15.00, -15.00),
+//				new Location(135, 45)
+//		);
+//
+//		// DEBUG
+//		System.out.println("\n\nINITIAL PATH\n");
+//		for (Location current : testList) {
+//			System.out.println("Location: (" + current.getX() + "," + current.getY() + ")");
+//		}
+//		System.out.println("\n");
 
 		/** Begin initializing communications. */
 		t.clear();
