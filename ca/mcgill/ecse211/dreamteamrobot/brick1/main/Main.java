@@ -131,6 +131,8 @@ public class Main {
 			Sound.twoBeeps();
 			Button.ESCAPE.waitForPress();
 			return;
+		} else {
+			System.out.println("*************** RECEIVED WIFI ****************");
 		}
 //		HashMap<String, Integer> spoofRoundData = new HashMap<>();
 //		spoofRoundData.put("SC", 1);
@@ -144,8 +146,10 @@ public class Main {
 //		spoofRoundData.put("ur-y", 2);
 //		spoofRoundData.put("BC", 2);
 //		KinematicModel.roundData = spoofRoundData;
-
-		int role = KinematicModel.roundData.get("Role");
+		int role = 0;
+		try{
+			role = KinematicModel.roundData.get("Role");
+		} catch(NullPointerException e) {}
 
 		switch (role) {
 
@@ -324,6 +328,11 @@ public class Main {
 
 		try {
 			WifiConnection conn = new WifiConnection(KinematicModel.WIFI_SERVER_IP, KinematicModel.TEAM_NUMBER);
+			if(conn.StartData.get("OTN") == KinematicModel.TEAM_NUMBER){
+				conn.StartData.put("Role", 0);
+			} else {
+				conn.StartData.put("Role", 1);
+			}
 			return conn.StartData;
 		} catch (IOException e) {
 			return null;

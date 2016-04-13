@@ -75,6 +75,8 @@ public class KinematicModel {
      *  Constants related to wifi connection.
      */
     public static final String WIFI_SERVER_IP = "192.168.10.200"; //"localhost";
+    //public static final String WIFI_SERVER_IP = "192.168.10.102"; //"localhost";
+
     public static final int    TEAM_NUMBER = 12;
 
     /**

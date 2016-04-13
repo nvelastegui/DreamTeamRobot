@@ -187,7 +187,7 @@ public class Driver extends Thread {
 
                             // Localize robot relative to board, given starting corner.
                             // 1: BL, 2: BR, 3: TR, 4: TL
-                            int startingCorner = KinematicModel.roundData.get("SC");
+                            int startingCorner = KinematicModel.roundData.get("OSC");
                             switch (startingCorner) {
                                 case 1:
                                     // Do nothing.
@@ -330,7 +330,7 @@ public class Driver extends Thread {
 
                             // Localize robot relative to board, given starting corner.
                             // 1: BL, 2: BR, 3: TR, 4: TL
-                            int startingCornerDefense = KinematicModel.roundData.get("SC");
+                            int startingCornerDefense = KinematicModel.roundData.get("DSC");
                             switch (startingCornerDefense) {
                                 case 1:
                                     // Do nothing.
