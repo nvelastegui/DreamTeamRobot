@@ -289,11 +289,11 @@ public class Driver extends Thread {
                     if (pathToOffensiveZone != null) {
 
                         // DEBUG
-                        System.out.println("\n\nINITIAL PATH\n");
-                        for (Location current : pathToOffensiveZone) {
-                            System.out.println("Location: (" + current.getX() + "," + current.getY() + ")");
-                        }
-                        System.out.println("\n");
+//                        System.out.println("\n\nINITIAL PATH\n");
+//                        for (Location current : pathToOffensiveZone) {
+//                            System.out.println("Location: (" + current.getX() + "," + current.getY() + ")");
+//                        }
+//                        System.out.println("\n");
 
                         pathToOffensiveZone.remove(0);
                         Sound.twoBeeps();

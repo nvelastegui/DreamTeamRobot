@@ -207,6 +207,13 @@ public class PathFinder {
         /** 4. Simplify block path */
         List<Location> simplifiedPath = simplifyLocationList(convertBlockPathToLocationPath(blockPath));
 
+        System.out.println("\n\nGENERATED NEW PATH\n");
+        for (Location current : simplifiedPath) {
+            System.out.println("Location: (" + current.getX() + "," + current.getY() + ")");
+        }
+        System.out.println("\n");
+
+
         /** 5. Return. */
         return simplifiedPath;
 
@@ -403,7 +410,7 @@ public class PathFinder {
             Location nextLocation;
             try {
                 nextLocation = expensiveList.get(expensiveList.indexOf(current) + 1);
-            } catch (NullPointerException e) {
+            } catch (NullPointerException|IndexOutOfBoundsException e) {
                 // If this is the last location in the list, then just add it the simplified path and break.
                 simplifiedPath.add(current);
                 break;
