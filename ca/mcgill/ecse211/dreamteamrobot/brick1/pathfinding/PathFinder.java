@@ -205,10 +205,10 @@ public class PathFinder {
         if (blockPath == null) return null;
 
         /** 4. Simplify block path */
-        // TODO: Develop algorithm for simplifying block path.
+        List<Location> simplifiedPath = simplifyLocationList(convertBlockPathToLocationPath(blockPath));
 
         /** 5. Return. */
-        return convertBlockPathToLocationPath(blockPath);
+        return simplifiedPath;
 
     }
 
@@ -306,10 +306,10 @@ public class PathFinder {
     }
 
     /**
-     *
-     * @param x
-     * @param y
-     * @return
+     * Determines board block given x and y coordinates.
+     * @param x x position
+     * @param y y position
+     * @return Block number.
      */
     public static int determineBlockByCoordinate (double x, double y) {
 
@@ -370,4 +370,112 @@ public class PathFinder {
 
     }
 
+    /**
+     * Analyzes a list of locations and removes fluff (multiple locations along a line).
+     * @param expensiveList List to be simplified.
+     * @return Simplified list.
+     */
+    private static List<Location> simplifyLocationList (List<Location> expensiveList) {
+
+        // If the list is small just keep it as is.
+        if (expensiveList.size() < 3) return expensiveList;
+
+        // Crete return list.
+        List<Location> simplifiedPath = new ArrayList<>();
+
+        // Initialize the direction and set 'last' location to first in expensiveList.
+        // 0 - vertical, 1 - horizontal
+        int direction = determineDirection(expensiveList.get(0), expensiveList.get(1));
+        // Log initial value for last location.
+        Location lastLocation = expensiveList.get(0);
+
+        // Add the first location to the simplified list and remove it from the expensive list.
+        simplifiedPath.add(lastLocation);
+        expensiveList.remove(0);
+
+        // Cycle through expensive list
+        for (Location current : expensiveList) {
+
+            // Grab next location
+            Location nextLocation;
+            try {
+                nextLocation = expensiveList.get(expensiveList.indexOf(current) + 1);
+            } catch (NullPointerException e) {
+                // If this is the last location in the list, then just add it the simplified path and break.
+                simplifiedPath.add(current);
+                break;
+            }
+
+            // Check if trio (last, current, next) are aligned (same direction).
+            // If they are, remove the current location from expensive list and keep the direction.
+            if (areSameDirection(direction, lastLocation, current) && areSameDirection(direction, current, nextLocation)) {
+                // Update direction.
+                direction = determineDirection(lastLocation, current);
+                // Update last location.
+                lastLocation = current;
+                // Remove current from the expensive list.
+                expensiveList.remove(current);
+            }
+            // If the three are not in the same direction...
+            else {
+                // Update the direction.
+                direction = determineDirection(current, nextLocation);
+                // Add the current location to the simplified list.
+                simplifiedPath.add(current);
+                // Remove it from expensive list.
+                expensiveList.remove(current);
+            }
+
+        }
+
+        return simplifiedPath;
+
+    }
+
+    /**
+     *
+     * @param direction
+     * @param lastLocation
+     * @param currentLocation
+     * @return
+     */
+    private static boolean areSameDirection (int direction, Location lastLocation, Location currentLocation) {
+        switch (direction) {
+            case 0:
+                return (lastLocation.getY() == currentLocation.getY());
+            case 1:
+                return (lastLocation.getX() == currentLocation.getX());
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * @param lastLocation Previous location.
+     * @param currentLocation Next location.
+     * @return Direction created by two locations (horizontal (1) or vertical (0)).
+     */
+    private static int determineDirection (Location lastLocation, Location currentLocation) {
+        if (lastLocation.getX() == currentLocation.getX()) return 1;
+        else return 0;
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
