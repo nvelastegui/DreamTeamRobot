@@ -207,6 +207,13 @@ public class PathFinder {
         /** 4. Simplify block path */
         List<Location> simplifiedPath = simplifyLocationList(convertBlockPathToLocationPath(blockPath));
 
+        System.out.println("\n\nGENERATED NEW PATH\n");
+        for (Location current : simplifiedPath) {
+            System.out.println("Location: (" + current.getX() + "," + current.getY() + ")");
+        }
+        System.out.println("\n");
+
+
         /** 5. Return. */
         return simplifiedPath;
 
