@@ -19,7 +19,10 @@ public class In extends Thread {
 	private int sleepTime;
 	private ArrayDeque<String> Incoming;
 
-	
+	/**
+	 * Parent In Class
+	 * @param stream
+     */
 	public In(InputStreamReader stream){
 		this.lock = new Object();
 		if(stream == null) {
@@ -33,9 +36,10 @@ public class In extends Thread {
 
 	}
 
-	/*
+	/**
 	 * Reads one line from the TCP socket connection
-	 */
+	 * @return the string read from the buffer or null if buffer is empty
+     */
 	public String readLine(){
 		if(this.inBuffer == null)return null;
 
@@ -68,6 +72,12 @@ public class In extends Thread {
 	 * Passes each new line to the queue.processLine function to be sorted
 	 * @see java.lang.Thread#run()
 	 */
+
+	/**
+	 * Polls for new lines in the socket connection.
+	 * Passes each new line to the queue.processLine function to be sorted
+	 * @see java.lang.Thread#run()
+	 */
 	public void run() {
 		this.running = true;
 		System.out.println("Starting to listen");
@@ -88,32 +98,51 @@ public class In extends Thread {
 			}
 		}
 	}
-	
+
+	/**
+	 * Stops the thread from listening
+	 */
 	public void stopListening(){
 		synchronized(lock){
 			this.running = false;
 			this.sleepTime = 0;
 		}
 	}
-	
+
+	/**
+	 * Returns if the thread is running
+	 * @return
+     */
 	public Boolean isRunning(){
 		synchronized(lock) {
 			return this.running;
 		}
 	}
-	
+
+	/**
+	 * Setter for Thread Sleep time
+	 * @param sleepTime
+     */
 	public void setSleepTime(int sleepTime){
 		synchronized(lock){
 			this.sleepTime = sleepTime;
 		}
 	}
-	
+
+	/**
+	 * Getter for Thread Sleep time
+	 * @return
+     */
 	public int getSleepTime(){
 		synchronized(lock){
 			return this.sleepTime;
 		}
 	}
 
+	/**
+	 * Setter for queue object
+	 * @param queue
+     */
 	public void setQueue(Queue queue) {
 		synchronized(lock){
 			this.queue = queue;

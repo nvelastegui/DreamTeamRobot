@@ -246,6 +246,11 @@ public class Gunner extends Thread {
         }
     }
 
+
+    /**
+     * Handler method, that given a Connection object will poll for new CLAWS_MOVE messages. Will execute request accordingly and then send command acknowledgement message.
+     * @param con
+     */
     private void handleClaws(Connection con){
         if(con == null) return;
 
@@ -264,6 +269,10 @@ public class Gunner extends Thread {
         }
     }
 
+    /**
+     * Handler method, that given a Connection object will poll for new READ_BALL messages. Will execute request accordingly and then send command acknowledgement message.
+     * @param con
+     */
     private void handleColourRead(Connection con){
         if(con == null) return;
 
@@ -286,6 +295,10 @@ public class Gunner extends Thread {
         }
     }
 
+    /**
+     * Handler method, that given a Connection object will poll for new EXECUTE_SHOOT messages. Will execute request accordingly and then send command acknowledgement message.
+     * @param con
+     */
     private void handleShoot(Connection con){
         if(con == null) return;
 

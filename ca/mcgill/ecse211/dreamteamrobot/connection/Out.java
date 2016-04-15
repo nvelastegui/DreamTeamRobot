@@ -11,7 +11,12 @@ public class Out {
 	private OutputStreamWriter outWritter;
 	//private OutputStream outData;
 	private Object lock;
-	
+
+	/**
+	 * Parent class for Out Object and its methods
+	 * Given an output stream, will instantiate a StreamWriter around it and set the encoding
+	 * @param outData
+     */
 	public Out(OutputStream outData){
 		this.outStream = outData;
 
@@ -27,7 +32,11 @@ public class Out {
 
 		this.lock = new Object();
 	}
-	
+
+	/**
+	 * Sends a raw String down the socket
+	 * @param str
+     */
 	public void sendRaw(String str) {
 		if(this.outStream == null || this.outWritter == null) return;
 		try {
@@ -44,6 +53,13 @@ public class Out {
 	}
 	
 	// Sends : "{"url":"<routeName>","data":"<data>"}
+
+	/**
+	 * Send a String to a specific route on the other end. Structures the message in the standardized route/body format
+	 * Message format is as follows : "{"url":"<routeName>","data":"<data>"}
+	 * @param routeName
+	 * @param body
+     */
 	public void sendStr(String routeName, String body){
 		JSONObject json = new JSONObject();
 		json.put(KinematicModel.ROUTE_PROPERTY, routeName);
@@ -59,6 +75,12 @@ public class Out {
 	}
 	
 	// Sends : "{"url":"<routeName>","data":"JSON.stringify(<data>)"}
+	/**
+	 * Send a Structured JSON Object to a specific route on the other end. Structures the message in the standardized route/body format
+	 * Message format is as follows : "{"url":"<routeName>","data":"JSON.stringify(<data>)"}"
+	 * @param routeName
+	 * @param body
+	 */
 	public void sendJSONObj(String routeName, JSONObject body){
 		JSONObject json = new JSONObject();
 		json.put(KinematicModel.ROUTE_PROPERTY, routeName);

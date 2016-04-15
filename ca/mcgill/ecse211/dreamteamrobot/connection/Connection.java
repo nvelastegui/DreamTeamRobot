@@ -19,11 +19,21 @@ public class Connection {
 	
 	private DataOutputStream outData;
 	private DataInputStream inData;
-	
+
+	/**
+	 * Empty connection class object
+	 */
 	public Connection(){
 		
 	}
-	
+
+	/**
+	 * Given a port to open / listen on, this method waits for incoming connections and opens a TCP/IP socket.
+	 * Returns whether the connection has been successfully established in the given time limit
+	 * @param port
+	 * @param timeout
+     * @return
+     */
 	public boolean accept(int port, int timeout){
 		try {
 			serverSocket = new ServerSocket(port);
@@ -48,7 +58,14 @@ public class Connection {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Similar to accept but will execute a connection request and open a socket on a remote address and port.
+	 * Returns whether the connection has been successfully established in the given time limit
+	 * @param serverName
+	 * @param port
+     * @return
+     */
 	public boolean connect(String serverName, int port){
 		try {
 			socket = new Socket(serverName, port);
@@ -68,7 +85,11 @@ public class Connection {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Triggers the In Thread and instantiates the queue object for incoming messages
+	 * @param sleepTime
+     */
 	public void listen(int sleepTime){
 		this.in.setSleepTime(sleepTime);
 		this.in.setQueue(this.queue);

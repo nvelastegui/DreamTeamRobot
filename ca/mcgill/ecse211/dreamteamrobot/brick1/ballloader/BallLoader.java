@@ -214,7 +214,7 @@ public class BallLoader {
     }
 
     /**
-     *
+     * Given the index of the target ball and the locations of all balls this method will calculate the best approach inorder to maximize success rate when grabbing the balls
      * @param ballIndex int
      * @param ballLocationsArr double[][] = {{coordsOfBall1}, {coordsOfBall2}}
      * @return
@@ -240,6 +240,9 @@ public class BallLoader {
         }
     }
 
+    /**
+     * Closes the clasp on brick2 in a synchronous fasion.
+     */
     public void closeGripsSync(){
         JSONObject closeAngle = new JSONObject();
         closeAngle.put("claws_angle", 0);
@@ -251,6 +254,9 @@ public class BallLoader {
         }
     }
 
+    /**
+     * Increments the target ball
+     */
     public void incrementTargetBall(){
         try{
             this.availableBalls[this.TargetBall] = false;
@@ -261,6 +267,11 @@ public class BallLoader {
         this.TargetBall ++;
     }
 
+    /**
+     * Synchronous RTP call to brick2 to read the color of the ball and report the RGB array back as structured JSON
+     * @param waitUntilDone
+     * @return
+     */
     public KinematicModel.BALL_COLORS readBallColour(boolean waitUntilDone){
 
         //this.brick2.queue.get("BALL_COLOUR").clear();
@@ -293,6 +304,12 @@ public class BallLoader {
         return null;
     }
 
+    /**
+     * Calculate the euclidean distance between 2 arbitrarily sized arrays
+     * @param a
+     * @param b
+     * @return
+     */
     private double euclidDist(double[] a, double[] b){
         double squaresSum = 0;
         for (int i=0;(i<a.length && i<b.length);i++){
@@ -301,6 +318,9 @@ public class BallLoader {
         return Math.sqrt(squaresSum);
     }
 
+    /**
+     * Given the target ball, this will execute path planning and travelTo function to navigate to the ball. Executes bestApproach
+     */
     public void moveToTargetBall(){
 
         //@TODO : need to set up better approach than driving right in to the ball..
@@ -316,6 +336,11 @@ public class BallLoader {
         }
     }
 
+    /**
+     * Synchronously executes generating a path to a target way point and carrying out the traveling of the returned path.
+     * @param xCoord
+     * @param yCoord
+     */
     private void travelToPath(double xCoord, double yCoord){
         Odometer tempOdo = navigator.getOdometer();
 
@@ -337,22 +362,34 @@ public class BallLoader {
         }
     }
 
-    private void quickLocalize(){
-
-    }
-
+    /**
+     * getter for state.
+     * @return
+     */
     public STATES getState() {
         return this.state;
     }
 
+    /**
+     * setter for state.
+     * @param state
+     */
     public void setState(STATES state) {
         this.state = state;
     }
 
+    /**
+     * getter for TargetBall.
+     * @return
+     */
     public int getTargetBall() {
         return TargetBall;
     }
 
+    /**
+     * setter for TargetBall.
+     * @param TargetBall
+     */
     public void setTargetBall(int TargetBall) {
         this.TargetBall = TargetBall;
     }

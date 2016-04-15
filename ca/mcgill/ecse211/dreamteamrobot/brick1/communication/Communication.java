@@ -18,6 +18,12 @@ public class Communication extends Thread{
 
     private int CYCLE_TIME;
 
+    /**
+     * Instantiates the Communication object that holds the Connections object for brick2 and the webserver
+     * @param driver
+     * @param brick2
+     * @param comp
+     */
     public Communication(Driver driver, Connection brick2, Connection comp){
         this.driver = driver;
         this.brick2 = brick2;
@@ -27,6 +33,10 @@ public class Communication extends Thread{
         if(this.brick2 != null) this.initializeRoutes(this.brick2);
     }
 
+    /**
+     * Registers the required routes for incoming RPC messages on a particular connection
+     * @param con
+     */
     private void initializeRoutes(Connection con){
         if(con == null) return;
 
@@ -106,6 +116,10 @@ public class Communication extends Thread{
         con.out.sendJSONObj(KinematicModel.ROUTES.HEARTBEAT_B1.toString(), heartBeat);
     }
 
+    /**
+     * Handle incoming NAV_TO messages. Change current waypoint in navigator class.
+     * @param con
+     */
     private void handleNavTo(Connection con){
         if(con == null) return;
 
@@ -122,6 +136,10 @@ public class Communication extends Thread{
         }
     }
 
+    /**
+     * Handle TURN_TO messages. Executes Navigator.turnToAngle
+     * @param con
+     */
     private void handleTurnTo(Connection con){
         if(con == null) return;
 
@@ -148,6 +166,10 @@ public class Communication extends Thread{
         }
     }
 
+    /**
+     * Handle UPDATE_ODO messages to update the current value of the odometer
+     * @param con
+     */
     private void handleUpdateOdo(Connection con){
         if(con == null) return;
 
@@ -178,10 +200,18 @@ public class Communication extends Thread{
         }
     }
 
+    /**
+     * Getter for CYCLE_TIME. Dictates how quickly the thread cycles
+     * @return
+     */
     public int getCYCLE_TIME() {
         return CYCLE_TIME;
     }
 
+    /**
+     * Setter for CYCLE_TIME. Dictates how quickly the thread cycles
+     * @param CYCLE_TIME
+     */
     public void setCYCLE_TIME(int CYCLE_TIME) {
         this.CYCLE_TIME = CYCLE_TIME;
     }

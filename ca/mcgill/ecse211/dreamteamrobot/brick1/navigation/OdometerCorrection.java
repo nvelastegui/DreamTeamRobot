@@ -42,6 +42,13 @@ public class OdometerCorrection extends Thread {
     private double[] leftLoc = new double[3];
     private double[] rightLoc = new double[3];
 
+    /**
+     * Parent class for odometryCorrection Object. Stores Odometer object, detectionTachoCounts and Left / Right Color Pollers.
+     * This class operates as its own thread and constantly polls the color sensors. Performs calculations when lines are hit and updates the odometer object.
+     * @param odometer
+     * @param leftP
+     * @param rightP
+     */
     public OdometerCorrection (Odometer odometer, ColourPoller leftP, ColourPoller rightP) {
         this.leftDetectleftTacho = 0;
         this.leftDetectrightTacho = 0;
@@ -231,7 +238,13 @@ public class OdometerCorrection extends Thread {
         }
     }
 
-
+    /**
+     * Reads in various tachoCounts and performs trig calculations to calculate the intecept theta and correct the odometer object accordingly.
+     * @param leftDetectleftTacho
+     * @param leftDetectrightTacho
+     * @param rightDetectleftTacho
+     * @param rigthDetectrightTacho
+     */
     public void correctTheta(double leftDetectleftTacho, double leftDetectrightTacho, double rightDetectleftTacho, double rigthDetectrightTacho){
         // calculate for heading
         double lineInterceptAngle;
@@ -283,6 +296,12 @@ public class OdometerCorrection extends Thread {
         this.odometer.setTheta(correctedHeading);
     }
 
+    /**
+     * Given distances (side lengths) this method executes the trig operation to return the angle enclosed in the triangle.
+     * @param first
+     * @param second
+     * @return
+     */
     private static double calcLineInterceptAngle(double first, double second){
         double deltaTheta = (second - first) * Math.PI / 180;
         double sideLength = deltaTheta * KinematicModel.WHEEL_RADIUS_L;
