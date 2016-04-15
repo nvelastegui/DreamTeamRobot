@@ -255,14 +255,12 @@ public class UltrasonicLocalizer {
 	 * @return Value of delta theta for corresponding angles A and B.
 	 */
 	private double getDeltaTheta (double angleA, double angleB) {
-
 		double deltaTheta = Math.PI/4.0 - ((angleA + angleB) / 2);
 		deltaTheta += Math.PI;
 		if (deltaTheta < 0) {
 			deltaTheta += 2.0*Math.PI;
 		}
 		return deltaTheta % (2.0*Math.PI);
-
 	}
 
 

@@ -59,11 +59,6 @@ public class LCDDisplay extends Thread {
 			// Get info from driver.
 			DriverStatusPacket stats = driver.getStatus();
 
-			// Debugging: print values
-//			System.out.println("X: " + stats.getX());
-//			System.out.println("Y: " + stats.getY());
-//			System.out.println("T: " + stats.getTheta());
-
 			// Display info on screen.
 			LCD.drawString("Sts: " + stats.getCurrentState(), 0, 0);
 			LCD.drawString("X: " + String.valueOf(stats.getX()), 0, 1);
@@ -71,14 +66,6 @@ public class LCDDisplay extends Thread {
 			LCD.drawString("T: " + String.valueOf(stats.getTheta()), 0, 3);
 			LCD.drawString("  ", 0, 4);
 			// line 5 reserved for messages sent in via sendToDisplay.
-
-//			// get the odometry information
-//			odometer.getPosition(position, new boolean[] { true, true, true });
-//
-//			// display odometry information
-//			for (int i = 0; i < 3; i++) {
-//				t.drawString(formattedDoubleToString(position[i], 2), 3, i);
-//			}
 
 			// throttle the LCDDisplay
 			displayEnd = System.currentTimeMillis();

@@ -258,17 +258,8 @@ public class Navigator extends Thread {
 	 */
 	private boolean isFacingDestination (double destinationAngle) {
 		double currentTheta = odometer.getTheta();
-		double err1 = Math.abs(destinationAngle-currentTheta);
-		double err2 = Math.abs(Math.PI*2-currentTheta - destinationAngle);
-
-//		if(currentTheta > Math.PI * 3/2){
-//			return err2 < tolTheta;
-//		} else {
-//			return err1 < tolTheta;
-//		}
 		double err = Math.min(Math.abs(destinationAngle-currentTheta), Math.abs(Math.PI*2-currentTheta - destinationAngle));
 		return err < tolTheta;
-		// return ((destinationAngle - tolTheta) < currentTheta) && (currentTheta < (destinationAngle + tolTheta));
 	}
 
 	/**

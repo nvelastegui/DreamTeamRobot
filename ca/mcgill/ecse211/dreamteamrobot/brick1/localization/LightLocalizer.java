@@ -124,7 +124,6 @@ public class LightLocalizer {
 		}
 
 		System.out.println("Final Theta: " + odo.getTheta());
-		//nav.turnToAngle(0.00);
 
 		// Turn to 180 degrees.
 		nav.turnToAngle(Math.PI);
@@ -134,9 +133,6 @@ public class LightLocalizer {
 		pause(2500);
 		rightMotor.stop();
 		leftMotor.stop();
-
-
-		// !!!!!! >>>>> EVERYTHING ABOVE THIS IS WORKING <<<<<<<<<<< !!!!!!!!!
 
 		// Drive until robot sees line.
 		leftMotor.setSpeed(KinematicModel.lightLocalization_backwardSpeed);

@@ -283,10 +283,6 @@ public class Driver extends Thread {
                                         pathToOffensiveZone = new ArrayList<>();
                                         pathToOffensiveZone.addAll(initialPointCase4);
                                     }
-//                            pathToOffensiveZone = PathFinder.generatePath(
-//                                    new Location(odometer.getX(), odometer.getY()),
-//                                    new Location(135.00, 15.00)
-//                            );
                                     break;
                             }
 

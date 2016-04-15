@@ -61,41 +61,6 @@ public class Main {
      */
 	public static void main(String[] args) throws InterruptedException {
 
-//		HashMap<String, Integer> spoofRoundData = new HashMap<>();
-//		spoofRoundData.put("SC", 1);
-//		spoofRoundData.put("Role", 0);
-//		spoofRoundData.put("w1", 4);
-//		spoofRoundData.put("d1", 5);
-//		spoofRoundData.put("d2", 5);
-//		spoofRoundData.put("ll-x", 5);
-//		spoofRoundData.put("ll-y", 1);
-//		spoofRoundData.put("ur-x", 6);
-//		spoofRoundData.put("ur-y", 2);
-//		spoofRoundData.put("BC", 2);
-//		KinematicModel.roundData = spoofRoundData;
-//
-//
-//
-//		PathFinder.board = new Graph(12*12);
-//		// Fully connect the board.
-//		PathFinder.setupFullyConnectedBoard();
-//
-//		PathFinder.blockOutDefenseZone();   // Defense Zone must be blocked off.
-//		PathFinder.blockOutBallBox();       // Ball Box must be blocked off.
-//
-//
-//		List<Location> testList = PathFinder.generatePath(
-//				new Location(-15.00, -15.00),
-//				new Location(135, 45)
-//		);
-//
-//		// DEBUG
-//		System.out.println("\n\nINITIAL PATH\n");
-//		for (Location current : testList) {
-//			System.out.println("Location: (" + current.getX() + "," + current.getY() + ")");
-//		}
-//		System.out.println("\n");
-
 		/** Begin initializing communications. */
 		t.clear();
 		t.drawString("< DreamTeamRobot >", 0, 0);
@@ -134,18 +99,7 @@ public class Main {
 		} else {
 			System.out.println("*************** RECEIVED WIFI ****************");
 		}
-//		HashMap<String, Integer> spoofRoundData = new HashMap<>();
-//		spoofRoundData.put("SC", 1);
-//		spoofRoundData.put("Role", 0);
-//		spoofRoundData.put("w1", 4);
-//		spoofRoundData.put("d1", 5);
-//		spoofRoundData.put("d2", 5);
-//		spoofRoundData.put("ll-x", 5);
-//		spoofRoundData.put("ll-y", 1);
-//		spoofRoundData.put("ur-x", 6);
-//		spoofRoundData.put("ur-y", 2);
-//		spoofRoundData.put("BC", 2);
-//		KinematicModel.roundData = spoofRoundData;
+
 		int role = 0;
 		try{
 			role = KinematicModel.roundData.get("Role");

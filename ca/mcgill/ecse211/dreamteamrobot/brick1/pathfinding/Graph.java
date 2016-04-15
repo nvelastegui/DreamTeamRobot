@@ -1,7 +1,7 @@
 package ca.mcgill.ecse211.dreamteamrobot.brick1.pathfinding;
 
 /******************************************************************************
- *  ATTENTION: This class is somewhat based on code from
+ *  ATTENTION: This class is loosely based on code from
  *  http://algs4.cs.princeton.edu/41graph/AdjMatrixGraph.java.html
  ******************************************************************************/
 
